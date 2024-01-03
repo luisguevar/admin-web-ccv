@@ -1,0 +1,261 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                <i class="icon-2x text-dark-50 flaticon-bag mx-2"></i>
+                Crear Nueva Cotización
+            </h3>
+        </div>
+        <div class="card-toolbar">
+        </div>
+    </div>
+    <div class="card-body">
+        <ng-container *ngIf="isLoading$ | async">
+            <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
+
+        <div class="form-group row">
+            <div class="col-5">
+                <label class="form-label">Nombre del cliente: *</label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Buscar Cliente" autocomplete="off" [(ngModel)]="cliente">
+            </div>
+            <div class="col-3">
+                <label class="form-label">Fecha Emisión: *</label>
+
+                <div class="input-group input-group-solid">
+                    <input type="date" class="form-control form-control-lg form-control-solid" />
+                </div>
+            </div>
+
+            <div class="col-3">
+                <label class="form-label">Fecha Expiración: *</label>
+                <div class="input-group input-group-solid">
+                    <input type="date" class="form-control form-control-lg form-control-solid" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-5">
+                <label class="form-label">Estado: *</label>
+
+                <select name="categorie_id" class="form-control form-control-solid form-control-lg" [(ngModel)]="state">
+                    <option value="0">Inactivo</option>
+                    <option value="1">Pendiente</option>
+                    <option value="2">Enviado</option>
+                    <option value="3">Aceptado</option>
+                    <option value="4">Rechazado</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <label class="form-label">Atendido por: *</label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="sku" placeholder="SKU"
+                    autocomplete="off" [(ngModel)]="sku">
+            </div>
+
+
+        </div>
+
+
+
+        <div class="form-group row">
+            <div class="col-11">
+                <label class="form-label">Observaciones: *</label>
+                <textarea class="form-control" name="descriptions" [(ngModel)]="resumen" placeholder=""
+                    rows="4"></textarea>
+            </div>
+
+        </div>
+
+       <!--  <div class="form-group row">
+            <div class="col-11">
+
+
+                <ul class="nav nav-tabs nav-tabs-line">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">CONTENIDO</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content mt-5" id="myTabContent">
+                    <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel"
+                        aria-labelledby="kt_tab_pane_2">
+
+
+                        <div class="form-group row">
+                            <div class="col-5">
+                                <label class="form-label">Producto: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                    name="cliente" placeholder="Buscar Cliente" autocomplete="off"
+                                    [(ngModel)]="cliente">
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label">Cantidad: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg" name="sku"
+                                    placeholder="SKU" autocomplete="off" [(ngModel)]="sku">
+                            </div>
+
+                            <div class="col-3">
+                                <label class="form-label">Cantidad: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg" name="sku"
+                                    placeholder="SKU" autocomplete="off" [(ngModel)]="sku">
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label class="form-label">Cantidad: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg" name="sku"
+                                    placeholder="SKU" autocomplete="off" [(ngModel)]="sku">
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-11">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Producto</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Precio/u</th>
+                                            <th scope="col">Descuento</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Laptop HP</td>
+                                            <td>2 u.</td>
+                                            <td>
+                                                s/ 1000
+                                            </td>
+                                            <td>
+                                                -
+                                            </td>
+                                            <td>
+                                                s/ 200
+                                            </td>
+                                            <td>
+                                                Eliminar
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Laptop HP</td>
+                                            <td>2 u.</td>
+                                            <td>
+                                                s/ 1000
+                                            </td>
+                                            <td>
+                                                -
+                                            </td>
+                                            <td>
+                                                s/ 200
+                                            </td>
+                                            <td>
+                                                Eliminar
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Laptop HP</td>
+                                            <td>2 u.</td>
+                                            <td>
+                                                s/ 1000
+                                            </td>
+                                            <td>
+                                                -
+                                            </td>
+                                            <td>
+                                                s/ 200
+                                            </td>
+                                            <td>
+                                                Eliminar
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-7">
+
+                            </div>
+                            <div class="col-4">
+                                <table class="table table-bordered">
+
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Neto</th>
+                                            <td>S/ 2033.60</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Descuento</th>
+                                            <td>S/ 0</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Sub Total</th>
+                                            <td>S/ 2033.60</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">IGV</th>
+                                            <td>S/ 446.40</td>
+
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <th scope="row">Total</th>
+                                            <td>S/ 2480</td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div> -->
+
+        <div class="form-group row">
+            <div class="col-6">
+                <button class="btn btn-md btn-danger" (click)="createCotizacion()">Volver</button>
+            </div>
+
+            <div class="col-5" style="display: flex;justify-content: right;">
+                <button class="btn btn-md btn-success mx-1" (click)="createCotizacion()">Exportar</button>
+                <button class="btn btn-md btn-primary" (click)="createCotizacion()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
