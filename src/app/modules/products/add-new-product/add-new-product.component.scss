@@ -1,0 +1,15 @@
+.contenedor-imagen {
+
+    height: 320px;
+    /* Ajusta este valor al tamaño fijo deseado */
+    overflow: hidden;
+    background-color: rgb(252, 252, 252);
+    /* Fondo gris */
+    border: 2px solid rgb(241, 239, 239);
+
+}
+
+.contenedor-imagen img {
+    height: 300px;
+    object-fit: scale-down;
+}
