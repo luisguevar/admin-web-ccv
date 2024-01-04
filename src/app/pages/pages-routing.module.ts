@@ -119,6 +119,15 @@ const routes: Routes = [
       },
 
       {
+        path: 'proveedores',
+        loadChildren: () =>
+          import('../modules/proveedores/proveedores.module').then(
+            (m) => m.ProveedoresModule
+          ),
+      },
+
+
+      {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full',

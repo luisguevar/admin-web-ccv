@@ -61,6 +61,27 @@ export const AsideMenuAdminGeneral = {
         }
       ]
     },
+
+    {
+      title: 'Proveedores',
+      root: true,
+      name: "proveedores",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Files/Selected-file.svg',
+      page: '/proveedores',
+      submenu: [
+        {
+          title: 'Registrar Proveedor',
+          page: '/proveedores/add-new-proveedor'
+        },
+        {
+          title: 'Lista de Proveedores',
+          page: '/proveedores/list-proveedor'
+        }
+      ]
+    },
+
     { section: 'Productos' },
     {
       title: 'Categorias',
