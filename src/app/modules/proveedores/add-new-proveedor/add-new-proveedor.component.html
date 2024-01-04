@@ -1,1 +1,226 @@
-<p>add-new-proveedor works!</p>
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                <i class="icon-2x text-dark-50 flaticon-bag mx-2"></i>
+                Registrar Nuevo Proveedor
+            </h3>
+        </div>
+        <div class="card-toolbar">
+        </div>
+    </div>
+    <div class="card-body">
+        <ng-container *ngIf="isLoading$ | async">
+            <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
+
+        <div class="form-group row">
+            <div class="col-4">
+                <label class="form-label">Tipo Persona: *</label>
+
+                <select name="categorie_id" class="form-control form-control-solid form-control-lg">
+
+                    <option value="1">Natural</option>
+                    <option value="2">Jurídica</option>
+
+                </select>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Tipo Documento: *</label>
+
+                <select name="categorie_id" class="form-control form-control-solid form-control-lg">
+
+                    <option value="1">RUC</option>
+                    <option value="2">DNI</option>
+
+                </select>
+            </div>
+
+            <div class="col-3">
+                <label class="form-label">Nro Documento: *</label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Nro Documento" autocomplete="off">
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-8">
+                <label class="form-label">Nombre / Razón Social: *</label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Nro Documento" autocomplete="off">
+            </div>
+            <div class="col-3">
+                <label class="form-label">Celular: *</label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Nro Documento" autocomplete="off">
+            </div>
+
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-6">
+                <label class="form-label">Correo: *</label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Nro Documento" autocomplete="off">
+            </div>
+            <div class="col-5">
+                <label class="form-label">Web: </label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Nro Documento" autocomplete="off">
+            </div>
+            <div class="col-11">
+                <label class="form-label">Dirección: </label>
+                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
+                    placeholder="Nro Documento" autocomplete="off">
+            </div>
+
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-11">
+                <label class="form-label">Observaciones: *</label>
+                <textarea class="form-control" name="descriptions" placeholder="" rows="4"></textarea>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-11">
+
+
+                <ul class="nav nav-tabs nav-tabs-line">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">CONTACTOS</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content mt-5" id="myTabContent">
+                    <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel"
+                        aria-labelledby="kt_tab_pane_2">
+
+
+                        <div class="form-group row">
+                            <div class="col-5">
+                                <label class="form-label">Nombre del contacto: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                    name="nombreContacto" placeholder="Nombre del contacto" autocomplete="off"
+                                    [(ngModel)]="nombreContacto">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Correo: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                    name="correoContacto" placeholder="Correo" autocomplete="off"
+                                    [(ngModel)]="correoContacto">
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label class="form-label">Tipo Documento: *</label>
+
+                                <select name="tipoDocumentoContacto"
+                                    class="form-control form-control-solid form-control-lg"
+                                    [(ngModel)]="tipoDocumentoContacto">
+
+                                    <option value="1">RUC</option>
+                                    <option value="2">DNI</option>
+
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">N° Documento: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                    name="nroDocumentoContacto" placeholder="N° Documento" autocomplete="off"
+                                    [(ngModel)]="nroDocumentoContacto">
+                            </div>
+
+                            <div class="col-3">
+                                <label class="form-label">Celular: *</label>
+                                <input type="text" class="form-control form-control-solid form-control-lg"
+                                    name="celularContacto" placeholder="Celular" autocomplete="off"
+                                    [(ngModel)]="celularContacto">
+                            </div>
+
+                            <div class="col-1" style="    align-items: center;
+                            display: flex;
+                            margin-top: 2%;">
+
+
+                                <a onclick="return false" (click)="addContacto()"
+                                    class="btn btn-success font-weight-bold mr-2 ">
+                                    <i class=" flaticon2-add"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-11">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nombre Completo</th>
+                                            <th scope="col">Celular</th>
+                                            <th scope="col">Correo</th>
+                                            <th scope="col">Tipo Documento</th>
+                                            <th scope="col">Nro Documento</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <ng-container *ngFor="let contacto of listContacto; let i = index">
+                                            <tr>
+                                                <th scope="row">{{ i + 1 }}</th>
+                                                <td>{{ contacto.nombre }}</td>
+                                                <td>{{ contacto.celular }}</td>
+                                                <td>{{ contacto.correo }}</td>
+                                                <td>{{ contacto.tipoDocumento }}</td>
+                                                <td>{{ contacto.nroDocumento }}</td>
+                                                <td>
+                                                    <a  class="btn" (click)="removeContacto(contacto)">
+                                                        <i class="flaticon-delete-1 text-danger"></i>
+                                                    </a>
+                                                    
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+
+
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-6">
+                <button class="btn btn-md btn-danger" (click)="createCotizacion()">Volver</button>
+            </div>
+
+            <div class="col-5" style="display: flex;justify-content: right;">
+
+                <button class="btn btn-md btn-primary" (click)="createCotizacion()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
