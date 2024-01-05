@@ -18,7 +18,8 @@
             <div class="col-4">
                 <label class="form-label">Tipo Persona: *</label>
 
-                <select name="categorie_id" class="form-control form-control-solid form-control-lg">
+                <select name="tipoPersona" class="form-control form-control-solid form-control-lg"
+                    [(ngModel)]="tipoPersona">
 
                     <option value="1">Natural</option>
                     <option value="2">Jurídica</option>
@@ -28,7 +29,8 @@
             <div class="col-4">
                 <label class="form-label">Tipo Documento: *</label>
 
-                <select name="categorie_id" class="form-control form-control-solid form-control-lg">
+                <select name="tipoDocumento" class="form-control form-control-solid form-control-lg"
+                    [(ngModel)]="tipoDocumento">
 
                     <option value="1">RUC</option>
                     <option value="2">DNI</option>
@@ -38,8 +40,8 @@
 
             <div class="col-3">
                 <label class="form-label">Nro Documento: *</label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                    placeholder="Nro Documento" autocomplete="off">
+                <input type="text" class="form-control form-control-solid form-control-lg" name="nroDocumento"
+                    placeholder="Nro Documento" autocomplete="off" [(ngModel)]="nroDocumento">
             </div>
 
         </div>
@@ -47,13 +49,13 @@
         <div class="form-group row">
             <div class="col-8">
                 <label class="form-label">Nombre / Razón Social: *</label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                    placeholder="Nro Documento" autocomplete="off">
+                <input type="text" class="form-control form-control-solid form-control-lg" name="razonSocial"
+                    placeholder="Nombre / Razon social" autocomplete="off" [(ngModel)]="razonSocial">
             </div>
             <div class="col-3">
                 <label class="form-label">Celular: *</label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                    placeholder="Nro Documento" autocomplete="off">
+                <input type="text" class="form-control form-control-solid form-control-lg" name="celular"
+                    placeholder="Celular" autocomplete="off" [(ngModel)]="celular">
             </div>
 
 
@@ -62,18 +64,18 @@
         <div class="form-group row">
             <div class="col-6">
                 <label class="form-label">Correo: *</label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                    placeholder="Nro Documento" autocomplete="off">
+                <input type="text" class="form-control form-control-solid form-control-lg" name="correo"
+                    placeholder="Correo" autocomplete="off" [(ngModel)]="correo">
             </div>
             <div class="col-5">
                 <label class="form-label">Web: </label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                    placeholder="Nro Documento" autocomplete="off">
+                <input type="text" class="form-control form-control-solid form-control-lg" name="web" placeholder="Web"
+                    autocomplete="off" [(ngModel)]="web">
             </div>
             <div class="col-11">
                 <label class="form-label">Dirección: </label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                    placeholder="Nro Documento" autocomplete="off">
+                <input type="text" class="form-control form-control-solid form-control-lg" name="direccion"
+                    placeholder="Dirección" autocomplete="off" [(ngModel)]="direccion">
             </div>
 
         </div>
@@ -82,7 +84,8 @@
         <div class="form-group row">
             <div class="col-11">
                 <label class="form-label">Observaciones: *</label>
-                <textarea class="form-control" name="descriptions" placeholder="" rows="4"></textarea>
+                <textarea class="form-control" name="observaciones" placeholder="Observaciones" rows="4"
+                    [(ngModel)]="observaciones"></textarea>
             </div>
 
         </div>
@@ -187,10 +190,10 @@
                                                 <td>{{ contacto.tipoDocumento }}</td>
                                                 <td>{{ contacto.nroDocumento }}</td>
                                                 <td>
-                                                    <a  class="btn" (click)="removeContacto(contacto)">
+                                                    <a class="btn" (click)="removeContacto(contacto)">
                                                         <i class="flaticon-delete-1 text-danger"></i>
                                                     </a>
-                                                    
+
                                                 </td>
                                             </tr>
                                         </ng-container>
@@ -214,12 +217,12 @@
 
         <div class="form-group row">
             <div class="col-6">
-                <button class="btn btn-md btn-danger" (click)="createCotizacion()">Volver</button>
+                <button class="btn btn-md btn-danger">Volver</button>
             </div>
 
             <div class="col-5" style="display: flex;justify-content: right;">
 
-                <button class="btn btn-md btn-primary" (click)="createCotizacion()">Guardar</button>
+                <button class="btn btn-md btn-primary" (click)="createProveedor()">Guardar</button>
             </div>
         </div>
     </div>

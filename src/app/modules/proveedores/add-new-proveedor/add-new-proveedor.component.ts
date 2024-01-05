@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toaster } from 'ngx-toast-notifications';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { ProveedorService } from '../_service/proveedor.service';
 
 @Component({
   selector: 'app-add-new-proveedor',
@@ -9,11 +11,28 @@ import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-ale
 })
 export class AddNewProveedorComponent implements OnInit {
 
+  isLoading$: any;
+
   constructor(
     public toaster: Toaster,
+    public _proveedorService: ProveedorService,
+    public modelService: NgbModal,
   ) { }
 
+
+
+  /* Data Proveedor */
+  tipoPersona: any = 1;
+  tipoDocumento: any = 1;
+  nroDocumento: any = null;
+  razonSocial: any = null;
+  celular: any = null;
+  correo: any = null;
+  web: any = null;
+  direccion: any = null;
+  observaciones: any = null;
   listContacto: any = [];
+
 
   /* Data Contacto */
   nombreContacto: any = null;
@@ -23,6 +42,7 @@ export class AddNewProveedorComponent implements OnInit {
   celularContacto: any = null;
 
   ngOnInit(): void {
+    this.isLoading$ = this._proveedorService.isLoadingSubject;
   }
 
   addContacto() {
@@ -41,6 +61,7 @@ export class AddNewProveedorComponent implements OnInit {
     /* Insertar campos a la lista */
     let dataContacto = {
       id: 0,
+      estado: 1,
       nombre: this.nombreContacto,
       correo: this.correoContacto,
       tipoDocumento: this.tipoDocumentoContacto,
@@ -68,5 +89,26 @@ export class AddNewProveedorComponent implements OnInit {
     }
 
 
+  }
+
+
+  createProveedor() {
+    let dataProveedor = {
+      id: 0,
+      estado: 1,
+      tipoPersona: this.tipoPersona,
+      tipoDocumento: this.tipoDocumento,
+      nroDocumento: this.nroDocumento,
+      razon_social: this.razonSocial,
+      celular: this.celular,
+      correo: this.correo,
+      web: this.web,
+      direccion: this.direccion,
+      observaciones: this.observaciones,
+      listContacto: this.listContacto
+
+    }
+
+    console.log('dataProveedor', dataProveedor);
   }
 }
