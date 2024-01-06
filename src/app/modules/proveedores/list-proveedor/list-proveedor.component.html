@@ -1,7 +1,9 @@
 <div class="card card-custom gutter-b">
     <div class="card-header">
         <div class="card-title">
-            <h3 class="card-label"><i class="icon-2x text-dark-50 flaticon-doc mx-2"></i> Lista de Proveedores</h3>
+            <h3 class="card-label"><i class="icon-2x text-dark-50 
+                flaticon-open-box
+                mx-2"></i> Lista de Proveedores</h3>
         </div>
         <div class="card-toolbar">
             <a type="button" class="btn btn-primary" routerLink="/proveedores/add-new-proveedor"><i
@@ -62,8 +64,9 @@
                                     *ngIf="product.state == 3">Inactivo</span> -->
                             </td>
                             <td style="display: flex;">
-                                <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
-                                    ngbTooltip="Editar Producto" ngbTooltipClass="kt-tooltip">
+                                <a [routerLink]="['/proveedores/edit-proveedor',proveedor.id]" class=" btn btn-icon btn-light
+                                    btn-hover-primary btn-sm mx-1" ngbTooltip="Editar Producto"
+                                    ngbTooltipClass="kt-tooltip">
                                     <span class="svg-icon svg-icon-md svg-icon-primary">
 
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +108,7 @@
                                     </span>
                                 </a>
 
-                               
+
                             </td>
                         </tr>
                     </ng-container>

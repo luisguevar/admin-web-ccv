@@ -68,7 +68,7 @@ export const AsideMenuAdminGeneral = {
       name: "proveedores",
       bullet: 'dot',
       icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Files/Selected-file.svg',
+      svg: './assets/media/svg/icons/Shopping/Box2.svg',
       page: '/proveedores',
       submenu: [
         {

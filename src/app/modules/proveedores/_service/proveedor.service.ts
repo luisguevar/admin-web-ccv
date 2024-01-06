@@ -21,15 +21,42 @@ export class ProveedorService {
   }
 
 
-  allProveedores(page=1,search=''){
+  allProveedores(page = 1, search = '') {
     this.isLoadingSubject.next(true);
-    let headers = new HttpHeaders({'Authorization' : 'Bearer '+this.authservice.token});
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let LINK = "";
-    if(search){
-      LINK = LINK + "&search="+search;
+    if (search) {
+      LINK = LINK + "&search=" + search;
     }
-    let URL = URL_SERVICIOS + "/proveedores/all?page="+page+LINK;
-    return this.http.get(URL,{headers: headers}).pipe(
+    let URL = URL_SERVICIOS + "/proveedores/all?page=" + page + LINK;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  createProveedor(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/proveedores/add";
+    return this.http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  showProveedor(proveedor_id) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/proveedores/show_proveedor/" + proveedor_id;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  updateProveedor(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/proveedores/update/" + data.id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }

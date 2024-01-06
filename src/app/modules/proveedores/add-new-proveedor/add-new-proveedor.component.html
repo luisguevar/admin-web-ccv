@@ -49,8 +49,23 @@
         <div class="form-group row">
             <div class="col-8">
                 <label class="form-label">Nombre / Razón Social: *</label>
-                <input type="text" class="form-control form-control-solid form-control-lg" name="razonSocial"
-                    placeholder="Nombre / Razon social" autocomplete="off" [(ngModel)]="razonSocial">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-solid form-control-lg" name="razonSocial"
+                        placeholder="Nombre / Razon social" autocomplete="off" [(ngModel)]="razonSocial"
+                        #razonSocialControl="ngModel" required />
+                    <div class="input-group-append"
+                        *ngIf="isButtonClicked || (razonSocialControl.invalid && (razonSocialControl.dirty || razonSocialControl.touched))">
+                        <span class="input-group-text" id="basic-addon2">
+                            <i class=" fas fa-exclamation-circle text-danger"></i>
+                        </span>
+                    </div>
+                </div>
+                <div
+                    *ngIf="isButtonClicked || (razonSocialControl.invalid && (razonSocialControl.dirty || razonSocialControl.touched))">
+                    <div class="validate-form" *ngIf="razonSocialControl.errors?.required">Nombre / Razón Social es
+                        obligatorio.</div>
+                    <!-- Puedes agregar otras validaciones según tus necesidades -->
+                </div>
             </div>
             <div class="col-3">
                 <label class="form-label">Celular: *</label>
@@ -217,7 +232,7 @@
 
         <div class="form-group row">
             <div class="col-6">
-                <button class="btn btn-md btn-danger">Volver</button>
+                <button [routerLink]="['/proveedores/list-proveedor']" class="btn btn-md btn-danger">Volver</button>
             </div>
 
             <div class="col-5" style="display: flex;justify-content: right;">
