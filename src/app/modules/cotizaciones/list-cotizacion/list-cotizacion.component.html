@@ -24,8 +24,7 @@
                 </small>
             </div>
             <div class="col-3">
-                <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Filtro'"
-                    (click)="allCotizaciones()">
+                <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Filtro'">
                     <i class="icon text-white flaticon-search-1"></i>
                 </button>
                 <button class="btn btn-dark ml-2" placement="top" [ngbTooltip]="'Reiniciar'" (click)="reset()">
@@ -48,13 +47,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-
-                        <td>1001</td>
-                        <td>Luis A. Guevara</td>
-                        <td>2023-10-01</td>
-                        <td>s/ 300</td>
-                        <td>Victor Villar</td>
+                    <ng-container *ngFor="let proveedor of cotizaciones; let i = index">
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ proveedor.cliente_id }}</td>
+                            <td>{{ proveedor.fechaEmision }}</td>
+                            <td>{{ proveedor.total }}</td>
+                            <td>{{ proveedor.vendedor_id }}</td>
+                            <td>{{ proveedor.estado }}</td>
+                            <td>0</td>
+                            <td>
                         <td>
                             <span class="label label-lg label-inline label-light-success">Aceptado</span>
                             <!--   <span class="label label-lg label-inline label-light-danger"
@@ -125,6 +127,7 @@
                             </a>
                         </td>
                     </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
