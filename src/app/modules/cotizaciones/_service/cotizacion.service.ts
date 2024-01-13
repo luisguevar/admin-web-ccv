@@ -60,6 +60,17 @@ export class CotizacionService {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
+  allClientes() {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let URL = URL_SERVICIOS + "/cotizaciones/allClientes";
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
 }
 
 

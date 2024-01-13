@@ -12,10 +12,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
+import { AddDialogClienteComponent } from './add-dialog-cliente/add-dialog-cliente.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
-  declarations: [CotizacionesComponent, AddNewCotizacionComponent, ListCotizacionComponent, EditCotizacionComponent, DeleteCotizacionComponent],
+  declarations: [CotizacionesComponent, AddNewCotizacionComponent, ListCotizacionComponent, EditCotizacionComponent, DeleteCotizacionComponent, AddDialogClienteComponent],
   imports: [
     CommonModule,
     CotizacionesRoutingModule,
@@ -28,6 +30,7 @@ import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
+    MatPaginatorModule
   ]
 })
 export class CotizacionesModule { }
