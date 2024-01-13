@@ -47,14 +47,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let proveedor of cotizaciones; let i = index">
+                    <ng-container *ngFor="let cotizacion of cotizaciones; let i = index">
                         <tr>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ proveedor.cliente_id }}</td>
-                            <td>{{ proveedor.fechaEmision }}</td>
-                            <td>{{ proveedor.total }}</td>
-                            <td>{{ proveedor.vendedor_id }}</td>
-                            <td>{{ proveedor.estado }}</td>
+                            <td>{{ cotizacion.clienteName }}</td>
+                            <td>{{ cotizacion.fechaEmision }}</td>
+                            <td>{{ cotizacion.total }}</td>
+                            <td>{{ cotizacion.vendedorName }}</td>
+                            <td>{{ cotizacion.estado }}</td>
                             <td>0</td>
                             <td>
                         <td>
@@ -67,8 +67,9 @@
                                 *ngIf="product.state == 3">Inactivo</span> -->
                         </td>
                         <td style="display: flex;">
-                            <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1" ngbTooltip="Editar Producto"
-                                ngbTooltipClass="kt-tooltip">
+                            <a  [routerLink]="['/cotizaciones/edit-cotizacion',cotizacion.id]" class=" btn btn-icon btn-light
+                            btn-hover-primary btn-sm mx-1" ngbTooltip="Editar Producto"
+                            ngbTooltipClass="kt-tooltip">
                                 <span class="svg-icon svg-icon-md svg-icon-primary">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
