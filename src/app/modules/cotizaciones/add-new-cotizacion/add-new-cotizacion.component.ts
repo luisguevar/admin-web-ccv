@@ -54,6 +54,22 @@ export class AddNewCotizacionComponent implements OnInit {
   }
 
   addProducto() {
+    let dataProducto = {
+      id : 0,
+      estado : 1,
+      producto_id : 1,
+      nombre: "sin nombre",
+      precio : 100,
+      cantidad : this.cantidad,
+      descuentoHabilitado: this.descuentoHabilitado,
+      descuento : this.descuento,
+
+      total : (this.cantidad * 100 *(100 - this.descuento))/100,
+
+    }
+
+    this.listProducto.push(dataProducto)
+    console.log('listProducto:', this.listProducto);
 
   }
 
@@ -113,5 +129,18 @@ export class AddNewCotizacionComponent implements OnInit {
     if (!this.descuentoHabilitado) {
       this.descuento = null;
     }
+    else{
+      this.descuento = 1;
+    }
   }
+
+  removeProducto(producto: any) {
+
+    if (producto.id == 0) {
+      this.listProducto = this.listProducto.filter((item) => item != producto);
+    }
+
+
+  }
+
 }

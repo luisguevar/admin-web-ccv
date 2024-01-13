@@ -148,60 +148,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Laptop HP</td>
-                                            <td>2 u.</td>
-                                            <td>
-                                                s/ 1000
-                                            </td>
-                                            <td>
-                                                -
-                                            </td>
-                                            <td>
-                                                s/ 200
-                                            </td>
-                                            <td>
-                                                Eliminar
-                                            </td>
-                                        </tr>
+                                        <ng-container *ngFor ="let producto of listProducto; let i=index">
+                                            <tr>
+                                                <th scope="row">{{i+1}}</th>
+                                                <td>{{producto.nombre}}</td>
+                                                <td>{{producto.cantidad}} u.</td>
+                                                <td>
+                                                    {{producto.precio}}
+                                                </td>
+                                                <td>
+                                                    <ng-container *ngIf="producto.descuentoHabilitado && producto.descuento !== null">
+                                                        {{producto.descuento}} %
+                                                        
+                                                    </ng-container> 
+                                                </td>
+                                                <td>
+                                                    s/. {{producto.total}}
+                                                </td>
+                                                <td>
+                                                    <a (click)="removeProducto(producto)"> Eliminar</a>
+                                                </td>
+                                            </tr>
+                                        </ng-container>    
 
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Laptop HP</td>
-                                            <td>2 u.</td>
-                                            <td>
-                                                s/ 1000
-                                            </td>
-                                            <td>
-                                                -
-                                            </td>
-                                            <td>
-                                                s/ 200
-                                            </td>
-                                            <td>
-                                                Eliminar
-                                            </td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Laptop HP</td>
-                                            <td>2 u.</td>
-                                            <td>
-                                                s/ 1000
-                                            </td>
-                                            <td>
-                                                -
-                                            </td>
-                                            <td>
-                                                s/ 200
-                                            </td>
-                                            <td>
-                                                Eliminar
-                                            </td>
-                                        </tr>
+                                        
 
 
                                     </tbody>
