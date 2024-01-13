@@ -12,6 +12,7 @@ import { error } from 'console';
 export class AddNewCotizacionComponent implements OnInit {
   isLoading$: any;
 
+
   constructor(
     public toaster: Toaster,
     public _CotizacionService: CotizacionService,
@@ -24,13 +25,18 @@ export class AddNewCotizacionComponent implements OnInit {
   //nroDocumento: any = null;
   cliente_id: any = null;
   vendedor_id: any = null;
-  estadoCotizacion : any =null;
+  estadoCotizacion: any = null;
   fechaEmision: any = null;
   fechaExpiracion: any = null;
   total: any = null;
   observaciones: any = null;
-  
-  
+
+
+
+  //Data productos
+  producto_id: any = null;
+  cantidad: any = null;
+  descuento: any = null;
   listProducto: any = [];
 
 
@@ -38,51 +44,18 @@ export class AddNewCotizacionComponent implements OnInit {
   nombreProducto: any = null;
   Cantidad: any = null;
   Precio: any = null;
-  
-  
+
+
   isButtonClicked: boolean = false;
+  descuentoHabilitado: boolean = false;
 
   ngOnInit(): void {
     this.isLoading$ = this._CotizacionService.isLoadingSubject;
   }
 
-  // addProducto() {
+  addProducto() {
 
-  //   /* Validar campos llenos */
-  //   if (!this.nombreProducto || !this.Cantidad || !this.Precio) {
-
-  //     this.toaster.open(NoticyAlertComponent, { text: `danger-'Todos los campos del Producto son obligatorios'` });
-  //     return;
-  //   }
-
-
-  //   /* Insertar campos a la lista */
-  //   let dataProducto = {
-  //     id: 0,
-  //     estado: 1,
-  //     nombre: this.nombreProducto,
-  //     cantidad: this.Cantidad,
-  //     precio: this.Precio,
-  //   }
-
-  //   this.listProducto.push(dataProducto);
-
-  //   /* Resetear campos */
-
-  //   this.nombreProducto = null;
-  //   this.Cantidad = null;
-  //   this.Precio = null
-
-  // }
-
-  // removeProducto(Producto: any) {
-
-  //   if (Producto.id == 0) {
-  //     this.listProducto = this.listProducto.filter((item) => item != Producto);
-  //   }
-
-
-  // }
+  }
 
   createCotizacion() {
     if (!this.observaciones) {
@@ -93,13 +66,13 @@ export class AddNewCotizacionComponent implements OnInit {
     let dataCotizacion = {
       id: 0,
       estado: 1,
-      cliente_id : 1,
-      vendedor_id : 1,
+      cliente_id: 1,
+      vendedor_id: 1,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
       total: 100,
       observaciones: this.observaciones,
-      estadoCotizacion : this.estadoCotizacion
+      estadoCotizacion: this.estadoCotizacion
       //listProducto: this.listProducto
 
     }
@@ -129,21 +102,16 @@ export class AddNewCotizacionComponent implements OnInit {
     )
   }
 
-   resetForm() {
-     this.fechaEmision = null;
-     this.fechaExpiracion= null;
-     this.observaciones = null;
-    //  this.razonSocial = null;
-    //  this.celular = null;
-    //  this.cantidad = null;
-    //  this.fechaExpiracion = null;
-    //  this.total = null;
-    //  this.observaciones = null;
-    //  this.listProducto = null;
-    //  this.nombreProducto = null;
-    //  this.Cantidad = null;
-    //  this.Estado = null;   
-    //  this.isButtonClicked = false;
+  resetForm() {
+    this.fechaEmision = null;
+    this.fechaExpiracion = null;
+    this.observaciones = null;
 
-   }
+  }
+
+  onCheckboxChange() {
+    if (!this.descuentoHabilitado) {
+      this.descuento = null;
+    }
+  }
 }
