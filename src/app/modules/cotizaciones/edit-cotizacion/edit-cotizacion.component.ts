@@ -22,6 +22,8 @@ export class EditCotizacionComponent implements OnInit {
   ) { }
   cotizacion_id: any = 0;
   cotizacion: any = null;
+  cliente_id: any = 0;
+  vendedor_id: any = 0;
   
   listproducto: any =[];
   listProductoNew: any = [];
@@ -71,7 +73,8 @@ export class EditCotizacionComponent implements OnInit {
       this.fechaEmision = this.cotizacion.fechaEmision;
       this.fechaExpiracion = this.cotizacion.fechaExpiracion;
 
-
+      this.cliente_id = this.cotizacion.cliente_id;
+      this.vendedor_id = this.cotizacion.vendedor_id;
       
     })
   }
@@ -80,8 +83,8 @@ export class EditCotizacionComponent implements OnInit {
     let dataCotizacion = {
       id: this.cotizacion_id,
       estado: this.estado,
-      cliente: this.cliente,
-      vendedor: this.vendedor,
+      cliente_id: this.cliente_id,
+      vendedor_id: this.vendedor_id,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
       total: 100,
@@ -91,7 +94,7 @@ export class EditCotizacionComponent implements OnInit {
 
     }
     console.log('dataCotizacion', dataCotizacion);
-    //this.update(dataCotizacion);
+    this.update(dataCotizacion);
   }
 
 
@@ -136,7 +139,9 @@ export class EditCotizacionComponent implements OnInit {
 
   }
 
+  onCheckboxChange(){
 
+  }
   removeproducto(producto:any){
     console.log(producto)
     if (producto.id !== 0) {

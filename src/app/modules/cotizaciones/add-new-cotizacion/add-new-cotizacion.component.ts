@@ -41,7 +41,10 @@ export class AddNewCotizacionComponent implements OnInit {
   cliente_nombre: any = null;
   vendedor_nombre: any = null;
 
-
+//resumen
+  totalCotizacion:any = 0;
+  igvCotizacion:any = 0;
+  subtotalCotizacion:any  =0;
 
   //Data productos
   producto_id: any = null;
@@ -80,13 +83,15 @@ export class AddNewCotizacionComponent implements OnInit {
       cantidad: this.cantidad,
       descuentoHabilitado: this.descuentoHabilitado,
       descuento: this.descuento,
-
       total: (this.cantidad * 100 * (100 - this.descuento)) / 100,
-
     }
 
-    this.listProducto.push(dataProducto)
+    this.totalCotizacion = this.totalCotizacion + dataProducto.total;
+    this.igvCotizacion = this.totalCotizacion*0.18;
+    this.subtotalCotizacion = this.totalCotizacion - this.igvCotizacion
+    this.listProducto.push(dataProducto);
     console.log('listProducto:', this.listProducto);
+    
 
   }
 
@@ -109,10 +114,10 @@ export class AddNewCotizacionComponent implements OnInit {
       vendedor_id: this.vendedor_id,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
-      total: 100,
+      total: this.totalCotizacion,
       observaciones: this.observaciones,
-      estadoCotizacion: this.estadoCotizacion
-      //listProducto: this.listProducto
+      estadoCotizacion: this.estadoCotizacion,
+      listProducto: this.listProducto
 
     }
 
@@ -161,7 +166,11 @@ export class AddNewCotizacionComponent implements OnInit {
 
     if (producto.id == 0) {
       this.listProducto = this.listProducto.filter((item) => item != producto);
+      this.totalCotizacion = this.totalCotizacion - producto.total
+      this.igvCotizacion = this.totalCotizacion*0.18;
+      this.subtotalCotizacion = this.totalCotizacion - this.igvCotizacion
     }
+
 
 
   }

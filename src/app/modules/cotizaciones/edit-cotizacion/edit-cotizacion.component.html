@@ -10,9 +10,9 @@
         </div>
     </div>
     <div class="card-body">
-        <ng-container *ngIf="isLoading$ | async">
+         <ng-container *ngIf="isLoading$ | async">
             <span class="spinner spinner-primary ml-5"></span>
-        </ng-container>
+        </ng-container> 
 
         <div class="form-group row">
             <div class="col-5">
@@ -43,7 +43,7 @@
             <div class="col-5">
                 <label class="form-label">Estado: *</label>
 
-                <select [(ngModel)]="estadoCotizacion" name="estadoCotizacion"
+                <select [(ngModel)]="estado" name="estado"
                     class="form-control form-control-solid form-control-lg">
                     <option value="0">Inactivo</option>
                     <option value="1">Pendiente</option>
