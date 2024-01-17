@@ -82,6 +82,23 @@ export const AsideMenuAdminGeneral = {
       ]
     },
 
+    {
+      title: 'Clientes',
+      root: true,
+      name: "clientes",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Communication/Group.svg',
+      page: '/clientes',
+      submenu: [
+
+        {
+          title: 'Gestionar clientes',
+          page: '/clientes/lista'
+        }
+      ]
+    },
+
     { section: 'Productos' },
     {
       title: 'Categorias',

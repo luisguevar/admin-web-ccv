@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CategorieListComponent } from './categorie-list/categorie-list.component';
 import { CategorieComponent } from './categorie.component';
 
-"localhost:4200/categorias/edit"
+
 const routes: Routes = [
   {
     path: '',
