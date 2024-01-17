@@ -20,24 +20,26 @@ export class EditCotizacionComponent implements OnInit {
     public modelService: NgbModal,
     public activerouter: ActivatedRoute,
   ) { }
-
-
   cotizacion_id: any = 0;
   cotizacion: any = null;
-  productos: any = [];
-
-  listproductoNew: any = [];
-
+  
+  listproducto: any =[];
+  listProductoNew: any = [];
   /* Data Cotizacion */
-  cliente_id: any = null;
-  vendedor_id: any = null;
-  estadoCotizacion : any =null;
+  cliente: any = null;
+  vendedor: any = null;
+  estado : any =null;
   fechaEmision: any = null;
   fechaExpiracion: any = null;
   total: any = null;
   observaciones: any = null;
 
-
+  //Data productos
+  producto_id: any = null;
+  cantidad: any = null;
+  descuento: any = null;
+  descuentoHabilitado: boolean = false;
+    
   /* Data Contacto */
   nombreContacto: any = null;
   correoContacto: any = null;
@@ -49,14 +51,10 @@ export class EditCotizacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading$ = this._cotizacionService.isLoadingSubject;
-
     this.activerouter.params.subscribe((resp: any) => {
       this.cotizacion_id = resp["id"] || "";
     })
-
     this.showCotizacion(this.cotizacion_id);
-
-
   }
 
   showCotizacion(id: any) {
@@ -64,46 +62,36 @@ export class EditCotizacionComponent implements OnInit {
       console.log('cotizacion: ', resp);
 
       this.cotizacion = resp.cotizacion;
-      // this.productos = resp.productos;
-
+      this.listproducto = resp.productos;
+      console.log('listproducto: ', this.listproducto);
+      this.cliente = this.cotizacion.clienteName;
       this.observaciones = this.cotizacion.observaciones;
-      // this.tipoPersona = this.cotizacion.tipoPersona;
-      // this.tipoDocumento = this.cotizacion.tipoDocumento;
-      // this.nroDocumento = this.cotizacion.nroDocumento;
-      // this.razonSocial = this.cotizacion.razon_social;
-      // this.celular = this.cotizacion.celular;
-      // this.correo = this.cotizacion.correo;
-      // this.web = this.cotizacion.web;
-      // this.direccion = this.cotizacion.direccion;
-      // this.observaciones = this.cotizacion.observaciones;
-      // this.listProducto = this.productos;
+      this.vendedor = this.cotizacion.vendedorName;
+      this.estado = this.cotizacion.estado;
+      this.fechaEmision = this.cotizacion.fechaEmision;
+      this.fechaExpiracion = this.cotizacion.fechaExpiracion;
 
+
+      
     })
   }
 
-
-  
-
-
   updateCotizacion() {
-    
     let dataCotizacion = {
       id: this.cotizacion_id,
-      estado: 1,
-      cliente_id : 1,
-      vendedor_id : 1,
+      estado: this.estado,
+      cliente: this.cliente,
+      vendedor: this.vendedor,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
       total: 100,
       observaciones: this.observaciones,
-      estadoCotizacion : this.estadoCotizacion
+      estadoCotizacion : this.estado,
+      listProducto :this.listProductoNew
 
     }
-
     console.log('dataCotizacion', dataCotizacion);
-
-
-    this.update(dataCotizacion);
+    //this.update(dataCotizacion);
   }
 
 
@@ -115,7 +103,7 @@ export class EditCotizacionComponent implements OnInit {
 
         if (resp.success) {
           /* this.resetForm(); */
-          this.listproductoNew = [];
+          this.listProductoNew = [];
           this.showCotizacion(this.cotizacion_id);
           this.toaster.open(NoticyAlertComponent, { text: `primary-'Cotizacion actualizado correctamente'` });
         }
@@ -128,6 +116,41 @@ export class EditCotizacionComponent implements OnInit {
     )
 
 
+  }
+
+  addProducto() {
+    let dataProducto = {
+      id : 0,
+      estado : 1,
+      producto_id : 1,
+      nombre: "sin nombre",
+      precio : 100,
+      cantidad : this.cantidad,
+      descuentoHabilitado: this.descuentoHabilitado,
+      descuento : this.descuento,
+      total : (this.cantidad * 100 *(100 - this.descuento))/100,
+    }
+    this.listproducto.push(dataProducto),
+    this.listProductoNew.push(dataProducto)
+    console.log('listProducto:', this.listproducto);
+
+  }
+
+
+  removeproducto(producto:any){
+    console.log(producto)
+    if (producto.id !== 0) {
+      const productoInactivo = { ...producto, estado: 0 };
+      this.listProductoNew.push(productoInactivo);
+    } else {
+      this.listProductoNew = this.listProductoNew.filter((item) => item != producto);
+    }
+
+    const dataIndex = this.listproducto.findIndex(item => item === producto);
+
+    if (dataIndex !== -1) {
+      this.listproducto.splice(dataIndex, 1);
+    }
   }
 
 }
