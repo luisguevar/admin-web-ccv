@@ -19,6 +19,7 @@ export class AddNewCotizacionComponent implements OnInit {
   isLoading$;
   isLoading = false;
   listClientes: any = [];
+  totalTemporal: any = 0;
 
   constructor(
     public toaster: Toaster,
@@ -44,6 +45,7 @@ export class AddNewCotizacionComponent implements OnInit {
   descuentoGlobal: any = null;
 
   //resumen
+  netoCotizacion: any = 0
   totalCotizacion: any = 0;
   igvCotizacion: any = 0;
   subtotalCotizacion: any = 0;
@@ -60,7 +62,7 @@ export class AddNewCotizacionComponent implements OnInit {
   Cantidad: any = null;
   Precio: any = null;
 
-  fechaactual : any = new Date();
+  fechaactual: any = new Date();
 
 
   isButtonClicked: boolean = false;
@@ -105,11 +107,12 @@ export class AddNewCotizacionComponent implements OnInit {
       total: (this.cantidad * 100 * (100 - this.descuento)) / 100,
     }
 
-    this.totalCotizacion = this.totalCotizacion + dataProducto.total;
-    this.igvCotizacion = this.totalCotizacion * 0.18;
-    this.subtotalCotizacion = this.totalCotizacion - this.igvCotizacion
+    this.totalTemporal = this.totalTemporal + dataProducto.total;
+    console.log(this.totalTemporal);
+    this.calcularSubTotal();
+
     this.listProducto.push(dataProducto);
-    console.log('listProducto:', this.listProducto);
+    /* console.log('listProducto:', this.listProducto); */
 
 
   }
@@ -178,16 +181,23 @@ export class AddNewCotizacionComponent implements OnInit {
     }
     else {
       this.descuento = 1;
+
     }
   }
 
   onCheckboxChangeDescuentoGlobal() {
     if (!this.descuentoGlobalHabilitado) {
       this.descuentoGlobal = null;
+      this.totalCotizacion = this.totalTemporal;
     }
     else {
-      this.descuentoGlobal = 1;
+      this.descuentoGlobal = 0;
+      this.totalCotizacion = this.totalTemporal * (100 - this.descuentoGlobal) / 100;
     }
+  }
+
+  calcularDescuento() {
+    this.totalCotizacion = this.totalTemporal * (100 - this.descuentoGlobal) / 100;
   }
 
 
@@ -235,18 +245,31 @@ export class AddNewCotizacionComponent implements OnInit {
   addProductoDialog() {
     const modalRef = this.modelService.open(AddProductComponent, { centered: true, size: 'lg' });
     // Capturar el resultado cuando se cierra el modal
-   /*  modalRef.componentInstance.clienteE.subscribe((resp: any) => {
-      console.log(resp);
-
-      this.cliente_nombre = resp.nombres + ' ' + resp.apellidos + '(' + resp.nroDocumento + ')';
-      this.cliente_id = resp.id;
-      this.cdr.detectChanges(); // Forzar la detección de cambios
-
-    }) */
+    /*  modalRef.componentInstance.clienteE.subscribe((resp: any) => {
+       console.log(resp);
+ 
+       this.cliente_nombre = resp.nombres + ' ' + resp.apellidos + '(' + resp.nroDocumento + ')';
+       this.cliente_id = resp.id;
+       this.cdr.detectChanges(); // Forzar la detección de cambios
+ 
+     }) */
 
   }
 
   addCliente2() {
     this.cliente_nombre = "hola"
+  }
+
+
+  calcularSubTotal() {
+    this.descuentoGlobalHabilitado = false;
+    this.descuentoGlobal = null;
+
+    const total = this.totalTemporal;
+    this.igvCotizacion = total * 0.18;
+    this.netoCotizacion = total - this.igvCotizacion;
+    this.subtotalCotizacion = total;
+    this.totalCotizacion = total;
+
   }
 }
