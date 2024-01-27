@@ -7,6 +7,7 @@ import { error } from 'console';
 import { AddClienteComponent } from '../../clientes/add-cliente/add-cliente.component';
 import { AddDialogClienteComponent } from '../add-dialog-cliente/add-dialog-cliente.component';
 import { AuthService } from '../../auth';
+import { AddProductComponent } from '../add-product/add-product.component';
 @Component({
   selector: 'app-add-new-cotizacion',
   templateUrl: './add-new-cotizacion.component.html',
@@ -34,7 +35,7 @@ export class AddNewCotizacionComponent implements OnInit {
   cliente_id: any = 0;
   vendedor_id: any = null;
   estadoCotizacion: any = 1;
-  fechaEmision: any = null;
+  fechaEmision: string = null;
   fechaExpiracion: any = null;
   total: any = null;
   observaciones: any = null;
@@ -59,6 +60,8 @@ export class AddNewCotizacionComponent implements OnInit {
   Cantidad: any = null;
   Precio: any = null;
 
+  fechaactual : any = new Date();
+
 
   isButtonClicked: boolean = false;
   descuentoHabilitado: boolean = false;
@@ -68,12 +71,25 @@ export class AddNewCotizacionComponent implements OnInit {
   listProductosall: any = null;
 
 
+
+
   ngOnInit(): void {
     this.isLoading$ = this._CotizacionService.isLoadingSubject;
     this.allClientes();
     this.vendedor_nombre = this.authservice.user.name + ' ' + this.authservice.user.surname + ' / ' + this.authservice.user.email;
     this.vendedor_id = this.authservice.user.id;
-    console.log('user: ', this.authservice.user)
+    this.fechaEmision = this.obtenerFechaActual();
+    console.log('fecha: ', this.fechaEmision)
+  }
+
+  obtenerFechaActual(): string {
+    // Obtener la fecha actual en formato 'yyyy-MM-dd'
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+    const yyyy = today.getFullYear();
+
+    return yyyy + '-' + mm + '-' + dd;
   }
 
   addProducto() {
@@ -213,6 +229,20 @@ export class AddNewCotizacionComponent implements OnInit {
       this.cdr.detectChanges(); // Forzar la detección de cambios
 
     })
+
+  }
+
+  addProductoDialog() {
+    const modalRef = this.modelService.open(AddProductComponent, { centered: true, size: 'lg' });
+    // Capturar el resultado cuando se cierra el modal
+   /*  modalRef.componentInstance.clienteE.subscribe((resp: any) => {
+      console.log(resp);
+
+      this.cliente_nombre = resp.nombres + ' ' + resp.apellidos + '(' + resp.nroDocumento + ')';
+      this.cliente_id = resp.id;
+      this.cdr.detectChanges(); // Forzar la detección de cambios
+
+    }) */
 
   }
 

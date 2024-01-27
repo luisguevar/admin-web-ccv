@@ -14,10 +14,11 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { AddDialogClienteComponent } from './add-dialog-cliente/add-dialog-cliente.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { AddProductComponent } from './add-product/add-product.component';
 
 
 @NgModule({
-  declarations: [CotizacionesComponent, AddNewCotizacionComponent, ListCotizacionComponent, EditCotizacionComponent, DeleteCotizacionComponent, AddDialogClienteComponent],
+  declarations: [CotizacionesComponent, AddNewCotizacionComponent, ListCotizacionComponent, EditCotizacionComponent, DeleteCotizacionComponent, AddDialogClienteComponent, AddProductComponent],
   imports: [
     CommonModule,
     CotizacionesRoutingModule,

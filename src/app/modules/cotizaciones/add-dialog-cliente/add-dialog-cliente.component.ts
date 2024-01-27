@@ -57,6 +57,8 @@ export class AddDialogClienteComponent implements OnInit {
       cliente.apellidos.toLowerCase().includes(this.search.toLowerCase())
     );
 
+    
+
     // Asigna la lista filtrada a filteredClientes y luego aplica la paginación
     this.filteredClientes = clientesFiltrados;
     this.desde = 0;  // Reinicia la paginación a la primera página
