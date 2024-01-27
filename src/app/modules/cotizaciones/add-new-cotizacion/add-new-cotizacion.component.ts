@@ -72,7 +72,7 @@ export class AddNewCotizacionComponent implements OnInit {
   usuario: any = null;
   listProductosall: any = null;
 
-
+  producto_nombre: any = null;
 
 
   ngOnInit(): void {
@@ -124,23 +124,28 @@ export class AddNewCotizacionComponent implements OnInit {
       return;
     }
 
-    if (!this.observaciones) {
-      this.toaster.open(NoticyAlertComponent, { text: `danger-'El campo observaciones es requerido.'` });
+    if (!this.fechaExpiracion) {
+      this.toaster.open(NoticyAlertComponent, { text: `danger-'El campo fecha expiración es requerido.'` });
       return;
     }
 
     let dataCotizacion = {
       id: 0,
       estado: 1,
-      cliente_id: this.vendedor_id,
+      cliente_id: this.cliente_id,
       vendedor_id: this.vendedor_id,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
-      total: this.totalCotizacion,
+      total: this.totalTemporal,
       observaciones: this.observaciones,
       estadoCotizacion: this.estadoCotizacion,
+      tieneDescuento: this.descuentoGlobalHabilitado,
+      descuento: 0,
       listProducto: this.listProducto
 
+    }
+    if (this.descuentoGlobalHabilitado) {
+      dataCotizacion.descuento = this.descuentoGlobal;
     }
 
     console.log('dataCotizacion', dataCotizacion);
@@ -156,8 +161,10 @@ export class AddNewCotizacionComponent implements OnInit {
         console.log('Respuesta:', resp);
 
         if (resp.success) {
-          this.resetForm();
+
           this.toaster.open(NoticyAlertComponent, { text: `primary-'Cotizacion guardado correctamente'` });
+          this.resetForm();
+          this.cdr.detectChanges(); // Forzar la detección de cambios
         }
       },
       (error: any) => {
@@ -169,9 +176,22 @@ export class AddNewCotizacionComponent implements OnInit {
   }
 
   resetForm() {
-    this.fechaEmision = null;
+    this.cliente_nombre = null;
     this.fechaExpiracion = null;
+    this.estadoCotizacion = 1;
     this.observaciones = null;
+    this.producto_nombre = null;
+    this.cantidad = null;
+    this.descuentoHabilitado = false;
+    this.descuento = null;
+    this.listProducto = [];
+    this.netoCotizacion = 0;
+    this.igvCotizacion = 0;
+    this.subtotalCotizacion = 0;
+    this.descuentoGlobalHabilitado = false;
+    this.totalCotizacion = 0;
+    this.totalTemporal = 0;
+
 
   }
 
@@ -205,9 +225,9 @@ export class AddNewCotizacionComponent implements OnInit {
 
     if (producto.id == 0) {
       this.listProducto = this.listProducto.filter((item) => item != producto);
-      this.totalCotizacion = this.totalCotizacion - producto.total
-      this.igvCotizacion = this.totalCotizacion * 0.18;
-      this.subtotalCotizacion = this.totalCotizacion - this.igvCotizacion
+      this.totalTemporal = this.totalTemporal - (producto.precio * producto.cantidad);
+      this.calcularSubTotal();
+
     }
 
 
@@ -266,7 +286,8 @@ export class AddNewCotizacionComponent implements OnInit {
     this.descuentoGlobal = null;
 
     const total = this.totalTemporal;
-    this.igvCotizacion = total * 0.18;
+    this.igvCotizacion = (total * 0.18).toFixed(2); // Utilizando toFixed para limitar a 2 decimales
+
     this.netoCotizacion = total - this.igvCotizacion;
     this.subtotalCotizacion = total;
     this.totalCotizacion = total;

@@ -96,14 +96,19 @@
 
 
                         <div class="form-group row">
-                            <div class="col-8">
+                            <div class="col-7">
                                 <label class="form-label">Producto: *</label>
-                                <input type="text" class="form-control form-control-solid form-control-lg"
-                                    name="producto_id" placeholder="Buscar Producto" autocomplete="off"
-                                    [(ngModel)]="producto_id"> <a onclick="return false" (click)="addProductoDialog()"
-                                    class="btn font-weight-bold mr-2 ">
-                                    <i class=" flaticon2-add  text-primary"></i>
-                                </a>
+                                <div style="display: flex;">
+                                    <input readonly type="text" class="form-control form-control-solid form-control-lg"
+                                        name="producto_nombre" placeholder="Agregar Producto" autocomplete="off"
+                                        [(ngModel)]="producto_nombre">
+                                    <a onclick="return false" (click)="addProductoDialog()"
+                                        class="btn font-weight-bold mr-2 ">
+                                        <i class=" flaticon2-add  text-primary"></i>
+                                    </a>
+                                </div>
+
+
                             </div>
                             <div class="col-2">
                                 <label class="form-label">Cantidad: *</label>
@@ -167,12 +172,11 @@
                                                 <td>
                                                     {{producto.precio}}
                                                 </td>
-                                                <td>
-                                                    <ng-container
-                                                        *ngIf="producto.descuentoHabilitado && producto.descuento !== null">
-                                                        {{producto.descuento}} %
-
-                                                    </ng-container>
+                                                <td *ngIf="producto.descuento">
+                                                    {{producto.descuento}} %
+                                                </td>
+                                                <td *ngIf="!producto.descuento">
+                                                    -
                                                 </td>
                                                 <td>
                                                     s/. {{producto.total}}
@@ -223,7 +227,8 @@
                                                     class="form-control form-control-solid form-control-lg"
                                                     name="descuentoGlobal" placeholder="Ex: 10" autocomplete="off"
                                                     [(ngModel)]="descuentoGlobal"
-                                                    [disabled]="!descuentoGlobalHabilitado" (input)="calcularDescuento()">
+                                                    [disabled]="!descuentoGlobalHabilitado"
+                                                    (input)="calcularDescuento()">
                                             </td>
 
                                         </tr>

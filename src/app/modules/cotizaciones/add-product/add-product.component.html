@@ -5,57 +5,62 @@
         </div>
     </div>
 
-    
-        <div class="card-body">
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"
-                    aria-labelledby="kt_tab_pane_1_4">
-                    <div class="form form-label-right">
+
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"
+                aria-labelledby="kt_tab_pane_1_4">
+                <div class="form form-label-right">
 
 
-                        <div class="form-group row">
+                    <div class="form-group row">
 
-                            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
-                                [(ngModel)]="search" (input)="buscarProductos()" />
-                            <small class="form-text text-muted">
-                                <b>Buscar</b>
-                                por nombre del cliente
-                            </small>
-
-                           
+                        <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                            [(ngModel)]="search" (input)="buscarProductos()" />
+                        <small class="form-text text-muted">
+                            <b>Buscar</b>
+                            por nombre / categoria del producto
+                        </small>
 
 
-                            <div class="col-1">
-                                <button class="btn btn-dark" placement="top" [ngbTooltip]="'Reiniciar'"
-                                    (click)="reset()">
-                                    <i class="icon text-white flaticon-refresh"></i>
-                                </button>
-                            </div>
+
+
+                        <div class="col-1">
+                            <button class="btn btn-dark" placement="top" [ngbTooltip]="'Reiniciar'" (click)="reset()">
+                                <i class="icon text-white flaticon-refresh"></i>
+                            </button>
                         </div>
                     </div>
-<ng-container *ngIf = "filteredProductos">
+                </div>
+                <ng-container *ngIf="filteredProductos">
                     <div class="table-responsive">
                         <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
                             <thead>
                                 <tr class="text-left">
-                                    <th class="pr-0">Nombres</th>
-                                    <th class="pr-0">Email</th>
-                                    <th>Documento</th>
-                                    <th class="pr-0"></th>
+                                    <th class="pr-0">Imagen</th>
+                                    <th class="pr-0">Nombre</th>
+                                    <th class="pr-0">Categoría</th>
+                                    <th class="pr-0">Stock</th>
+                                   
+                                   
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Paginacion con pipes -->
-                                <tr *ngFor="let cliente of filteredProductos ; let i=index">
-                                    <td>{{ cliente.title }} </td>
-
-                                    <td>lguevaraaredo@correo.com</td>
-
-                                    <!-- <td>{{ cliente. }}</td>
- -->
+                                <tr *ngFor="let product of filteredProductos| slice:desde:hasta ; let i=index">
                                     <td>
-                                        <a class=" font-weight-bold mr-2"><i
-                                                class="
+                                        <div class="symbol symbol-50 flex-shrink-0 mr-4">
+                                            <div class="symbol-label"
+                                                [ngStyle]="{'background-image': 'url('+product.imagen+')'}"></div>
+                                        </div>
+                                    </td>
+
+                                    <td>{{ product.title }} </td>
+                                    <td>{{ product.categorie.name }} </td>
+
+                                    <td>{{ product.stock}} </td>
+                                    <td>
+                                        <a class=" font-weight-bold mr-2"><i class="
                                                 flaticon-add-circular-button text-primary"></i></a>
 
 
@@ -63,25 +68,23 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <mat-paginator [length]="filteredClientes.length" [pageSize]="pageSize"
+                        <mat-paginator [length]="filteredProductos.length" [pageSize]="pageSize"
                             (page)="cambiarPagina($event)">
-                        </mat-paginator> -->
+                        </mat-paginator>
 
                     </div>
-</ng-container>    
-<ng-container *ngIf = "filteredProductos.length === 0">
+                </ng-container>
+                <ng-container *ngIf="filteredProductos.length === 0">
 
-<div class="modal-title h4" id="example-modal-sizes-title-lg">
-            <i class="icon-2x text-dark-50 flaticon2-search-1 mx-2"></i> {{mensaje}}
-        </div>
-</ng-container>            
+                    {{mensaje}}
+                </ng-container>
 
 
-
-                </div>
 
             </div>
+
         </div>
-    
+    </div>
+
 
 </div>

@@ -3,16 +3,16 @@
         <div class="card-title">
             <h3 class="card-label">
                 <i class="icon-2x text-dark-50 flaticon-bag mx-2"></i>
-                Editar Cotización 
+                Editar Cotización
             </h3>
         </div>
         <div class="card-toolbar">
         </div>
     </div>
     <div class="card-body">
-         <ng-container *ngIf="isLoading$ | async">
+        <ng-container *ngIf="isLoading$ | async">
             <span class="spinner spinner-primary ml-5"></span>
-        </ng-container> 
+        </ng-container>
 
         <div class="form-group row">
             <div class="col-5">
@@ -43,8 +43,7 @@
             <div class="col-5">
                 <label class="form-label">Estado: *</label>
 
-                <select [(ngModel)]="estado" name="estado"
-                    class="form-control form-control-solid form-control-lg">
+                <select [(ngModel)]="estado" name="estado" class="form-control form-control-solid form-control-lg">
                     <option value="0">Inactivo</option>
                     <option value="1">Pendiente</option>
                     <option value="2">Enviado</option>
@@ -95,8 +94,9 @@
                             </div>
                             <div class="col-2">
                                 <label class="form-label">Cantidad: *</label>
-                                <input type="number" class="form-control form-control-solid form-control-lg"
-                                min="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
+                                <input type="number" class="form-control form-control-solid form-control-lg" min="1"
+                                    onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="cantidad"
+                                    placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
                             </div>
 
                             <div class="col-2">
@@ -104,12 +104,14 @@
                                 <div class="input-group">
                                     <div class="input-group-append">
                                         <label class="input-group-text">
-                                            <input type="checkbox" [(ngModel)]="descuentoHabilitado" (change)="onCheckboxChange()">
+                                            <input type="checkbox" [(ngModel)]="descuentoHabilitado"
+                                                (change)="onCheckboxChange()">
                                         </label>
                                     </div>
                                     <input type="number" class="form-control form-control-solid form-control-lg"
                                         name="descuento" placeholder="Ex: 10" autocomplete="off" [(ngModel)]="descuento"
-                                        min="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [disabled]="!descuentoHabilitado">
+                                        min="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                        [disabled]="!descuentoHabilitado">
                                 </div>
                             </div>
 
@@ -150,17 +152,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <ng-container *ngFor ="let producto of listproducto; let i=index">
+                                        <ng-container *ngFor="let producto of listproducto; let i=index">
                                             <tr>
                                                 <th scope="row">{{i+1}}</th>
                                                 <td>{{producto.producto_id}}</td>
                                                 <td>{{producto.cantidad}} u.</td>
                                                 <td>{{producto.precio}}</td>
-                                                <td> 
-                                                        {{producto.descuento}} % 
+                                                <td *ngIf="producto.descuento">
+                                                    {{producto.descuento}} %
+                                                </td>
+                                                <td *ngIf="!producto.descuento">
+                                                   -
                                                 </td>
                                                 <td>
-                                                    s/. {{producto.cantidad * producto.precio * ((100- producto.descuento)/100)}}
+                                                    s/. {{producto.cantidad * producto.precio * ((100-
+                                                    producto.descuento)/100)}}
                                                 </td>
                                                 <td>
                                                     <a class="btn" (click)="removeproducto(producto)">
@@ -168,7 +174,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                        </ng-container>   
+                                        </ng-container>
 
 
                                     </tbody>
@@ -186,27 +192,39 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">Neto</th>
-                                            <td>S/ 2033.60</td>
-
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Descuento</th>
-                                            <td>S/ 0</td>
-
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Sub Total</th>
-                                            <td>S/ 2033.60</td>
+                                            <td>S/ {{netoCotizacion}} </td>
 
                                         </tr>
                                         <tr>
                                             <th scope="row">IGV</th>
-                                            <td>S/ 446.40</td>
+                                            <td>S/ {{igvCotizacion}}</td>
 
                                         </tr>
+                                        <tr>
+                                            <th scope="row">Sub Total</th>
+                                            <td>S/ {{subtotalCotizacion}}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"> <input type="checkbox"
+                                                    [(ngModel)]="descuentoGlobalHabilitado"
+                                                    (change)="onCheckboxChangeDescuentoGlobal()"> Habilitar Descuento %
+                                            </th>
+                                            <td> <input type="number"
+                                                    class="form-control form-control-solid form-control-lg"
+                                                    name="descuentoGlobal" placeholder="Ex: 10" autocomplete="off"
+                                                    [(ngModel)]="descuentoGlobal"
+                                                    [disabled]="!descuentoGlobalHabilitado"
+                                                    (input)="calcularDescuento()">
+                                            </td>
+
+                                        </tr>
+
+
                                         <tr class="table-primary">
                                             <th scope="row">Total</th>
-                                            <td>S/ 2480</td>
+                                            <td>S/ {{totalCotizacion}}
+                                            </td>
 
                                         </tr>
 

@@ -25,13 +25,13 @@ export class EditCotizacionComponent implements OnInit {
   cotizacion: any = null;
   cliente_id: any = 0;
   vendedor_id: any = 0;
-  
-  listproducto: any =[];
+
+  listproducto: any = [];
   listProductoNew: any = [];
   /* Data Cotizacion */
   cliente: any = null;
   vendedor: any = null;
-  estado : any =null;
+  estado: any = null;
   fechaEmision: any = null;
   fechaExpiracion: any = null;
   total: any = null;
@@ -42,8 +42,8 @@ export class EditCotizacionComponent implements OnInit {
   cantidad: any = null;
   descuento: any = null;
   descuentoHabilitado: boolean = false;
-  totalproducto : any = null;
-    
+  totalproducto: any = null;
+
   /* Data Contacto */
   nombreContacto: any = null;
   correoContacto: any = null;
@@ -52,6 +52,16 @@ export class EditCotizacionComponent implements OnInit {
   celularContacto: any = null;
 
   isButtonClicked: boolean = false;
+
+  //resumen
+  netoCotizacion: any = 0
+  totalCotizacion: any = 0;
+  igvCotizacion: any = 0;
+  subtotalCotizacion: any = 0;
+  descuentoGlobalHabilitado: boolean = false;
+  descuentoGlobal: any = null;
+  totalTemporal: any = 0;
+
 
   ngOnInit(): void {
     this.isLoading$ = this._cotizacionService.isLoadingSubject;
@@ -75,13 +85,23 @@ export class EditCotizacionComponent implements OnInit {
       this.estado = this.cotizacion.estado;
       this.fechaEmision = this.cotizacion.fechaEmision;
       this.fechaExpiracion = this.cotizacion.fechaExpiracion;
-      this.total = this.cotizacion.total
-
+      /* this.total = this.cotizacion.total */
+      this.totalTemporal = this.cotizacion.total;
       //this.totalproducto = this.listproducto.cantidad * this.listproducto.precio;
       console.log(this.totalproducto);
       this.cliente_id = this.cotizacion.cliente_id;
       this.vendedor_id = this.cotizacion.vendedor_id;
-      
+
+      this.totalTemporal = this.cotizacion.total;
+      this.calcularSubTotal();
+
+      if (this.cotizacion.tieneDescuento) {
+        this.descuentoGlobalHabilitado = true;
+        this.descuentoGlobal = this.cotizacion.descuento;
+
+        this.totalCotizacion = this.cotizacion.total * ((100 - this.cotizacion.descuento) / 100);
+      }
+
     })
   }
 
@@ -93,12 +113,18 @@ export class EditCotizacionComponent implements OnInit {
       vendedor_id: this.vendedor_id,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
-      total: 100,
+      total: this.totalTemporal,
       observaciones: this.observaciones,
-      estadoCotizacion : this.estado,
-      listProducto :this.listProductoNew
+      estadoCotizacion: this.estado,
+      tieneDescuento: this.descuentoGlobalHabilitado,
+      descuento: 0,
+      listProducto: this.listProductoNew
 
     }
+    if (this.descuentoGlobalHabilitado) {
+      dataCotizacion.descuento = this.descuentoGlobal;
+    }
+
     console.log('dataCotizacion', dataCotizacion);
     this.update(dataCotizacion);
   }
@@ -130,32 +156,53 @@ export class EditCotizacionComponent implements OnInit {
 
   addProducto() {
     let dataProducto = {
-      id : 0,
-      estado : 1,
-      producto_id : 1,
+      id: 0,
+      estado: 1,
+      producto_id: 1,
       nombre: "sin nombre",
-      precio : 100,
-      cantidad : this.cantidad,
+      precio: 100,
+      cantidad: this.cantidad,
       descuentoHabilitado: this.descuentoHabilitado,
-      descuento : this.descuento,
-      total : (this.cantidad * 100 *(100 - this.descuento))/100,
+      descuento: this.descuento,
+      total: (this.cantidad * 100 * (100 - this.descuento)) / 100,
     }
-    this.listproducto.push(dataProducto),
+    this.totalTemporal = this.totalTemporal + dataProducto.total;
+    console.log(this.totalTemporal);
+    this.calcularSubTotal();
+
+    this.listproducto.push(dataProducto);
     this.listProductoNew.push(dataProducto)
     console.log('listProducto:', this.listproducto);
 
   }
-
-  
   onCheckboxChange() {
     if (!this.descuentoHabilitado) {
-        // Si el checkbox está deshabilitado, borra el valor del descuento
-        this.descuento = "";
+      this.descuento = null;
+    }
+    else {
+      this.descuento = 1;
+
     }
   }
 
 
-  removeproducto(producto:any){
+  onCheckboxChangeDescuentoGlobal() {
+    if (!this.descuentoGlobalHabilitado) {
+      this.descuentoGlobal = null;
+      this.totalCotizacion = this.totalTemporal;
+    }
+    else {
+      this.descuentoGlobal = 0;
+      this.totalCotizacion = this.totalTemporal * (100 - this.descuentoGlobal) / 100;
+    }
+  }
+
+  calcularDescuento() {
+    this.totalCotizacion = this.totalTemporal * (100 - this.descuentoGlobal) / 100;
+  }
+
+
+  removeproducto(producto: any) {
     console.log(producto)
     if (producto.id !== 0) {
       const productoInactivo = { ...producto, estado: 0 };
@@ -169,6 +216,22 @@ export class EditCotizacionComponent implements OnInit {
     if (dataIndex !== -1) {
       this.listproducto.splice(dataIndex, 1);
     }
+
+    this.totalTemporal = this.totalTemporal - (producto.precio * producto.cantidad);
+    this.calcularSubTotal();
+  }
+
+  calcularSubTotal() {
+    this.descuentoGlobalHabilitado = false;
+    this.descuentoGlobal = null;
+
+    const total = this.totalTemporal;
+    this.igvCotizacion = (total * 0.18).toFixed(2); // Utilizando toFixed para limitar a 2 decimales
+
+    this.netoCotizacion = total - this.igvCotizacion;
+    this.subtotalCotizacion = total;
+    this.totalCotizacion = total;
+
   }
 
 }

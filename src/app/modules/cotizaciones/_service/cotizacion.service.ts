@@ -21,14 +21,13 @@ export class CotizacionService {
   }
 
 
-  allCotizaciones(page = 1, search = '') {
+  allCotizaciones(estadoCotizacion: number) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-    let LINK = "";
-    if (search) {
-      LINK = LINK + "&search=" + search;
-    }
-    let URL = URL_SERVICIOS + "/cotizaciones/all?page=" + page + LINK;
+
+    let URL = URL_SERVICIOS + "/cotizaciones/all";
+    URL += `?estadoCotizacion=${estadoCotizacion}`;
+
     return this.http.get(URL, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -56,6 +55,15 @@ export class CotizacionService {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/cotizaciones/update/" + data.id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  removeCotizacion(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/remove/" + data.id;
     return this.http.put(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );

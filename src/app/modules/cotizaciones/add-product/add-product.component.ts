@@ -3,6 +3,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toaster } from 'ngx-toast-notifications';
 import { CotizacionService } from '../_service/cotizacion.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ProductsService } from '../../products/_services/products.service';
+
 
 
 @Component({
@@ -16,42 +18,63 @@ export class AddProductComponent implements OnInit {
     public toaster: Toaster,
     public _CotizacionService: CotizacionService,
     public modelService: NgbModal,
+    public _productServices: ProductsService
   ) { }
+  //paginacion
+  pageSize = 3;
+  desde: number = 0;
+  hasta: number = 3;
 
-  search : any = null;
-  filteredProductos : any =[];
-  productos : any = null;
-  mensaje : any = "Ingrese el nombre de un Producto";
+  search: any = null;
+  filteredProductos: any = [];
+  productos: any = null;
+  mensaje: any = "Ingrese el nombre de un Producto";
 
   ngOnInit(): void {
-    this.allProductos();
+    this.allProducts();
   }
 
-  listProductosall:any = null;
+  listProductosall: any = null;
 
-  allProductos() {
-    this._CotizacionService.allProductos().subscribe((resp: any) => {
-      //console.log('Productos: ', resp);
-      this.listProductosall = resp.productos;
-      
+
+  allProducts(page = 1) {
+    let LINK = "";
+    if (this.search) {
+      LINK = LINK + "&search=" + this.search;
+    }
+    this._productServices.allProducts(page, LINK).subscribe((resp: any) => {
+      console.log(resp);
+      this.listProductosall = resp.products.data.filter(x => (x.state != 3));
     })
   }
 
   buscarProductos() {
     // Filtra la lista completa de clientes según el término de búsqueda
+
     const productosFiltrados = this.listProductosall.filter(producto =>
       producto.title.toLowerCase().includes(this.search.toLowerCase())
     );
     // Asigna la lista filtrada a filteredClientes y luego aplica la paginación
-    this.filteredProductos =  productosFiltrados;
-   
+    this.filteredProductos = productosFiltrados;
+
     this.mensaje = "No se Encontraron Productos";
-   console.log(this.filteredProductos);
+    console.log(this.filteredProductos);
+    if (!this.search) {
+      this.filteredProductos = [];
+    }
+    this.desde = 0;  // Reinicia la paginación a la primera página
+    this.hasta = this.pageSize;
+
   }
 
   reset() {
-    this.allProductos();
+    this.allProducts();
     this.search = null;
   }
 
+  cambiarPagina(e: PageEvent) {
+    console.log(e);
+    this.desde = e.pageIndex * e.pageSize;
+    this.hasta = this.desde + e.pageSize;
+  }
 }
