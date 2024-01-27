@@ -95,6 +95,13 @@ export class AddNewCotizacionComponent implements OnInit {
   }
 
   addProducto() {
+
+    if (!this.cantidad) {
+      this.toaster.open(NoticyAlertComponent, { text: `danger-'El campo cantidad es requerido.'` });
+      return;
+    }
+
+
     let dataProducto = {
       id: 0,
       estado: 1,
@@ -112,6 +119,9 @@ export class AddNewCotizacionComponent implements OnInit {
     this.calcularSubTotal();
 
     this.listProducto.push(dataProducto);
+    this.cantidad = null;
+    this.descuentoHabilitado = false;
+    this.descuento = null;
     /* console.log('listProducto:', this.listProducto); */
 
 
@@ -189,6 +199,7 @@ export class AddNewCotizacionComponent implements OnInit {
     this.igvCotizacion = 0;
     this.subtotalCotizacion = 0;
     this.descuentoGlobalHabilitado = false;
+    this.descuentoGlobal = null;
     this.totalCotizacion = 0;
     this.totalTemporal = 0;
 

@@ -36,7 +36,7 @@ export class EditCotizacionComponent implements OnInit {
   fechaExpiracion: any = null;
   total: any = null;
   observaciones: any = null;
-
+  estadoCotizacion: number = 1;
   //Data productos
   producto_id: any = null;
   cantidad: any = null;
@@ -82,7 +82,7 @@ export class EditCotizacionComponent implements OnInit {
       this.cliente = this.cotizacion.clienteName;
       this.observaciones = this.cotizacion.observaciones;
       this.vendedor = this.cotizacion.vendedorName;
-      this.estado = this.cotizacion.estado;
+      this.estadoCotizacion = this.cotizacion.estadoCotizacion;
       this.fechaEmision = this.cotizacion.fechaEmision;
       this.fechaExpiracion = this.cotizacion.fechaExpiracion;
       /* this.total = this.cotizacion.total */
@@ -108,14 +108,14 @@ export class EditCotizacionComponent implements OnInit {
   updateCotizacion() {
     let dataCotizacion = {
       id: this.cotizacion_id,
-      estado: this.estado,
+      estado: 1,
       cliente_id: this.cliente_id,
       vendedor_id: this.vendedor_id,
       fechaEmision: this.fechaEmision,
       fechaExpiracion: this.fechaExpiracion,
       total: this.totalTemporal,
       observaciones: this.observaciones,
-      estadoCotizacion: this.estado,
+      estadoCotizacion: this.estadoCotizacion,
       tieneDescuento: this.descuentoGlobalHabilitado,
       descuento: 0,
       listProducto: this.listProductoNew
