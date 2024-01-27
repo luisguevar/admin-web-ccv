@@ -20,6 +20,7 @@ export class EditCotizacionComponent implements OnInit {
     public modelService: NgbModal,
     public activerouter: ActivatedRoute,
   ) { }
+
   cotizacion_id: any = 0;
   cotizacion: any = null;
   cliente_id: any = 0;
@@ -41,6 +42,7 @@ export class EditCotizacionComponent implements OnInit {
   cantidad: any = null;
   descuento: any = null;
   descuentoHabilitado: boolean = false;
+  totalproducto : any = null;
     
   /* Data Contacto */
   nombreContacto: any = null;
@@ -65,6 +67,7 @@ export class EditCotizacionComponent implements OnInit {
 
       this.cotizacion = resp.cotizacion;
       this.listproducto = resp.productos;
+
       console.log('listproducto: ', this.listproducto);
       this.cliente = this.cotizacion.clienteName;
       this.observaciones = this.cotizacion.observaciones;
@@ -72,7 +75,10 @@ export class EditCotizacionComponent implements OnInit {
       this.estado = this.cotizacion.estado;
       this.fechaEmision = this.cotizacion.fechaEmision;
       this.fechaExpiracion = this.cotizacion.fechaExpiracion;
+      this.total = this.cotizacion.total
 
+      //this.totalproducto = this.listproducto.cantidad * this.listproducto.precio;
+      console.log(this.totalproducto);
       this.cliente_id = this.cotizacion.cliente_id;
       this.vendedor_id = this.cotizacion.vendedor_id;
       
@@ -96,6 +102,7 @@ export class EditCotizacionComponent implements OnInit {
     console.log('dataCotizacion', dataCotizacion);
     this.update(dataCotizacion);
   }
+
 
 
   update(dataCotizacion: any) {
@@ -139,9 +146,15 @@ export class EditCotizacionComponent implements OnInit {
 
   }
 
-  onCheckboxChange(){
-
+  
+  onCheckboxChange() {
+    if (!this.descuentoHabilitado) {
+        // Si el checkbox está deshabilitado, borra el valor del descuento
+        this.descuento = "";
+    }
   }
+
+
   removeproducto(producto:any){
     console.log(producto)
     if (producto.id !== 0) {

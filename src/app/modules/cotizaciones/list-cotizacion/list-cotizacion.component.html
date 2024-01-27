@@ -54,17 +54,21 @@
                             <td>{{ cotizacion.fechaEmision }}</td>
                             <td>{{ cotizacion.total }}</td>
                             <td>{{ cotizacion.vendedorName }}</td>
-                            <td>{{ cotizacion.estado }}</td>
-                            <td>0</td>
+                           
+                            
                             <td>
                         <td>
-                            <span class="label label-lg label-inline label-light-success">Aceptado</span>
-                            <!--   <span class="label label-lg label-inline label-light-danger"
-                                *ngIf="product.state == 1">Pendiente</span>
+
+                            <!-- <span class="label label-lg label-inline label-light-danger"
+                                *ngIf="cotizacion.estado == 0">Inactivo</span> -->
+                            <span class="label label-lg label-inline label-light-info"
+                                *ngIf="cotizacion.estado == 1">Pendiente</span>
+                            <span class="label label-lg label-inline label-light-primary"
+                                *ngIf="cotizacion.estado == 2">Enviado</span>
                             <span class="label label-lg label-inline label-light-success"
-                                *ngIf="product.state == 2">Activo</span>
-                            <span class="label label-lg label-inline label-light-warning"
-                                *ngIf="product.state == 3">Inactivo</span> -->
+                                *ngIf="cotizacion.estado == 3">Aceptado</span>
+                            <span class="label label-lg label-inline label-light-danger"
+                                *ngIf="cotizacion.estado == 4">Rechazado</span>
                         </td>
                         <td style="display: flex;">
                             <a  [routerLink]="['/cotizaciones/edit-cotizacion',cotizacion.id]" class=" btn btn-icon btn-light

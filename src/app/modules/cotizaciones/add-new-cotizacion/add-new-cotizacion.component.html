@@ -53,7 +53,7 @@
 
                 <select [(ngModel)]="estadoCotizacion" name="estadoCotizacion"
                     class="form-control form-control-solid form-control-lg">
-                    <option value="0">Inactivo</option>
+                    <!-- <option value="0">Inactivo</option> -->
                     <option value="1">Pendiente</option>
                     <option value="2">Enviado</option>
                     <option value="3">Aceptado</option>
@@ -105,7 +105,7 @@
                             <div class="col-2">
                                 <label class="form-label">Cantidad: *</label>
                                 <input type="number" class="form-control form-control-solid form-control-lg"
-                                    name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
+                                min="1" name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
                             </div>
 
                             <div class="col-2">
@@ -247,11 +247,11 @@
 
         <div class="form-group row">
             <div class="col-6">
-                <button class="btn btn-md btn-danger" (click)="createCotizacion()">Volver</button>
+                <button class="btn btn-md btn-danger" [routerLink]="['/cotizaciones/list-cotizacion']">Volver</button>
             </div>
 
             <div class="col-5" style="display: flex;justify-content: right;">
-                <button class="btn btn-md btn-success mx-1" (click)="createCotizacion()">Exportar</button>
+                <button class="btn btn-md btn-success mx-1" (click)="allProductos()">Exportar</button>
                 <button class="btn btn-md btn-primary" (click)="createCotizacion()">Guardar</button>
             </div>
         </div>

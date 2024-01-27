@@ -71,6 +71,17 @@ export class CotizacionService {
     );
   }
 
+
+  allProductos() {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let URL = URL_SERVICIOS + "/cotizaciones/allProductos";
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
 }
 
 

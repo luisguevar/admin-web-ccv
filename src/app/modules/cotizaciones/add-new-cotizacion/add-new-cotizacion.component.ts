@@ -63,6 +63,7 @@ export class AddNewCotizacionComponent implements OnInit {
   descuentoHabilitado: boolean = false;
 
   usuario: any = null;
+  listProductosall:any = null;
 
 
   ngOnInit(): void {
@@ -179,6 +180,13 @@ export class AddNewCotizacionComponent implements OnInit {
     this._CotizacionService.allClientes().subscribe((resp: any) => {
       console.log('Clientes: ', resp);
       this.listClientes = resp.clientes;
+    })
+  }
+
+  allProductos() {
+    this._CotizacionService.allProductos().subscribe((resp: any) => {
+      console.log('Productos: ', resp);
+      this.listProductosall = resp.Productos;
     })
   }
 
