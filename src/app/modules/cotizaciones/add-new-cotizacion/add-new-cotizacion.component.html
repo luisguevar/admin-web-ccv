@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="card-body">
-        
+
 
         <div class="form-group row">
             <div class="col-5">
@@ -104,8 +104,8 @@
                             </div>
                             <div class="col-2">
                                 <label class="form-label">Cantidad: *</label>
-                                <input type="number" class="form-control form-control-solid form-control-lg"
-                                min="1" name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
+                                <input type="number" class="form-control form-control-solid form-control-lg" min="1"
+                                    name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
                             </div>
 
                             <div class="col-2">
@@ -202,8 +202,15 @@
 
                                         </tr>
                                         <tr>
-                                            <th scope="row">Descuento</th>
-                                            <td>S/ 0</td>
+                                            <th scope="row"> <input type="checkbox"
+                                                    [(ngModel)]="descuentoGlobalHabilitado"
+                                                    (change)="onCheckboxChangeDescuentoGlobal()"> Habilitar Descuento %
+                                            </th>
+                                            <td> <input type="number"
+                                                    class="form-control form-control-solid form-control-lg"
+                                                    name="descuentoGlobal" placeholder="Ex: 10" autocomplete="off"
+                                                    [(ngModel)]="descuentoGlobal" [disabled]="!descuentoGlobalHabilitado">
+                                            </td>
 
                                         </tr>
                                         <tr>
@@ -218,7 +225,7 @@
                                         </tr>
                                         <tr class="table-primary">
                                             <th scope="row">Total</th>
-                                            <td>{{totalCotizacion}}
+                                            <td>S/ {{totalCotizacion}}
                                             </td>
 
                                         </tr>

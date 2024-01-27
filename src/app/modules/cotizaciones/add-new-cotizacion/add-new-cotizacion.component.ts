@@ -40,11 +40,12 @@ export class AddNewCotizacionComponent implements OnInit {
   observaciones: any = null;
   cliente_nombre: any = null;
   vendedor_nombre: any = null;
+  descuentoGlobal: any = null;
 
-//resumen
-  totalCotizacion:any = 0;
-  igvCotizacion:any = 0;
-  subtotalCotizacion:any  =0;
+  //resumen
+  totalCotizacion: any = 0;
+  igvCotizacion: any = 0;
+  subtotalCotizacion: any = 0;
 
   //Data productos
   producto_id: any = null;
@@ -61,9 +62,10 @@ export class AddNewCotizacionComponent implements OnInit {
 
   isButtonClicked: boolean = false;
   descuentoHabilitado: boolean = false;
+  descuentoGlobalHabilitado: boolean = false;
 
   usuario: any = null;
-  listProductosall:any = null;
+  listProductosall: any = null;
 
 
   ngOnInit(): void {
@@ -88,11 +90,11 @@ export class AddNewCotizacionComponent implements OnInit {
     }
 
     this.totalCotizacion = this.totalCotizacion + dataProducto.total;
-    this.igvCotizacion = this.totalCotizacion*0.18;
+    this.igvCotizacion = this.totalCotizacion * 0.18;
     this.subtotalCotizacion = this.totalCotizacion - this.igvCotizacion
     this.listProducto.push(dataProducto);
     console.log('listProducto:', this.listProducto);
-    
+
 
   }
 
@@ -163,12 +165,22 @@ export class AddNewCotizacionComponent implements OnInit {
     }
   }
 
+  onCheckboxChangeDescuentoGlobal() {
+    if (!this.descuentoGlobalHabilitado) {
+      this.descuentoGlobal = null;
+    }
+    else {
+      this.descuentoGlobal = 1;
+    }
+  }
+
+
   removeProducto(producto: any) {
 
     if (producto.id == 0) {
       this.listProducto = this.listProducto.filter((item) => item != producto);
       this.totalCotizacion = this.totalCotizacion - producto.total
-      this.igvCotizacion = this.totalCotizacion*0.18;
+      this.igvCotizacion = this.totalCotizacion * 0.18;
       this.subtotalCotizacion = this.totalCotizacion - this.igvCotizacion
     }
 
