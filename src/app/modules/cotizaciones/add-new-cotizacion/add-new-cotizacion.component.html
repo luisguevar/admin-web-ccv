@@ -32,7 +32,7 @@
                 <label class="form-label">Fecha Emisión: *</label>
 
                 <div class="input-group input-group-solid">
-                    <input [(ngModel)]="fechaEmision" name="fechaEmision" type="date"
+                    <input [(ngModel)]="fechaEmision" name="fechaEmision" type="date" 
                         class="form-control form-control-lg form-control-solid" />
                 </div>
             </div>
@@ -96,11 +96,13 @@
 
 
                         <div class="form-group row">
-                            <div class="col-6">
+                            <div class="col-8">
                                 <label class="form-label">Producto: *</label>
                                 <input type="text" class="form-control form-control-solid form-control-lg"
                                     name="producto_id" placeholder="Buscar Producto" autocomplete="off"
-                                    [(ngModel)]="producto_id">
+                                    [(ngModel)]="producto_id"> <a onclick="return false" (click)="addProductoDialog()" class="btn font-weight-bold mr-2 ">
+                                    <i class=" flaticon2-add  text-primary"></i>
+                                </a>
                             </div>
                             <div class="col-2">
                                 <label class="form-label">Cantidad: *</label>

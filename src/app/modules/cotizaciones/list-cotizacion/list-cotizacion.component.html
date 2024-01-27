@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-6">
                 <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
-                    [(ngModel)]="search" />
+                    [(ngModel)]="search" (input)="buscarClientes()" />
                 <small class="form-text text-muted">
                     <b>Buscar</b>
                     por nombre del cliente
@@ -47,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let cotizacion of cotizaciones; let i = index">
+                    <ng-container *ngFor="let cotizacion of filteredCotizaciones; let i = index">
                         <tr>
                             <td>{{ i + 1 }}</td>
                             <td>{{ cotizacion.clienteName }}</td>
