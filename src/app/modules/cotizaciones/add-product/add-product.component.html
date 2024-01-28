@@ -40,6 +40,7 @@
                                     <th class="pr-0">Imagen</th>
                                     <th class="pr-0">Nombre</th>
                                     <th class="pr-0">Categoría</th>
+                                    <th class="pr-0">Precio</th>
                                     <th class="pr-0">Stock</th>
                                    
                                    
@@ -57,7 +58,7 @@
 
                                     <td>{{ product.title }} </td>
                                     <td>{{ product.categorie.name }} </td>
-
+                                    <td>{{ product.price_soles}} </td>
                                     <td>{{ product.stock}} </td>
                                     <td>
                                         <a (click) = "seleccionarProducto(product)" class=" font-weight-bold mr-2"><i class="

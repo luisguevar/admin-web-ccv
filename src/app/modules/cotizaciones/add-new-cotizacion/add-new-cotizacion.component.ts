@@ -122,6 +122,9 @@ export class AddNewCotizacionComponent implements OnInit {
     this.cantidad = null;
     this.descuentoHabilitado = false;
     this.descuento = null;
+    this.producto_nombre= null;
+    this.Precio = null;
+    this.producto_id = null;
     /* console.log('listProducto:', this.listProducto); */
 
 
@@ -236,7 +239,9 @@ export class AddNewCotizacionComponent implements OnInit {
 
     if (producto.id == 0) {
       this.listProducto = this.listProducto.filter((item) => item != producto);
-      this.totalTemporal = this.totalTemporal - (producto.precio * producto.cantidad);
+      
+      this.totalTemporal = this.totalTemporal - (producto.total);
+      
       this.calcularSubTotal();
 
     }
