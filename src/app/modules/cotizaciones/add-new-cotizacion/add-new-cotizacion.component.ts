@@ -105,13 +105,13 @@ export class AddNewCotizacionComponent implements OnInit {
     let dataProducto = {
       id: 0,
       estado: 1,
-      producto_id: 1,
-      nombre: "sin nombre",
-      precio: 100,
+      producto_id: this.producto_id,
+      nombre: this.producto_nombre,
+      precio: this.Precio,
       cantidad: this.cantidad,
       descuentoHabilitado: this.descuentoHabilitado,
       descuento: this.descuento,
-      total: (this.cantidad * 100 * (100 - this.descuento)) / 100,
+      total: (this.cantidad * this.Precio * (100 - this.descuento)) / 100,
     }
 
     this.totalTemporal = this.totalTemporal + dataProducto.total;
@@ -276,14 +276,14 @@ export class AddNewCotizacionComponent implements OnInit {
   addProductoDialog() {
     const modalRef = this.modelService.open(AddProductComponent, { centered: true, size: 'lg' });
     // Capturar el resultado cuando se cierra el modal
-    /*  modalRef.componentInstance.clienteE.subscribe((resp: any) => {
-       console.log(resp);
- 
-       this.cliente_nombre = resp.nombres + ' ' + resp.apellidos + '(' + resp.nroDocumento + ')';
-       this.cliente_id = resp.id;
-       this.cdr.detectChanges(); // Forzar la detección de cambios
- 
-     }) */
+    
+    modalRef.componentInstance.productoE.subscribe((resp: any) => {
+      console.log(resp);
+      this.producto_id = resp.id;
+      this.producto_nombre = resp.title;
+      this.Precio = resp.price_soles;
+      this.cdr.detectChanges();
+    })
 
   }
 

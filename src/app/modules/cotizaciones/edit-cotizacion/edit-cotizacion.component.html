@@ -210,7 +210,7 @@
                                                     [(ngModel)]="descuentoGlobalHabilitado"
                                                     (change)="onCheckboxChangeDescuentoGlobal()"> Habilitar Descuento %
                                             </th>
-                                            <td> <input type="number"
+                                            <td> <input type="number"  min="0"
                                                     class="form-control form-control-solid form-control-lg"
                                                     name="descuentoGlobal" placeholder="Ex: 10" autocomplete="off"
                                                     [(ngModel)]="descuentoGlobal"

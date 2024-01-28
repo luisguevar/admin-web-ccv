@@ -18,6 +18,7 @@ export class AddProductComponent implements OnInit {
     public toaster: Toaster,
     public _CotizacionService: CotizacionService,
     public modelService: NgbModal,
+    public modal: NgbActiveModal,
     public _productServices: ProductsService
   ) { }
   //paginacion
@@ -25,10 +26,16 @@ export class AddProductComponent implements OnInit {
   desde: number = 0;
   hasta: number = 3;
 
+
   search: any = null;
   filteredProductos: any = [];
   productos: any = null;
   mensaje: any = "Ingrese el nombre de un Producto";
+
+
+  //Producto Seleccionado
+  selectedProducto : any = null;
+  @Output() productoE: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
     this.allProducts();
@@ -76,5 +83,12 @@ export class AddProductComponent implements OnInit {
     console.log(e);
     this.desde = e.pageIndex * e.pageSize;
     this.hasta = this.desde + e.pageSize;
+  }
+
+  seleccionarProducto(product){
+    this.modal.close();
+    this.selectedProducto = product;
+    this.productoE.emit(this.selectedProducto);
+    return;
   }
 }
