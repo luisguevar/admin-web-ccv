@@ -3,6 +3,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toaster } from 'ngx-toast-notifications';
 import { CotizacionService } from '../_service/cotizacion.service';
 import { PageEvent } from '@angular/material/paginator';
+import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-dialog-cliente',
@@ -22,17 +24,44 @@ export class AddDialogClienteComponent implements OnInit {
 
   search: string = '';
 
+  //regisro rápido
+  nombres: any = null;
+  apellidos: any = null;
+  correo: any = null;
+  formGroup: FormGroup;
+
+
+
   constructor(
     public toaster: Toaster,
     public _CotizacionService: CotizacionService,
     public modelService: NgbModal,
     public modal: NgbActiveModal,
+    public fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
     setTimeout(() => {
       this.allClientes();
+
     }, 10);
+    this.loadForm();
+  }
+  loadForm() {
+    this.formGroup = this.fb.group({
+      name: [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      surname: [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      nroDocumento: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(20)])],
+      email: [
+        null,
+        Validators.compose([
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(249),
+        ])
+      ]
+
+    });
   }
 
   allClientes() {
@@ -57,7 +86,7 @@ export class AddDialogClienteComponent implements OnInit {
       cliente.apellidos.toLowerCase().includes(this.search.toLowerCase())
     );
 
-    
+
 
     // Asigna la lista filtrada a filteredClientes y luego aplica la paginación
     this.filteredClientes = clientesFiltrados;
@@ -71,8 +100,49 @@ export class AddDialogClienteComponent implements OnInit {
     return;
   }
 
+  registrarClienteRapido() {
+
+    this._CotizacionService.createClienteRapido(this.formGroup.value).subscribe((resp: any) => {
+      console.log(resp);
+      if (resp.success) {
+        const data = {
+          id: resp.cliente_id,
+          nombres: resp.nombres,
+          apellidos: resp.apellidos,
+          nroDocumento: resp.nroDocumento
+        };
+
+        this.modal.close();
+        this.clienteE.emit(data);
+        return;
+      }
+    })
+    console.log('Modelo para guardar: ', this.formGroup.value);
+  }
+
   reset() {
     this.allClientes();
     this.search = null;
+  }
+
+  // helpers for View
+  isControlValid(controlName: string): boolean {
+    const control = this.formGroup.controls[controlName];
+    return control.valid && (control.dirty || control.touched);
+  }
+
+  isControlInvalid(controlName: string): boolean {
+    const control = this.formGroup.controls[controlName];
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  controlHasError(validation: string, controlName: string) {
+    const control = this.formGroup.controls[controlName];
+    return control.hasError(validation) && (control.dirty || control.touched);
+  }
+
+  isControlTouched(controlName: string): boolean {
+    const control = this.formGroup.controls[controlName];
+    return control.dirty || control.touched;
   }
 }

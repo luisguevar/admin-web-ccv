@@ -79,7 +79,7 @@ export class EditCotizacionComponent implements OnInit {
       this.listproducto = resp.productos;
 
       console.log('listproducto: ', this.listproducto);
-      this.cliente = this.cotizacion.clienteName;
+      this.cliente = this.cotizacion.clienteName  + '(' + this.cotizacion.clienteNroDocumento + ')';
       this.observaciones = this.cotizacion.observaciones;
       this.vendedor = this.cotizacion.vendedorName;
       this.estadoCotizacion = this.cotizacion.estadoCotizacion;
