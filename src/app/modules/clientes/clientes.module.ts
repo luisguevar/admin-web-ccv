@@ -11,10 +11,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
+import { DeleteClienteComponent } from './delete-cliente/delete-cliente.component';
 
 
 @NgModule({
-  declarations: [ClientesComponent, ListClienteComponent, AddClienteComponent, EditClienteComponent],
+  declarations: [ClientesComponent, ListClienteComponent, AddClienteComponent, EditClienteComponent, DeleteClienteComponent],
   imports: [
     CommonModule,
     ClientesRoutingModule,
