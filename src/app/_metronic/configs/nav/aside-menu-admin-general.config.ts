@@ -37,6 +37,10 @@ export const AsideMenuAdminGeneral = {
       page: '/ventas',
       submenu: [
         {
+          title: 'Punto de venta',
+          page: '/punto-venta/add-new-sale'
+        },
+        {
           title: 'Ordenes',
           page: '/ventas/lista-de-ordenes'
         }

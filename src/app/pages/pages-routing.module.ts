@@ -111,6 +111,14 @@ const routes: Routes = [
       },
 
       {
+        path: 'punto-venta',
+        loadChildren: () =>
+          import('../modules/punto-venta/punto-venta.module').then(
+            (m) => m.PuntoVentaModule
+          ),
+      },
+
+      {
         path: 'cotizaciones',
         loadChildren: () =>
           import('../modules/cotizaciones/cotizaciones.module').then(
