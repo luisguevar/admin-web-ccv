@@ -52,7 +52,8 @@ export class ListClienteComponent implements OnInit {
     )
     modalRef.componentInstance.clientsE.subscribe((resp:any)=>{
       // console.log(resp);
-      this.clientes.unshift(resp);
+      //this.clientes.unshift(resp);
+      this.allClientes();
     });
   }
 
