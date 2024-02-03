@@ -20,6 +20,12 @@ export class AddClienteComponent implements OnInit {
   apellidos:any = null;
   correo:any = null;
   nroDocumento:any = null;
+  contacto:any=null;
+  tipoPersona:any =null;
+  pais:any = null;
+  departamento:any=null;
+  direccion:any=null;
+  observacion:any=null;
  
   
   constructor(
@@ -43,7 +49,13 @@ export class AddClienteComponent implements OnInit {
       "apellidos" : this.apellidos,
       "correo": this.correo,
       "nroDocumento":this.nroDocumento,
-      "estado" : 1
+      "estado" : 1,
+      "contacto" : this.contacto,
+      "tipoPersona": this.tipoPersona,
+      "pais" : this.pais,
+      "departamento" : this.departamento,
+      "direccion" : this.direccion,
+      "observacion": this.observacion 
     };
 
     
