@@ -41,7 +41,7 @@ export class AddProductComponent implements OnInit {
     this.allProducts();
   }
 
-  listProductosall: any = null;
+  listProductosall: any = [];
 
 
   allProducts(page = 1) {

@@ -70,7 +70,7 @@ export class AddNewCotizacionComponent implements OnInit {
   descuentoGlobalHabilitado: boolean = false;
 
   usuario: any = null;
-  listProductosall: any = null;
+  listProductosall: any = [];
 
   producto_nombre: any = null;
 
