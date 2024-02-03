@@ -145,7 +145,8 @@
                                             <label class="form-label">Documento: *</label>
 
                                             <select name="tipoDocumento"
-                                                class="form-control form-control-solid form-control-lg">
+                                                class="form-control form-control-solid form-control-lg"
+                                                [(ngModel)]="cboTipoDocumento">
                                                 <!-- <option value="0">Inactivo</option> -->
                                                 <option value="1">Boleta</option>
                                                 <option value="2">Factura</option>
@@ -156,7 +157,7 @@
                                         <div>
                                             <label class="form-label">Tipo Pago: *</label>
 
-                                            <select name="tipoPago"
+                                            <select name="tipoPago" [formControl]="cboTipoPago"
                                                 class="form-control form-control-solid form-control-lg">
                                                 <!-- <option value="0">Inactivo</option> -->
                                                 <option value="1">Efectivo</option>
@@ -166,27 +167,30 @@
                                         </div>
                                         <br>
 
-                                        <label class="form-label">Efectivo recibido: *</label>
-                                        <div style="display: flex; ">
+                                        <div *ngIf="bPagoEfectivo">
+                                            <label class="form-label">Efectivo recibido: *</label>
+                                            <div style="display: flex; ">
 
-                                            <input type="number" class="form-control form-control-solid form-control-lg"
-                                                name="cliente" placeholder="Monto" autocomplete="off">
+                                                <input type="number"
+                                                    class="form-control form-control-solid form-control-lg"
+                                                    name="cliente" placeholder="Monto" autocomplete="off">
 
 
-                                            <div class="input-group" style="justify-content: right;">
+                                                <div class="input-group" style="justify-content: right;">
 
-                                                <div style="align-items: center; display: flex; margin-left: 5px;">
-                                                    <input type="checkbox">
+                                                    <div style="align-items: center; display: flex; margin-left: 5px;">
+                                                        <input type="checkbox">
+                                                    </div>
+
+                                                    <div style="align-items: center; display: flex; margin-left: 5px;">
+                                                        <b>Exacto</b>
+                                                    </div>
                                                 </div>
 
-                                                <div style="align-items: center; display: flex; margin-left: 5px;">
-                                                    <b>Exacto</b>
-                                                </div>
                                             </div>
-
                                         </div>
 
-                                        <div>
+                                        <div *ngIf="bPagoTarjeta">
                                             <label class="form-label">Código de Operación: *</label>
                                             <input type="text" class="form-control form-control-solid form-control-lg"
                                                 name="codOperacion" placeholder="N° Operación" autocomplete="off">
@@ -205,8 +209,16 @@
                                             </div>
 
                                         </div>
+                                        <br>
+                                        <div>
+                                            <p>SubTotal: </p>
+                                            <p>IGV: </p>
+                                            <p>Total: </p>
+                                        </div>
 
-
+                                        <div style="display: flex; justify-content: right;">
+                                            <button class="btn btn-md btn-primary">Efectuar venta</button>
+                                        </div>
 
                                     </div>
                                 </div>
