@@ -16,6 +16,7 @@ export class EditProveedorComponent implements OnInit {
 
 
   isLoading$: any;
+  productos: any = [];
 
   constructor(
     public toaster: Toaster,
@@ -72,6 +73,8 @@ export class EditProveedorComponent implements OnInit {
 
       this.proveedor = resp.proveedor;
       this.contactos = resp.contactos;
+      this.productos = resp.productos.data;
+      
       this.title = this.proveedor.razon_social;
 
       this.tipoPersona = this.proveedor.tipoPersona;
@@ -83,6 +86,7 @@ export class EditProveedorComponent implements OnInit {
       this.web = this.proveedor.web;
       this.direccion = this.proveedor.direccion;
       this.observaciones = this.proveedor.observaciones;
+     
 
       this.listContacto = this.contactos;
 

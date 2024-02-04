@@ -97,6 +97,7 @@ export class EditNewProductComponent implements OnInit {
       this.stock_individual = this.product.stock;
       this.checked_inventario = this.product.checked_inventario;
       this.state = this.product.state;
+      this.proveedor_id = this.product.proveedor_id;
     })
   }
 
