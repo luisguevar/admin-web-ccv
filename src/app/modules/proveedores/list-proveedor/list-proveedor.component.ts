@@ -33,12 +33,13 @@ export class ListProveedorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-  /*   this.spinnerService.startSpinner(); */
+    /*   this.spinnerService.startSpinner(); */
     this.isLoading$ = this._proveedorService.isLoading$;
     this.allProveedores();
   }
 
   allProveedores() {
+
     this._proveedorService.allProveedores(1, this.search).subscribe((resp: any) => {
       console.log('Proveedores: ', resp);
       this.proveedores = resp.proveedores;
@@ -80,12 +81,40 @@ export class ListProveedorComponent implements OnInit {
    } */
 
   delete(proveedor) {
+
+
     const modalRef = this.modelService.open(DeleteProveedorComponent, { centered: true, size: 'md' });
     modalRef.componentInstance.proveedor_selected = proveedor;
     modalRef.componentInstance.proveedorE.subscribe((resp: any) => {
-      console.log('eliminación: ', resp);
-      this.allProveedores();
-      this.cdr.detectChanges(); // Forzar la detección de cambios
+
+      if (resp) {
+
+
+        this._proveedorService.removeProveedor(proveedor).subscribe(
+          (resp: any) => {
+
+            if (resp.success) {
+              this.toaster.open(NoticyAlertComponent, { text: `info-El proveedor se removió exitosamente.` });
+              this.filteredProveedores = this.filteredProveedores.filter((item) => item != proveedor)
+              return;
+            }
+          },
+          (error: any) => {
+            console.error('Error al actualizar el proveedor:', error);
+            this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al eliminar el proveedor.` });
+            this.reset();
+            return;
+          }
+        )
+
+
+
+        /* this.reset();
+        this.cdr.detectChanges(); */
+      }
+
+      /*  this.allProveedores(); */
+      // Forzar la detección de cambios
 
     })
 

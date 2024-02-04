@@ -51,7 +51,7 @@
                         <th class="pr-0 ">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="!(isLoading$ | async)">
 
                     <ng-container *ngFor="let proveedor of filteredProveedores | slice:desde:hasta; let i = index">
                         <tr>

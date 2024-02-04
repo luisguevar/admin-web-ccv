@@ -25,42 +25,16 @@ export class DeleteProveedorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this._proveedorService.isLoading$;
-    console.log('proveedor_selected: ', this.proveedor_selected);
-  }
 
+  }
 
 
   delete() {
-    let dataProveedor = {
-      id: this.proveedor_selected.id
-    }
 
-     this.update(dataProveedor);
+    this.proveedorE.emit(true);
+    this.modal.close();
   }
 
-  update(dataProveedor: any) {
 
-    this._proveedorService.removeProveedor(dataProveedor).subscribe(
-      (resp: any) => {
-        console.log('Respuesta:', resp);
-
-        if (resp.success) {
-
-          this.toaster.open(NoticyAlertComponent, { text: `info-El proveedor se removió exitosamente.` });
-          this.modal.close();
-          this.proveedorE.emit(resp);
-          return;
-        }
-      },
-      (error: any) => {
-        console.error('Error al actualizar el proveedor:', error);
-        this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al eliminar el proveedor.` });
-        return;
-      }
-    )
-
-
-  }
 
 }
