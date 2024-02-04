@@ -60,4 +60,13 @@ export class ProveedorService {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
+  removeProveedor(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/proveedores/remove/" + data.id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
 }

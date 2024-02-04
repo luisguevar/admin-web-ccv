@@ -40,6 +40,7 @@ function appInitializer(authService: AuthService) {
     HttpClientModule,
     HighlightModule,
     ClipboardModule,
+    
     // #fake-start#
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
@@ -51,7 +52,7 @@ function appInitializer(authService: AuthService) {
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
-    ToastNotificationsModule.forRoot({duration: 5000, position: 'top-right'}),
+    ToastNotificationsModule.forRoot({duration: 5000, position: 'top-right'})
   ],
   providers: [
     // {

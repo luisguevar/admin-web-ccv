@@ -9,6 +9,7 @@ import { DeleteItemInventarioComponent } from './in/delete-item-inventario/delet
 import { DeleteSubItemInventarioComponent } from './in/delete-sub-item-inventario/delete-sub-item-inventario.component';
 import { EditItemInventarioComponent } from './in/edit-item-inventario/edit-item-inventario.component';
 import { EditSubItemInventarioComponent } from './in/edit-sub-item-inventario/edit-sub-item-inventario.component';
+import { ProveedorService } from '../../proveedores/_service/proveedor.service';
 
 @Component({
   selector: 'app-edit-new-product',
@@ -55,16 +56,20 @@ export class EditNewProductComponent implements OnInit {
   checked_inventario:any = 1;
   stock_individual:any = 0;
   state:any = 1;
+  proveedor_id: any = 0;
+  lstProveedores: any = [];
   constructor(
     public toaster:Toaster,
     public _productService: ProductsService,
     public router: Router,
     public activerouter: ActivatedRoute,
     public modelService: NgbModal,
+    public _proveedorService: ProveedorService,
   ) { }
 
   ngOnInit(): void {
     this.isLoading$ = this._productService.isLoading$;
+    this.allProveedores();
     this.activerouter.params.subscribe((resp:any) => {
       this.product_id = resp["id"] || "";
     })
@@ -73,6 +78,8 @@ export class EditNewProductComponent implements OnInit {
       this.products_colors = resp.products_colors;
       this.products_color_sizes = resp.products_color_sizes;
     })
+
+
     this._productService.showProduct(this.product_id).subscribe((resp:any) => {
       console.log(resp);
       this.product = resp.product;
@@ -192,6 +199,8 @@ export class EditNewProductComponent implements OnInit {
     formaData.append("stock",this.stock_individual ? this.stock_individual : 0)
     formaData.append("type_inventario",this.checked_inventario)
     formaData.append("state",this.state);
+    formaData.append("proveedor_id",this.proveedor_id);
+    
     // let index = 0;
     // for (const imagen of this.images_files) {
     //   formaData.append("files["+index+"]",imagen.file);
@@ -332,6 +341,14 @@ export class EditNewProductComponent implements OnInit {
           this.product_inventaries.push(resp.product_size_color);
         }
       }
+    })
+  }
+
+  allProveedores() {
+    this._proveedorService.allProveedores().subscribe((resp: any) => {
+      console.log('Proveedores: ', resp);
+      this.lstProveedores = resp.proveedores;
+    
     })
   }
 }

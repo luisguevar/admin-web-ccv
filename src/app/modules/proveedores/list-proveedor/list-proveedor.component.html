@@ -10,25 +10,27 @@
                     class="icon-2x text-white flaticon-file-1"></i> Registrar Proveedor</a>
         </div>
     </div>
+
+    <!--   <button (click)="probarAlerta()">
+        probarAlerta
+    </button> -->
     <div class="card-body">
 
-        <ng-container *ngIf="isLoading$ | async">
-            <span class="spinner spinner-primary ml-5"></span>
-        </ng-container>
+
 
         <div class="row">
             <div class="col-6">
                 <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
-                    [(ngModel)]="search" />
+                    [(ngModel)]="search" (input)="buscarProveedores()" />
                 <small class="form-text text-muted">
                     <b>Buscar</b>
                     Proveedor
                 </small>
             </div>
             <div class="col-3">
-                <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Filtro'" (click)="allProveedores()">
+                <!--    <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Filtro'" (click)="allProveedores()">
                     <i class="icon text-white flaticon-search-1"></i>
-                </button>
+                </button> -->
                 <button class="btn btn-dark ml-2" placement="top" [ngbTooltip]="'Reiniciar'" (click)="reset()">
                     <i class="icon text-white flaticon-refresh"></i>
                 </button>
@@ -36,6 +38,7 @@
         </div>
 
         <div class="table-responsive">
+
             <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
                 <thead>
                     <tr class="text-left">
@@ -43,25 +46,23 @@
                         <th style="min-width: 150px">Proveedor</th>
 
                         <th style="min-width: 100px">N° Productos</th>
+                        <th style="min-width: 100px">Contactos</th>
                         <th style="min-width: 150px">Estado</th>
                         <th class="pr-0 ">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    <ng-container *ngFor="let proveedor of proveedores; let i = index">
+                    <ng-container *ngFor="let proveedor of filteredProveedores | slice:desde:hasta; let i = index">
                         <tr>
                             <td>{{ i + 1 }}</td>
                             <td>{{ proveedor.razon_social }}</td>
-                            <td>0</td>
+                            <td>{{ proveedor.nroProductos }}</td>
+                            <td>{{ proveedor.nroContactos }}</td>
                             <td>
-                                <span class="label label-lg label-inline label-light-success">Aceptado</span>
-                                <!--   <span class="label label-lg label-inline label-light-danger"
-                                    *ngIf="product.state == 1">Pendiente</span>
                                 <span class="label label-lg label-inline label-light-success"
-                                    *ngIf="product.state == 2">Activo</span>
-                                <span class="label label-lg label-inline label-light-warning"
-                                    *ngIf="product.state == 3">Inactivo</span> -->
+                                    *ngIf="proveedor.estado == 1">Activo</span>
+
                             </td>
                             <td style="display: flex;">
                                 <a [routerLink]="['/proveedores/edit-proveedor',proveedor.id]" class=" btn btn-icon btn-light
@@ -87,7 +88,8 @@
                                     </span>
                                 </a>
 
-                                <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
+                                <a (click)="delete(proveedor)"
+                                    class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
                                     ngbTooltip="Eliminar Producto" ngbTooltipClass="kt-tooltip">
                                     <span class="svg-icon svg-icon-md svg-icon-danger">
 
@@ -115,6 +117,16 @@
 
                 </tbody>
             </table>
+
+            <ng-container *ngIf="isLoading$ | async">
+
+                <app-spinner></app-spinner>
+            
+
+            </ng-container>
+
+            <mat-paginator [length]="filteredProveedores.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+            </mat-paginator>
         </div>
 
     </div>

@@ -12,14 +12,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';/* 
+import { SpinnerInterceptor } from 'src/app/shared/interceptors/spinner.interceptor'; */
+import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
 
 @NgModule({
   declarations: [ProveedoresComponent, AddNewProveedorComponent, ListProveedorComponent, EditProveedorComponent, DeleteProveedorComponent],
   imports: [
     CommonModule,
     ProveedoresRoutingModule,
-
     HttpClientModule,
     FormsModule,
     NgbModule,
@@ -28,6 +31,12 @@ import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
-  ]
+    MatPaginatorModule,
+    SpinnerModule
+
+  ],
+ /*  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true }
+  ] */
 })
 export class ProveedoresModule { }

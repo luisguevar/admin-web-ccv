@@ -56,7 +56,7 @@ export class AddNewProveedorComponent implements OnInit {
       !this.tipoDocumentoContacto ||
       !this.celularContacto) {
 
-      this.toaster.open(NoticyAlertComponent, { text: `danger-'Todos los campos del contacto son obligatorios'` });
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Todos los campos del contacto son obligatorios` });
       return;
     }
 
@@ -99,8 +99,22 @@ export class AddNewProveedorComponent implements OnInit {
 
     if (!this.razonSocial) {
       this.isButtonClicked = true;
+
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'razon social' para continuar` });
+
       return;
     }
+
+    if (!this.nroDocumento) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'Nro Documento' para continuar` });
+      return;
+    }
+
+    if (!this.celular) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'Celular' para continuar` });
+      return;
+    }
+
 
     let dataProveedor = {
       id: 0,

@@ -98,7 +98,7 @@ export class EditProveedorComponent implements OnInit {
       !this.tipoDocumentoContacto ||
       !this.celularContacto) {
 
-      this.toaster.open(NoticyAlertComponent, { text: `danger-'Todos los campos del contacto son obligatorios'` });
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Todos los campos del contacto son obligatorios` });
       return;
     }
 
@@ -151,8 +151,21 @@ export class EditProveedorComponent implements OnInit {
 
     if (!this.razonSocial) {
       this.isButtonClicked = true;
+
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'razon social' para continuar` });
+
       return;
     }
+
+    if (!this.nroDocumento) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'Nro Documento' para continuar` });
+    }
+
+    if (!this.celular) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'Celular' para continuar` });
+    }
+
+
 
     let dataProveedor = {
       id: this.proveedor_id,
@@ -187,12 +200,12 @@ export class EditProveedorComponent implements OnInit {
           /* this.resetForm(); */
           this.listContactoNew = [];
           this.showProveedor(this.proveedor_id);
-          this.toaster.open(NoticyAlertComponent, { text: `primary-'Proveedor actualizado correctamente'` });
+          this.toaster.open(NoticyAlertComponent, { text: `success-El proveedor se actualizó exitosamente.` });
         }
       },
       (error: any) => {
         console.error('Error al actualizar el proveedor:', error);
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el proveedor.'` });
+        this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al actualizar el proveedor.` });
         return;
       }
     )

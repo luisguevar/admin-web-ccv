@@ -68,6 +68,18 @@
                     </div>
 
                     <div class="col-12">
+                        <label class="form-label">Proveedor: *</label>
+
+                        <select name="categorie_id" class="form-control form-control-solid form-control-lg"
+                            [(ngModel)]="proveedor_id">
+                            <ng-container *ngFor="let proveedor of lstProveedores">
+                                <option [value]="proveedor.id">{{ proveedor.razon_social }}</option>
+                            </ng-container>
+                           
+                        </select>
+                    </div>
+
+                    <div class="col-12">
                         <label class="form-label">Resumen del Producto: *</label>
                         <textarea class="form-control" name="descriptions" [(ngModel)]="resumen" placeholder=""
                             rows="4"></textarea>
@@ -186,7 +198,7 @@
                             <span></span>
                             Inventario Individual
                         </label>
-                      <!--   <label class="radio">
+                        <!--   <label class="radio">
                             <input type="radio" name="radiosC" [checked]="checked_inventario == 2" value="2"
                                 (click)="checkedInventario(2)">
                             <span></span>
@@ -211,7 +223,7 @@
             </div>
         </div>
 
-       <!--  <div class="form-group row" *ngIf="checked_inventario == 2">
+        <!--  <div class="form-group row" *ngIf="checked_inventario == 2">
             <div class="col-2">
                 <label class="form-label">DIMENSIONES : *</label>
                 <select name="product_size_id" (change)="changeDimension($event.target.value)"
