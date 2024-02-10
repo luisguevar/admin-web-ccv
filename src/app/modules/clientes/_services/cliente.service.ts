@@ -59,6 +59,15 @@ export class ClienteService {
     );
   }
 
+  removeCliente(cliente:any){
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/clientes/remove/" + cliente.id;
+    return this.http.put(URL, cliente, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
 
 
   getPaises() {

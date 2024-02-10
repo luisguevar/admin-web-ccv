@@ -23,12 +23,17 @@ export class DeleteClienteComponent implements OnInit {
     this.isLoading$ = this._clienteService.isLoading$;
   }
 
-  delete(){
+  /* delete(){
     this._clienteService.deleteCliente(this.cliente_selected.id).subscribe((resp:any) => {
       console.log(resp);
       this.modal.close();
       this.clientsE.emit(this.cliente_selected);
     })
+  } */
+
+  delete() {
+    this.clientsE.emit(true);
+    this.modal.close();
   }
 
 }

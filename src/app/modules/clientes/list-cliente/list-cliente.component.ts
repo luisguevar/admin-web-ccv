@@ -5,6 +5,8 @@ import { ClienteService } from '../_services/cliente.service';
 import { AddClienteComponent } from '../add-cliente/add-cliente.component';
 import { DeleteClienteComponent } from '../delete-cliente/delete-cliente.component';
 import { EditClienteComponent } from '../edit-cliente/edit-cliente.component';
+import { Toaster } from 'ngx-toast-notifications';
+import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 
 @Component({
   selector: 'app-list-cliente',
@@ -20,8 +22,10 @@ export class ListClienteComponent implements OnInit {
   URL_BACKEND:any = URL_BACKEND;
 
   constructor(
+    public toaster: Toaster,
     public _clienteService: ClienteService,
     public modelService: NgbModal,) {}
+
 
   ngOnInit(): void {
     this.isLoading$ = this._clienteService.isLoading$;
@@ -76,7 +80,7 @@ export class ListClienteComponent implements OnInit {
   }
 
   delete(cliente){
-    const modalRef = this.modelService.open(DeleteClienteComponent, {centered : true, size: 'md'});
+    /* const modalRef = this.modelService.open(DeleteClienteComponent, {centered : true, size: 'md'});
     modalRef.componentInstance.cliente_selected = cliente;
     modalRef.result.then(
       () => {
@@ -89,7 +93,44 @@ export class ListClienteComponent implements OnInit {
     modalRef.componentInstance.clientsE.subscribe((resp:any) => {
       let INDEX = this.clientes.findIndex(item => item.id == resp.id);
       this.clientes.splice(INDEX,1);
+    }) */
+    const modalRef = this.modelService.open(DeleteClienteComponent, { centered: true, size: 'md' });
+    modalRef.componentInstance.cliente_selected = cliente;
+    modalRef.componentInstance.clientsE.subscribe((resp: any) => {
+
+      if (resp) {
+
+
+        this._clienteService.removeCliente(cliente).subscribe(
+          (resp: any) => {
+
+            if (resp.success) {
+              this.toaster.open(NoticyAlertComponent, { text: `info-El cliente se removió exitosamente.` });
+              this.clientes = this.clientes.filter((item) => item != cliente)
+              return;
+            }
+          },
+          (error: any) => {
+            console.error('Error al actualizar el cliente:', error);
+            this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al eliminar el cliente.` });
+            this.reset();
+            return;
+          }
+        )
+
+
+
+        /* this.reset();
+        this.cdr.detectChanges(); */
+      }
+
+      /*  this.allProveedores(); */
+      // Forzar la detección de cambios
+
     })
+
+
+
   }
   
 

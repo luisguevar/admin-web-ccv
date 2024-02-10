@@ -17,14 +17,18 @@
       </div>
     </ng-container>
 
-    <form action="#" class="form form-label-right">
+    <form action="#" class="form form-label-right" >
       <div class="form-group row">
 
         <div class="col-6">
           <div class="col-12">
             <label class="form-label">Nombre del Cliente: *</label>
             <input type="text" class="form-control form-control-solid form-control-lg" name="Nombres"
-              placeholder="Nombres" autocomplete="off" [(ngModel)]="nombres">
+              placeholder="Nombres" autocomplete="off" [(ngModel)]="nombres" #nombresModel="ngModel" required minlength="3">
+                <div *ngIf="nombresModel.invalid && (nombresModel.dirty || nombresModel.touched)">
+                <div class ="alerta" *ngIf="nombresModel.errors?.required">El nombre de usuario es obligatorio.</div>
+                <div *ngIf="nombresModel.errors?.minlength">El nombre de usuario debe tener al menos 3 caracteres.</div>
+              </div>
           </div>
 
           <div class="col-12 py-2">
@@ -110,7 +114,7 @@
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">
       Cerrar
     </button>
-    <button type="submit" class="btn btn-primary btn-elevate mr-2" (click)="save()">
+    <button type="submit"   class="btn btn-primary btn-elevate mr-2" (click)="save()">
       Guardar
     </button>
 

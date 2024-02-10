@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toaster } from 'ngx-toast-notifications';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 import { ClienteService } from '../_services/cliente.service';
-import { FormControl } from '@angular/forms';
+import { FormControl ,FormsModule  } from '@angular/forms';
 
 @Component({
   selector: 'app-add-cliente',
@@ -57,6 +57,11 @@ export class AddClienteComponent implements OnInit {
 
   save() {
 
+    if (!this.nombres) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Ingrese el campo 'Nombres' para continuar` });
+      return;
+    }
+
 
     let datacliente =
     {
@@ -78,10 +83,12 @@ export class AddClienteComponent implements OnInit {
     this._clienteService.createCliente(datacliente).subscribe((resp: any) => {
       console.log(resp);
       this.clientsE.emit(resp.categorie);
-      this.toaster.open(NoticyAlertComponent, { text: `primary-'EL CLIENTE SE A REGISTRADO DE MANERA CORRECTA.'` });
+      this.toaster.open(NoticyAlertComponent, { text: `primary-'EL CLIENTE SE REGISTRO DE MANERA CORRECTA.'` });
       this.modal.close();
     })
   }
+
+  
 
   getPaises() {
     this._clienteService.getPaises().subscribe((resp: any) => {
