@@ -12,6 +12,7 @@ import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { DeleteClienteComponent } from './delete-cliente/delete-cliente.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { DeleteClienteComponent } from './delete-cliente/delete-cliente.componen
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
+    MatPaginatorModule,
   ]
 })
 export class ClientesModule { }

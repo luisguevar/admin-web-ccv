@@ -41,7 +41,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cliente of clientes">
+            <tr *ngFor="let cliente of clientes | slice:desde:hasta; let i = index">
               
               <td>{{ cliente.nombres + ' '+ cliente.apellidos}}</td>
               <td>{{ cliente.nroDocumento }}</td>
@@ -92,6 +92,9 @@
             </tr>
           </tbody>
         </table>
+
+        <mat-paginator [length]="clientes.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+        </mat-paginator>
       </div>
   
     </div>

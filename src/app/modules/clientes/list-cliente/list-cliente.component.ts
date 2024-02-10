@@ -5,6 +5,7 @@ import { ClienteService } from '../_services/cliente.service';
 import { AddClienteComponent } from '../add-cliente/add-cliente.component';
 import { DeleteClienteComponent } from '../delete-cliente/delete-cliente.component';
 import { EditClienteComponent } from '../edit-cliente/edit-cliente.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-cliente',
@@ -18,7 +19,10 @@ export class ListClienteComponent implements OnInit {
   
   clientes:any = [];
   URL_BACKEND:any = URL_BACKEND;
-
+  //paginacion
+  pageSize = 5;
+  desde: number = 0;
+  hasta: number = 5;
   constructor(
     public _clienteService: ClienteService,
     public modelService: NgbModal,) {}
@@ -27,6 +31,13 @@ export class ListClienteComponent implements OnInit {
     this.isLoading$ = this._clienteService.isLoading$;
     this.allClientes();
   }
+
+  cambiarPagina(e: PageEvent) {
+    /*   console.log(e); */
+    this.desde = e.pageIndex * e.pageSize;
+    this.hasta = this.desde + e.pageSize;
+  }
+  
 
   allClientes(){
     this._clienteService.allClientes(1,this.search).subscribe((resp:any)=>{
