@@ -7,6 +7,7 @@ import { DeleteClienteComponent } from '../delete-cliente/delete-cliente.compone
 import { EditClienteComponent } from '../edit-cliente/edit-cliente.component';
 import { Toaster } from 'ngx-toast-notifications';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-cliente',
@@ -20,7 +21,10 @@ export class ListClienteComponent implements OnInit {
   
   clientes:any = [];
   URL_BACKEND:any = URL_BACKEND;
-
+  //paginacion
+  pageSize = 5;
+  desde: number = 0;
+  hasta: number = 5;
   constructor(
     public toaster: Toaster,
     public _clienteService: ClienteService,
@@ -31,6 +35,13 @@ export class ListClienteComponent implements OnInit {
     this.isLoading$ = this._clienteService.isLoading$;
     this.allClientes();
   }
+
+  cambiarPagina(e: PageEvent) {
+    /*   console.log(e); */
+    this.desde = e.pageIndex * e.pageSize;
+    this.hasta = this.desde + e.pageSize;
+  }
+  
 
   allClientes(){
     this._clienteService.allClientes(1,this.search).subscribe((resp:any)=>{
