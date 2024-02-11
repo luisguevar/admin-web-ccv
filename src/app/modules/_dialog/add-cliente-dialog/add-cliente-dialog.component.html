@@ -74,7 +74,7 @@
                                     <td>{{ cliente.nroDocumento }}</td>
 
                                     <td>
-                                        <a (click)="seleccionarCliente(cliente)" class=" font-weight-bold mr-2"><i
+                                        <a (click)="seleccionarCliente(cliente)" class=" btn font-weight-bold mr-2"><i
                                                 class="
                                                 flaticon-add-circular-button text-primary"></i></a>
 
@@ -184,7 +184,8 @@
 
 
                     <div class="modal-footer">
-                        <button (click)="registrarClienteRapido()" type="submit" class="btn btn-primary" [disabled]="formGroup.invalid">
+                        <button (click)="registrarClienteRapido()" type="submit" class="btn btn-primary"
+                            [disabled]="formGroup.invalid">
                             Guardar
                         </button>
 

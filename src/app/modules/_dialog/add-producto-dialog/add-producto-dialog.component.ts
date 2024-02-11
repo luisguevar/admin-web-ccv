@@ -1,18 +1,16 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Toaster } from 'ngx-toast-notifications';
-import { CotizacionService } from '../_service/cotizacion.service';
 import { PageEvent } from '@angular/material/paginator';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Toaster } from 'ngx-toast-notifications';
+import { CotizacionService } from '../../cotizaciones/_service/cotizacion.service';
 import { ProductsService } from '../../products/_services/products.service';
 
-
-
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.scss']
+  selector: 'app-add-producto-dialog',
+  templateUrl: './add-producto-dialog.component.html',
+  styleUrls: ['./add-producto-dialog.component.scss']
 })
-export class AddProductComponent implements OnInit {
+export class AddProductoDialogComponent implements OnInit {
 
   constructor(
     public toaster: Toaster,
@@ -34,7 +32,7 @@ export class AddProductComponent implements OnInit {
 
 
   //Producto Seleccionado
-  selectedProducto : any = null;
+  selectedProducto: any = null;
   @Output() productoE: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
@@ -85,10 +83,11 @@ export class AddProductComponent implements OnInit {
     this.hasta = this.desde + e.pageSize;
   }
 
-  seleccionarProducto(product){
+  seleccionarProducto(product) {
     this.modal.close();
     this.selectedProducto = product;
     this.productoE.emit(this.selectedProducto);
     return;
   }
+
 }

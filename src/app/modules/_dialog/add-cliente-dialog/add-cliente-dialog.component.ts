@@ -1,17 +1,17 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Toaster } from 'ngx-toast-notifications';
-import { CotizacionService } from '../_service/cotizacion.service';
-import { PageEvent } from '@angular/material/paginator';
-import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Toaster } from 'ngx-toast-notifications';
+import { CotizacionService } from '../../cotizaciones/_service/cotizacion.service';
 
 @Component({
-  selector: 'app-add-dialog-cliente',
-  templateUrl: './add-dialog-cliente.component.html',
-  styleUrls: ['./add-dialog-cliente.component.scss']
+  selector: 'app-add-cliente-dialog',
+  templateUrl: './add-cliente-dialog.component.html',
+  styleUrls: ['./add-cliente-dialog.component.scss']
 })
-export class AddDialogClienteComponent implements OnInit {
+export class AddClienteDialogComponent implements OnInit {
+
   @Output() clienteE: EventEmitter<any> = new EventEmitter();
 
   //paginacion
@@ -145,4 +145,5 @@ export class AddDialogClienteComponent implements OnInit {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
   }
+
 }

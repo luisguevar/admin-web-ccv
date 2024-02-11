@@ -9,7 +9,7 @@ import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { CreatePuntoVentaComponent } from './create-punto-venta/create-punto-venta.component';
-
+import { AddClienteComponent } from '../clientes/add-cliente/add-cliente.component';
 
 @NgModule({
   declarations: [PuntoVentaComponent, CreatePuntoVentaComponent],
@@ -25,6 +25,7 @@ import { CreatePuntoVentaComponent } from './create-punto-venta/create-punto-ven
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
+   
   ]
 
  

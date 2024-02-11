@@ -16,10 +16,11 @@
             <div class="col-6">
                 <label class="form-label">Nombre del cliente: *</label>
                 <div style="display: flex;">
-                    <input readonly type="text" class="form-control form-control-solid form-control-lg" name="cliente"
-                        placeholder="Agregar cliente" autocomplete="off" [(ngModel)]="cliente_nombre">
+                    <input readonly type="text" class="form-control form-control-solid form-control-lg"
+                        name="cliente_nombre" placeholder="Agregar cliente" autocomplete="off"
+                        [(ngModel)]="cliente_nombre">
 
-                    <a onclick="return false" (click)="addCliente()" class="btn font-weight-bold mr-2 ">
+                    <a (click)="addClienteDialog()" class="btn font-weight-bold mr-2 ">
                         <i class=" flaticon2-add  text-primary"></i>
                     </a>
 
@@ -67,8 +68,10 @@
                             </div>
                             <div class="col-2">
                                 <label class="form-label">Cantidad: *</label>
-                                <input type="number" class="form-control form-control-solid form-control-lg" min="1"
-                                    name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad">
+                                <input [disabled]="bCantidad" type="number"
+                                    class="form-control form-control-solid form-control-lg" min="1" max="{{ nStock }}"
+                                    name="cantidad" placeholder="Ex: 1" autocomplete="off" [(ngModel)]="cantidad"
+                                    (ngModelChange)="actualizarCantidad()">
                             </div>
 
                             <div class="col-1" style="  align-items: center;display: flex; margin-top: 2%;">
@@ -88,35 +91,56 @@
 
                         <div class="form-group row">
                             <div class="col-8">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-striped table-bordered table-vertical-center">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Producto</th>
-                                            <th scope="col">Cantidad</th>
-                                            <th scope="col">Precio/u</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col"></th>
+                                            <th class="pr-0">#</th>
+                                            <th class="pr-0">Producto</th>
+                                            <th class="pr-0">Cantidad</th>
+                                            <th class="pr-0">Precio/u</th>
+                                            <th class="pr-0">Total</th>
+                                            <th class="pr-0"></th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- <ng-container *ngFor="let producto of listProducto; let i=index">
+                                        <ng-container *ngFor="let producto of lstProductos; let i=index">
                                             <tr>
-                                                  <th scope="row">{{i+1}}</th>
-                                                <td>{{producto.nombre}}</td>
-                                                <td>{{producto.cantidad}} u.</td>
+                                                <th scope="row">{{i+1}}</th>
+                                                <td>{{producto.producto_nombre}}</td>
+                                                <td>
+
+
+
+                                                    <a (click)="aumentar(producto)"> <i
+                                                            class="btn flaticon2-up text-primary icon-sm"></i></a>
+                                                    {{producto.cantidad}} u.
+                                                    <a (click)="disminuir(producto)"><i
+                                                            class="btn flaticon2-down text-primary icon-sm"></i></a>
+
+                                                </td>
                                                 <td>
                                                     {{producto.precio}}
+
+
                                                 </td>
-                                                
+
                                                 <td>
                                                     s/. {{producto.total}}
                                                 </td>
                                                 <td>
-                                                    <a (click)="removeProducto(producto)"> Eliminar</a>
+
+                                                    <a class="btn d-flex justify-content-center"
+                                                        (click)="removeproducto(producto)">
+                                                        <i class="flaticon-delete-1 text-danger"></i>
+                                                    </a>
+
+
+
                                                 </td>
+
                                             </tr>
-                                        </ng-container> -->
+                                        </ng-container>
 
 
 
@@ -131,7 +155,7 @@
                                         <div class="card-title">
                                             <h3 class="card-label" style="color: white;">
                                                 Total:
-                                                <small style="color: white;">2550</small>
+                                                <small style="color: white;">S/ {{ totalVenta }}</small>
                                             </h3>
                                         </div>
                                     </div>
@@ -140,7 +164,24 @@
                                             <td>Documento</td>
                                             <td>Boleta</td>
                                         </tr> -->
+                                        <div style="display: flex;">
+                                            <div style="width: 40%;align-items: center; display: flex;">
+                                                <input type="checkbox" [(ngModel)]="descuentoGlobalHabilitado"
+                                                    (change)="onCheckboxChangeDescuentoGlobal()" >
+                                                <b style="margin-left: 5%;"> Descuento(%)</b>
+                                            </div>
 
+                                            <div style="margin-left: 5%;">
+                                                <input type="number"
+                                                    class="form-control form-control-solid form-control-lg"
+                                                    [(ngModel)]="descuentoGlobal"
+                                                    [disabled]="!descuentoGlobalHabilitado"
+                                                    (input)="calcularDescuento()" name="descuentoGlobal"
+                                                    placeholder="Ex: 10" autocomplete="off" min="1" max="99">
+                                            </div>
+
+                                        </div>
+                                        <br>
                                         <div>
                                             <label class="form-label">Documento: *</label>
 
@@ -165,29 +206,23 @@
 
                                             </select>
                                         </div>
+
                                         <br>
 
                                         <div *ngIf="bPagoEfectivo">
                                             <label class="form-label">Efectivo recibido: *</label>
-                                            <div style="display: flex; ">
+                                            <div style="display: flex; width: 50%;">
 
-                                                <input type="number"
+                                                <input type="number" (input)="verificarMonto()"
+                                                    [(ngModel)]="efectivoRecibido"
                                                     class="form-control form-control-solid form-control-lg"
                                                     name="cliente" placeholder="Monto" autocomplete="off">
 
 
-                                                <div class="input-group" style="justify-content: right;">
 
-                                                    <div style="align-items: center; display: flex; margin-left: 5px;">
-                                                        <input type="checkbox">
-                                                    </div>
-
-                                                    <div style="align-items: center; display: flex; margin-left: 5px;">
-                                                        <b>Exacto</b>
-                                                    </div>
-                                                </div>
 
                                             </div>
+
                                         </div>
 
                                         <div *ngIf="bPagoTarjeta">
@@ -195,25 +230,13 @@
                                             <input type="text" class="form-control form-control-solid form-control-lg"
                                                 name="codOperacion" placeholder="N° Operación" autocomplete="off">
                                         </div>
-                                        <br>
-                                        <div style="display: flex;">
-                                            <div style="width: 40%;align-items: center; display: flex;">
-                                                <input type="checkbox">
-                                                <b style="margin-left: 5%;"> Descuento(%)</b>
-                                            </div>
 
-                                            <div style="margin-left: 5%;">
-                                                <input type="number"
-                                                    class="form-control form-control-solid form-control-lg"
-                                                    name="descuentoGlobal" placeholder="Ex: 10" autocomplete="off">
-                                            </div>
-
-                                        </div>
                                         <br>
                                         <div>
-                                            <p>SubTotal: </p>
-                                            <p>IGV: </p>
-                                            <p>Total: </p>
+                                            <p *ngIf="mostrarVuelto"><b>Vuelto: S/ {{ vuelto }}</b></p>
+                                            <p>SubTotal: S/ {{ subTotal }}</p>
+                                            <p>IGV: S/{{Igv }} </p>
+                                            <p>Total: S/{{ totalVenta }}</p>
                                         </div>
 
                                         <div style="display: flex; justify-content: right;">
@@ -245,7 +268,7 @@
 
         <div class="form-group row">
             <div class="col-6">
-                <button class="btn btn-md btn-danger" [routerLink]="['/cotizaciones/list-cotizacion']">Volver</button>
+                <button class="btn btn-md btn-danger" [routerLink]="['/ventas/lista-de-ordenes']">Volver</button>
             </div>
 
             <div class="col-5" style="display: flex;justify-content: right;">

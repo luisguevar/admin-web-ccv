@@ -5,9 +5,9 @@ import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-ale
 import { CotizacionService } from '../_service/cotizacion.service';
 import { error } from 'console';
 import { AddClienteComponent } from '../../clientes/add-cliente/add-cliente.component';
-import { AddDialogClienteComponent } from '../add-dialog-cliente/add-dialog-cliente.component';
 import { AuthService } from '../../auth';
-import { AddProductComponent } from '../add-product/add-product.component';
+import { AddClienteDialogComponent } from '../../_dialog/add-cliente-dialog/add-cliente-dialog.component';
+import { AddProductoDialogComponent } from '../../_dialog/add-producto-dialog/add-producto-dialog.component';
 @Component({
   selector: 'app-add-new-cotizacion',
   templateUrl: './add-new-cotizacion.component.html',
@@ -81,7 +81,7 @@ export class AddNewCotizacionComponent implements OnInit {
     this.vendedor_nombre = this.authservice.user.name + ' ' + this.authservice.user.surname + ' / ' + this.authservice.user.email;
     this.vendedor_id = this.authservice.user.id;
     this.fechaEmision = this.obtenerFechaActual();
-    console.log('fecha: ', this.fechaEmision)
+    /* console.log('fecha: ', this.fechaEmision) */
   }
 
   obtenerFechaActual(): string {
@@ -265,7 +265,7 @@ export class AddNewCotizacionComponent implements OnInit {
   }
 
   addCliente() {
-    const modalRef = this.modelService.open(AddDialogClienteComponent, { centered: true, size: 'lg' });
+    const modalRef = this.modelService.open(AddClienteDialogComponent, { centered: true, size: 'lg' });
     // Capturar el resultado cuando se cierra el modal
     modalRef.componentInstance.clienteE.subscribe((resp: any) => {
       console.log(resp);
@@ -279,7 +279,7 @@ export class AddNewCotizacionComponent implements OnInit {
   }
 
   addProductoDialog() {
-    const modalRef = this.modelService.open(AddProductComponent, { centered: true, size: 'lg' });
+    const modalRef = this.modelService.open(AddProductoDialogComponent, { centered: true, size: 'lg' });
     // Capturar el resultado cuando se cierra el modal
     
     modalRef.componentInstance.productoE.subscribe((resp: any) => {

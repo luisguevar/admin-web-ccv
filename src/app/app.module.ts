@@ -6,7 +6,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
 import { InlineSVGModule } from 'ng-inline-svg';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/_services/auth.service';
@@ -18,6 +18,12 @@ import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/sp
 import { FakeAPIService } from './_fake/fake-api.service';
 import { NoticyAlertComponent } from './componets/notifications/noticy-alert/noticy-alert.component';
 import { ToastNotificationsModule } from 'ngx-toast-notifications';
+import { AddClienteDialogComponent } from './modules/_dialog/add-cliente-dialog/add-cliente-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CRUDTableModule } from './_metronic/shared/crud-table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { SpinnerModule } from './shared/spinner/spinner.module';
+import { AddProductoDialogComponent } from './modules/_dialog/add-producto-dialog/add-producto-dialog.component';
 /* import { CreatePuntoVentaComponent } from './modules/puntoVenta/create-punto-venta/create-punto-venta.component'; */
 // #fake-end#
 
@@ -31,7 +37,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent,NoticyAlertComponent],
+  declarations: [AppComponent,NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -52,6 +58,16 @@ function appInitializer(authService: AuthService) {
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
+    HttpClientModule,
+    FormsModule,
+    NgbModule,
+    ReactiveFormsModule,
+    InlineSVGModule,
+    CRUDTableModule,
+    NgbModalModule,
+    NgbDatepickerModule,
+    MatPaginatorModule,
+    SpinnerModule,
     ToastNotificationsModule.forRoot({duration: 5000, position: 'top-right'})
   ],
   providers: [
@@ -76,6 +92,8 @@ function appInitializer(authService: AuthService) {
   ],
   exports: [
     NoticyAlertComponent,
+    AddClienteDialogComponent,
+    AddProductoDialogComponent
   ],
   bootstrap: [AppComponent],
 })
