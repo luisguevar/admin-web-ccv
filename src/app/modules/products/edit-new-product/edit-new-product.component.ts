@@ -58,6 +58,9 @@ export class EditNewProductComponent implements OnInit {
   state:any = 1;
   proveedor_id: any = 0;
   lstProveedores: any = [];
+
+  precioCompra: any = 0;
+  fechaCompra: any = null;
   constructor(
     public toaster:Toaster,
     public _productService: ProductsService,
@@ -98,6 +101,8 @@ export class EditNewProductComponent implements OnInit {
       this.checked_inventario = this.product.checked_inventario;
       this.state = this.product.state;
       this.proveedor_id = this.product.proveedor_id;
+      this.precioCompra = this.product.precioCompra;
+      this.fechaCompra = this.product.fecha_compra;
     })
   }
 
@@ -112,7 +117,7 @@ export class EditNewProductComponent implements OnInit {
   }
   processFile($event){
     if($event.target.files[0].type.indexOf("image") < 0){
-      this.toaster.open(NoticyAlertComponent,{text:`danger-'EL ARCHIVO CARGADO NO ES UNA IMAGEN'`});
+      this.toaster.open(NoticyAlertComponent, { text: `danger-El archivo cargado no es una imagen.` });
       return;
     }
     this.imagen_file = $event.target.files[0];
@@ -132,7 +137,7 @@ export class EditNewProductComponent implements OnInit {
 
   addFile($event){
     if($event.target.files[0].type.indexOf("image") < 0){
-      this.toaster.open(NoticyAlertComponent,{text:`danger-'EL ARCHIVO CARGADO NO ES UNA IMAGEN'`});
+      this.toaster.open(NoticyAlertComponent, { text: `danger-El archivo cargado no es una imagen.` });
       return;
     }
     this.img_files = $event.target.files[0];
@@ -143,7 +148,7 @@ export class EditNewProductComponent implements OnInit {
 
   addImages(){
     if(!this.img_files){
-      this.toaster.open(NoticyAlertComponent,{text:`danger-'DEBES AGREGAR UNA IMAGEN'`});
+      this.toaster.open(NoticyAlertComponent,{text:`warning-Inserte una imagen para continuar`});
       return;
     }
     let formaData = new FormData();
@@ -176,31 +181,36 @@ export class EditNewProductComponent implements OnInit {
 
   createProduct(){
 
-    if(! this.title ||
-      ! this.sku ||
-      ! this.categorie_id ||
-      ! this.price_soles ||
-      ! this.price_usd ||
-      ! this.resumen ||
-      ! this.description){
-        this.toaster.open(NoticyAlertComponent,{text:`danger-'TODOS LOS CAMPOS SON OBLIGATORIOS'`});
+    if (!this.title ||
+      !this.sku ||
+      !this.proveedor_id ||
+      !this.precioCompra ||
+      !this.fechaCompra ||
+      !this.categorie_id ||
+      !this.price_soles ||
+      !this.price_usd ||
+      !this.resumen ||
+      !this.stock_individual
+     ) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-Todos los campos son obligatorios.` });
       return;
     }
 
     let formaData = new FormData();
-    formaData.append("title",this.title);
-    formaData.append("sku",this.sku)
-    formaData.append("categorie_id",this.categorie_id)
-    formaData.append("price_soles",this.price_soles)
-    formaData.append("price_usd",this.price_usd)
-    formaData.append("resumen",this.resumen)
-    formaData.append("description",this.description)
-    formaData.append("imagen_file",this.imagen_file)
-    formaData.append("tags",this.tags)
-    formaData.append("stock",this.stock_individual ? this.stock_individual : 0)
-    formaData.append("type_inventario",this.checked_inventario)
-    formaData.append("state",this.state);
-    formaData.append("proveedor_id",this.proveedor_id);
+    formaData.append("title", this.title)
+    formaData.append("sku", this.sku)
+    formaData.append("state", this.state)
+    formaData.append("proveedor_id", this.proveedor_id)
+    formaData.append("precioCompra", this.precioCompra)
+    formaData.append("fechaCompra", this.fechaCompra)
+    formaData.append("categorie_id", this.categorie_id)
+    formaData.append("price_soles", this.price_soles)
+    formaData.append("price_usd", this.price_usd)
+    formaData.append("resumen", this.resumen)
+    formaData.append("stock", this.stock_individual)
+    formaData.append("description", this.description)
+    formaData.append("imagen_file", this.imagen_file)
+    formaData.append("tags", this.tags)
     
     // let index = 0;
     // for (const imagen of this.images_files) {
@@ -210,7 +220,7 @@ export class EditNewProductComponent implements OnInit {
 
     this._productService.updateProduct(this.product_id,formaData).subscribe((resp:any) => {
       console.log(resp);
-      this.toaster.open(NoticyAlertComponent,{text:`primary-'SE REGISTRO LOS CAMBIOS DEL PRODUCTO'`});
+      this.toaster.open(NoticyAlertComponent, { text: `success-El producto se actualizó exitosamente.` });
     })
   }
 
