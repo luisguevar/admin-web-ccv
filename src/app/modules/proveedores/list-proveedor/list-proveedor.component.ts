@@ -9,6 +9,7 @@ import { DeleteProveedorComponent } from '../delete-proveedor/delete-proveedor.c
 import { Workbook } from 'exceljs';
 import { AuthService } from '../../auth';
 import * as fs from 'file-saver';
+import { ConfirmService } from 'src/app/shared/confirm/confirm.service';
 
 @Component({
   selector: 'app-list-proveedor',
@@ -36,6 +37,7 @@ export class ListProveedorComponent implements OnInit {
     public toaster: Toaster,
     private cdr: ChangeDetectorRef,
     public authservice: AuthService,
+    public confirmService: ConfirmService
   ) { }
 
   ngOnInit(): void {
@@ -89,39 +91,33 @@ export class ListProveedorComponent implements OnInit {
 
   delete(proveedor) {
 
+    var title = 'Eliminar Proveedor';
+    var mensaje = '¿Está seguro que desea eliminar este proveedor?';
 
-    const modalRef = this.modelService.open(DeleteProveedorComponent, { centered: true, size: 'md' });
-    modalRef.componentInstance.proveedor_selected = proveedor;
-    modalRef.componentInstance.proveedorE.subscribe((resp: any) => {
+    this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
+      .subscribe(result => {
+        if (result) {
+          /* Colocar aquí procedimiento al confirmar elimninación */
+          
+          this._proveedorService.removeProveedor(proveedor).subscribe(
+            (resp: any) => {
 
-      if (resp) {
-
-
-        this._proveedorService.removeProveedor(proveedor).subscribe(
-          (resp: any) => {
-
-            if (resp.success) {
-              this.toaster.open(NoticyAlertComponent, { text: `info-El proveedor se removió exitosamente.` });
-              this.filteredProveedores = this.filteredProveedores.filter((item) => item != proveedor)
+              if (resp.success) {
+                this.toaster.open(NoticyAlertComponent, { text: `info-El proveedor se removió exitosamente.` });
+                this.filteredProveedores = this.filteredProveedores.filter((item) => item != proveedor)
+                return;
+              }
+            },
+            (error: any) => {
+              console.error('Error al actualizar el proveedor:', error);
+              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al eliminar el proveedor.` });
+              this.reset();
               return;
             }
-          },
-          (error: any) => {
-            console.error('Error al actualizar el proveedor:', error);
-            this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al eliminar el proveedor.` });
-            this.reset();
-            return;
-          }
-        )
+          )
+        }
 
-
-
-        
-      }
-
-     
-
-    })
+      });
 
   }
 

@@ -24,6 +24,10 @@ import { CRUDTableModule } from './_metronic/shared/crud-table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SpinnerModule } from './shared/spinner/spinner.module';
 import { AddProductoDialogComponent } from './modules/_dialog/add-producto-dialog/add-producto-dialog.component';
+import { ConfirmComponent } from './shared/confirm/confirm.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+
 /* import { CreatePuntoVentaComponent } from './modules/puntoVenta/create-punto-venta/create-punto-venta.component'; */
 // #fake-end#
 
@@ -37,7 +41,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent,NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent],
+  declarations: [AppComponent,NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -68,7 +72,8 @@ function appInitializer(authService: AuthService) {
     NgbDatepickerModule,
     MatPaginatorModule,
     SpinnerModule,
-    ToastNotificationsModule.forRoot({duration: 5000, position: 'top-right'})
+    ToastNotificationsModule.forRoot({duration: 5000, position: 'top-right'}),
+    MatDialogModule, MatButtonModule
   ],
   providers: [
     // {
