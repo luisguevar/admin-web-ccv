@@ -24,6 +24,7 @@ export class ListProveedorComponent implements OnInit {
   URL_BACKEND: any = URL_BACKEND;
 
   filteredProveedores: any = [];
+  
   //paginacion
   pageSize = 5;
   desde: number = 0;
@@ -50,7 +51,7 @@ export class ListProveedorComponent implements OnInit {
   allProveedores() {
 
     this._proveedorService.allProveedores(1, this.search).subscribe((resp: any) => {
-      console.log('Proveedores: ', resp);
+     /*  console.log('Proveedores: ', resp); */
       this.proveedores = resp.proveedores;
       this.filteredProveedores = [...this.proveedores];
     })
