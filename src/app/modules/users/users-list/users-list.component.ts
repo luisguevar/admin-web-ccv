@@ -129,7 +129,7 @@ export class UsersListComponent implements OnInit {
     }
 
 
-
+    //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
     this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
       .subscribe(result => {
         if (result) {
@@ -156,8 +156,8 @@ export class UsersListComponent implements OnInit {
               }
             },
             (error: any) => {
-              console.error('Error al actualizar el proveedor:', error);
-              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al desactivo el usuario.` });
+              console.error('Error al actualizar el usuario:', error);
+              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al desactivar el usuario.` });
               this.reset();
               return;
             }
