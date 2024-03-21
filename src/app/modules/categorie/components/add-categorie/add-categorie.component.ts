@@ -12,13 +12,14 @@ import { CategorieService } from '../../_services/categorie.service';
 export class AddCategorieComponent implements OnInit {
 
   @Output() clientsE: EventEmitter<any> = new EventEmitter();
-  isLoading$:any;
-  isLoading:boolean = false;
+  isLoading$: any;
+  isLoading: boolean = false;
 
-  name:any = null;
-  icono:any = null;
-  imagen_file:any = null;
-  imagen_previzualiza:any = null;
+  name: any = null;
+  icono: any = null;
+  imagen_file: any = null;
+  imagen_previzualiza: any = null;
+  state: any = 1;
   constructor(
     public _categorieService: CategorieService,
     public modal: NgbActiveModal,
@@ -29,9 +30,9 @@ export class AddCategorieComponent implements OnInit {
     this.isLoading$ = this._categorieService.isLoading$;
   }
 
-  processFile($event){
-    if($event.target.files[0].type.indexOf("image") < 0){
-      this.toaster.open(NoticyAlertComponent,{text:`danger-'EL ARCHIVO CARGADO NO ES UNA IMAGEN'`});
+  processFile($event) {
+    if ($event.target.files[0].type.indexOf("image") < 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `danger-'EL ARCHIVO CARGADO NO ES UNA IMAGEN'` });
       return;
     }
     this.imagen_file = $event.target.files[0];
@@ -43,15 +44,16 @@ export class AddCategorieComponent implements OnInit {
     // }, 25);
   }
 
-  save(){
+  save() {
     let formData = new FormData();
-    formData.append("imagen_file",this.imagen_file);
-    formData.append("name",this.name);
-    formData.append("icono",this.icono);
-    this._categorieService.createCategoria(formData).subscribe((resp:any) => {
+    formData.append("imagen_file", this.imagen_file);
+    formData.append("name", this.name);
+    formData.append("state", this.state);
+    formData.append("icono", this.icono);
+
+    this._categorieService.createCategoria(formData).subscribe((resp: any) => {
       console.log(resp);
       this.clientsE.emit(resp.categorie);
-      this.toaster.open(NoticyAlertComponent,{text:`primary-'LA CATEGORIA SE A REGISTRADO DE MANERA CORRECTA.'`});
       this.modal.close();
     })
   }

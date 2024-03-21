@@ -12,7 +12,7 @@ export class CategorieService {
 
   isLoading$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
-  
+
   constructor(
     private http: HttpClient,
     public authservice: AuthService,
@@ -21,41 +21,54 @@ export class CategorieService {
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
-  allCategories(page=1,search=''){
+  allCategories(page = 1, state = '', search = '') {
     this.isLoadingSubject.next(true);
-    let headers = new HttpHeaders({'Authorization' : 'Bearer '+this.authservice.token});
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let LINK = "";
-    if(search){
-      LINK = LINK + "&search="+search;
+    if (state) {
+      LINK = LINK + "&state=" + state;
     }
-    let URL = URL_SERVICIOS + "/products/categories/all?page="+page+LINK;
-    return this.http.get(URL,{headers: headers}).pipe(
+
+    if (search) {
+      LINK = LINK + "&search=" + search;
+    }
+    let URL = URL_SERVICIOS + "/products/categories/all?page=" + page + LINK;
+    return this.http.get(URL, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
 
-  createCategoria(data:any){
+  createCategoria(data: any) {
     this.isLoadingSubject.next(true);
-    let headers = new HttpHeaders({'Authorization' : 'Bearer '+this.authservice.token});
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/products/categories/add";
-    return this.http.post(URL,data,{headers: headers}).pipe(
+    return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
 
-  updateCategoria(categorie_id:any, data:any){
+  updateCategoria(categorie_id: any, data: any) {
     this.isLoadingSubject.next(true);
-    let headers = new HttpHeaders({'Authorization' : 'Bearer '+this.authservice.token});
-    let URL = URL_SERVICIOS + "/products/categories/update/"+categorie_id;
-    return this.http.post(URL,data,{headers: headers}).pipe(
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/products/categories/update/" + categorie_id;
+    return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
-  deleteCategoria(categorie_id:any){
+  deleteCategoria(categorie_id: any) {
     this.isLoadingSubject.next(true);
-    let headers = new HttpHeaders({'Authorization' : 'Bearer '+this.authservice.token});
-    let URL = URL_SERVICIOS + "/products/categories/delete/"+categorie_id;
-    return this.http.delete(URL,{headers: headers}).pipe(
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/products/categories/delete/" + categorie_id;
+    return this.http.delete(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  removeCategoria(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/products/categories/remove/" + data.id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }

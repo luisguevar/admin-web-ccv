@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
+import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
+    SpinnerModule,
+    MatPaginatorModule,
   ]
 })
 export class CategorieModule { }

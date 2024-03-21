@@ -1,9 +1,8 @@
 <div class="card card-custom gutter-b">
     <div class="card-header">
         <div class="card-title">
-            <h3 class="card-label"><i class="icon-2x text-dark-50 
-                flaticon-open-box
-                mx-2"></i> Lista de Proveedores</h3>
+            <h3 class="card-label"><i class="icon-2x text-dark-50 flaticon-open-box mx-2"></i> Lista de
+                Proveedores</h3>
         </div>
         <div class="card-toolbar">
             <a type="button" class="btn btn-primary" routerLink="/proveedores/add-new-proveedor"><i
@@ -121,7 +120,7 @@
                                         </svg>
                                     </span>
 
-                                   
+
                                 </a>
 
                             </td>
@@ -131,11 +130,9 @@
                 </tbody>
             </table>
 
+            <!-- Spinner -->
             <ng-container *ngIf="isLoading$ | async">
-
                 <app-spinner></app-spinner>
-
-
             </ng-container>
 
             <mat-paginator [length]="filteredProveedores.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">

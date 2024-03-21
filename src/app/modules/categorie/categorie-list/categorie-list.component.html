@@ -10,24 +10,32 @@
   </div>
   <div class="card-body">
 
-    <ng-container *ngIf="isLoading$ | async">
-      <span class="spinner spinner-primary ml-5"></span>
-    </ng-container>
-
     <div class="row">
+      <div class="col-2">
+        <select class="form-control" name="status" placeholder="Filtrar por Estado" [(ngModel)]="state">
+          <option value="0">Todos</option>
+          <option value="1">Activo</option>
+          <option value="2">Inactivo</option>
+        </select><small class="form-text text-muted"><b>Filtrar</b> por
+          Estado</small>
+      </div>
+
       <div class="col-6">
-        <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
-          [(ngModel)]="search" /><small class="form-text text-muted"><b>Buscar</b> por nombre de categoria</small>
+        <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" [(ngModel)]="search"
+          (input)="buscarCategorias()" />
+        <small class="form-text text-muted">
+          <b>Buscar</b>
+          Usuario
+        </small>
       </div>
       <div class="col-3">
-        <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Filtro'" (click)="allCategories()">
-          <i class="icon text-white flaticon-search-1"></i>
-        </button>
-        <button class="btn btn-dark ml-2" placement="top" [ngbTooltip]="'Reiniciar'" (click)="reset()">
+
+        <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Refrescar'" (click)="allCategories()">
           <i class="icon text-white flaticon-refresh"></i>
         </button>
       </div>
     </div>
+
     <div class="table-responsive">
       <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
         <thead>
@@ -35,11 +43,12 @@
             <th class="pr-0" style="width: 50px">Imagen</th>
             <th style="min-width: 150px">Nombre</th>
             <th style="min-width: 150px">Icono</th>
+            <th>Estado</th>
             <th class="pr-0">Acciones</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let categoria of categorias">
+        <tbody *ngIf="!(isLoading$ | async)">
+          <tr *ngFor="let categoria of filteredCategorias">
             <td>
               <div class="symbol symbol-50 flex-shrink-0 mr-4">
                 <div class="symbol-label"
@@ -49,10 +58,14 @@
             <td>{{ categoria.name }}</td>
             <td>{{ categoria.icono }}</td>
             <td>
+              <span class="label label-lg label-inline label-light-success" *ngIf="categoria.state == 1">Activo</span>
+              <span class="label label-lg label-inline label-light-danger" *ngIf="categoria.state == 2">Inactivo</span>
+            </td>
+            <td>
               <a (click)="edit(categoria)" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
                 ngbTooltip="Editar Categoria" ngbTooltipClass="kt-tooltip">
                 <span class="svg-icon svg-icon-md svg-icon-primary">
-                  <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
+
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                     height="24px" viewBox="0 0 24 24" version="1.1">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -66,14 +79,14 @@
                         fill="#000000" fill-rule="nonzero" opacity="0.3" />
                     </g>
                   </svg>
-                  <!--end::Svg Icon-->
+
                 </span>
               </a>
 
-              <a (click)="delete(categoria)" class="btn btn-icon btn-light btn-hover-primary btn-sm"
+              <a (click)="delete(categoria)" *ngIf="categoria.state == 1" class="btn btn-icon btn-light btn-hover-primary btn-sm"
                 ngbTooltip="Eliminar Categoria" ngbTooltipClass="kt-tooltip">
                 <span class="svg-icon svg-icon-md svg-icon-danger">
-                  <!--begin::Svg Icon | path:assets/media/svg/icons/General/Trash.svg-->
+
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                     height="24px" viewBox="0 0 24 24" version="1.1">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -86,7 +99,7 @@
                         fill="#000000" opacity="0.3" />
                     </g>
                   </svg>
-                  <!--end::Svg Icon-->
+
                 </span>
               </a>
 
@@ -94,7 +107,15 @@
           </tr>
         </tbody>
       </table>
-    </div>
+      <!-- Spinner -->
 
+
+    </div>
+    <ng-container *ngIf="isLoading$ | async">
+      <app-spinner></app-spinner>
+    </ng-container>
+
+    <mat-paginator [length]="filteredCategorias.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+    </mat-paginator>
   </div>
 </div>
