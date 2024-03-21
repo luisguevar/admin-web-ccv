@@ -6,7 +6,6 @@ import { ProductsComponent } from './products.component';
 import { AddNewProductComponent } from './add-new-product/add-new-product.component';
 import { LitsProductsComponent } from './lits-products/lits-products.component';
 import { EditNewProductComponent } from './edit-new-product/edit-new-product.component';
-import { DeleteNewProductComponent } from './delete-new-product/delete-new-product.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,10 +17,12 @@ import { DeleteItemInventarioComponent } from './edit-new-product/in/delete-item
 import { EditItemInventarioComponent } from './edit-new-product/in/edit-item-inventario/edit-item-inventario.component';
 import { DeleteSubItemInventarioComponent } from './edit-new-product/in/delete-sub-item-inventario/delete-sub-item-inventario.component';
 import { EditSubItemInventarioComponent } from './edit-new-product/in/edit-sub-item-inventario/edit-sub-item-inventario.component';
+import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
-  declarations: [ProductsComponent, AddNewProductComponent, LitsProductsComponent, EditNewProductComponent, DeleteNewProductComponent, DeleteImagenPComponent, DeleteItemInventarioComponent, EditItemInventarioComponent, DeleteSubItemInventarioComponent, EditSubItemInventarioComponent,],
+  declarations: [ProductsComponent, AddNewProductComponent, LitsProductsComponent, EditNewProductComponent, DeleteImagenPComponent, DeleteItemInventarioComponent, EditItemInventarioComponent, DeleteSubItemInventarioComponent, EditSubItemInventarioComponent,],
   imports: [
     CommonModule,
     ProductsRoutingModule,
@@ -34,7 +35,9 @@ import { EditSubItemInventarioComponent } from './edit-new-product/in/edit-sub-i
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
-    EditorModule
+    EditorModule,
+    SpinnerModule,
+    MatPaginatorModule,
   ]
 })
 export class ProductsModule { }

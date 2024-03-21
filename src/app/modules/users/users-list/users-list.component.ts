@@ -79,18 +79,12 @@ export class UsersListComponent implements OnInit {
   editUser(user) {
     const modalRef = this.modelService.open(EditUsersComponent, { centered: true, size: 'md' });
     modalRef.componentInstance.user_selected = user;
-    modalRef.result.then(
-      () => {
 
-      },
-      () => {
-
-      }
-    )
     modalRef.componentInstance.usersE.subscribe((resp: any) => {
-      console.log(resp);
-      let INDEX = this.users.findIndex(user => user.id == resp.id);
-      this.users[INDEX] = resp;
+      if (resp) {
+        this.allUsers();
+        this.toaster.open(NoticyAlertComponent, { text: `success-'El usuario se actualizó exitosamente.'` });
+      }
     })
   }
 

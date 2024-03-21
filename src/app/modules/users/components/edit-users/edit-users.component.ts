@@ -71,10 +71,10 @@ export class EditUsersComponent implements OnInit {
         this.toaster.open(NoticyAlertComponent, { text: `warning- El usuario ya existe.` });
         return;
       } else {
-        this.toaster.open(NoticyAlertComponent, { text: `primary - Usuario actualizado éxitosamente` });
+
         this.modal.close();
         this.usersE.emit(resp.user);
-        return;
+
       }
     })
   }

@@ -11,20 +11,32 @@
   </div>
   <div class="card-body">
 
-    <ng-container *ngIf="isLoading$ | async">
+    <!--  <ng-container *ngIf="isLoading$ | async">
       <span class="spinner spinner-primary ml-5"></span>
-    </ng-container>
+    </ng-container> -->
 
     <div class="row">
+      <div class="col-2">
+        <select class="form-control" name="status" placeholder="Filtrar por Estado" [(ngModel)]="state">
+          <option value="0">Todos</option>
+          <option value="1">Pendiente</option>
+          <option value="2">Activo</option>
+          <option value="3">Inactivo</option>
+        </select><small class="form-text text-muted"><b>Filtrar</b> por
+          Estado</small>
+      </div>
+
       <div class="col-6">
-        <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
-          [(ngModel)]="search" /><small class="form-text text-muted"><b>Buscar</b> por nombre deL PRODUCTO</small>
+        <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" [(ngModel)]="search"
+          (input)="buscarProductos()" />
+        <small class="form-text text-muted">
+          <b>Buscar</b>
+          Producto
+        </small>
       </div>
       <div class="col-3">
-        <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Filtro'" (click)="allProducts()">
-          <i class="icon text-white flaticon-search-1"></i>
-        </button>
-        <button class="btn btn-dark ml-2" placement="top" [ngbTooltip]="'Reiniciar'" (click)="reset()">
+
+        <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Refrescar'" (click)="allProducts()">
           <i class="icon text-white flaticon-refresh"></i>
         </button>
       </div>
@@ -43,8 +55,8 @@
             <th class="pr-0 ">Acciones</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let product of products">
+        <tbody *ngIf="!(isLoading$ | async)">
+          <tr *ngFor="let product of filteredProductos | slice:desde:hasta; let i = index">
             <td>
               <div class="symbol symbol-50 flex-shrink-0 mr-4">
                 <div class="symbol-label" [ngStyle]="{'background-image': 'url('+product.imagen+')'}"></div>
@@ -55,9 +67,9 @@
             <td>{{ product.price_soles }} PEN</td>
             <td>{{ product.price_usd }} USD</td>
             <td>
-              <span class="label label-lg label-inline label-light-danger" *ngIf="product.state == 1">Pendiente</span>
+              <span class="label label-lg label-inline label-light-warning" *ngIf="product.state == 1">Pendiente</span>
               <span class="label label-lg label-inline label-light-success" *ngIf="product.state == 2">Activo</span>
-              <span class="label label-lg label-inline label-light-warning" *ngIf="product.state == 3">Inactivo</span>
+              <span class="label label-lg label-inline label-light-danger" *ngIf="product.state == 3">Inactivo</span>
             </td>
             <td style="display: flex;">
               <a [routerLink]="['/products/edit-product',product.id]"
@@ -82,8 +94,9 @@
                 </span>
               </a>
 
-              <a (click)="delete(product)" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                ngbTooltip="Eliminar Producto" ngbTooltipClass="kt-tooltip">
+              <a (click)="delete(product)" *ngIf="product.state != 3 "
+                class="btn btn-icon btn-light btn-hover-primary btn-sm" ngbTooltip="Eliminar Producto"
+                ngbTooltipClass="kt-tooltip">
                 <span class="svg-icon svg-icon-md svg-icon-danger">
                   <!--begin::Svg Icon | path:assets/media/svg/icons/General/Trash.svg-->
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
@@ -108,5 +121,12 @@
       </table>
     </div>
 
+    <!-- Spinner -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-spinner></app-spinner>
+    </ng-container>
+
+    <mat-paginator [length]="filteredProductos.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+    </mat-paginator>
   </div>
 </div>
