@@ -60,18 +60,23 @@ const routes: Routes = [
           ),
       },
       //Mis Modulos
+     
+
       {
-        path: 'users',
+        path: 'usuarios',
         loadChildren: () =>
-          import('../modules/users/users.module').then(
-            (m) => m.UsersModule
+          import('../modules/usuarios/usuarios.module').then(
+            (m) => m.UsuariosModule
           ),
       },
+
+
+
       {
         path: 'categorias',
         loadChildren: () =>
-          import('../modules/categorie/categorie.module').then(
-            (m) => m.CategorieModule
+          import('../modules/categorias/categorias.module').then(
+            (m) => m.CategoriasModule
           ),
       },
       {

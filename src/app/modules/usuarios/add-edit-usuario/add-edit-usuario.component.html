@@ -1,0 +1,110 @@
+<ng-container *ngIf="isLoading">
+    <div class="progress progress-modal">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+            style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</ng-container>
+<div>
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <i class="icon-2x text-dark-50 flaticon-user-add mx-2"></i> {{ cTitle }}
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" >
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <form action="#" class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label class="form-label">Nombres Completos: *</label>
+                    <input type="text" class="form-control form-control-solid form-control-lg" name="name"
+                        placeholder="Nombre" autocomplete="off" [(ngModel)]="name">
+
+
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label">Apellidos Completos: *</label>
+                    <input type="text" class="form-control form-control-solid form-control-lg" name="surname"
+                        placeholder="Apellido" autocomplete="off" [(ngModel)]="surname">
+
+                </div>
+            </div>
+
+
+            <div class="form-group row ">
+                <div class="col-lg-8" [formGroup]="myForm" >
+                    <label class="form-label">Correo electrónico: *</label>
+                    <input type="text" class="form-control form-control-solid form-control-lg" formControlName="email"
+                        placeholder="Email" autocomplete="off">
+                    <div *ngIf="f.email.errors && (f.email.dirty || f.email.touched)" class="text-danger">
+                        <div *ngIf="f.email.errors.required">El correo es requerido</div>
+                        <div *ngIf="f.email.errors.email">Correo no válido</div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="form-label">Documento Identidad: *</label>
+                    <input type="text" class="form-control form-control-solid form-control-lg" name="documentIdentity"
+                        placeholder="Documento Identidad" autocomplete="off" [(ngModel)]="documentIdentity">
+
+
+                </div>
+            </div>
+
+            <div class="form-group row ">
+
+                <div class="col-lg-8 ">
+                    <label class="form-label">Rol : *</label>
+                    <select class="form-control" name="cboRol" placeholder="Selecciona un Rol" [formControl]="cboRol">
+
+                        <option *ngFor="let rol of lstRoles" [value]="rol.nIdRol">{{ rol.cRol }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-lg-4 ">
+                    <label class="form-label">Estado : *</label>
+                    <select class="form-control" name="cboEstado" placeholder="seleccione un estado"
+                        [formControl]="cboEstado">
+
+                        <option *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="!bEdit">
+                <div class="col-lg-6">
+                    <label class="form-label">Contraseña: *</label>
+                    <input type="password" class="form-control form-control-solid form-control-lg" name="password"
+                        placeholder="Contraseña" autocomplete="off" [(ngModel)]="password">
+
+
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label">Repetir Contraseña: *</label>
+                    <input type="password" class="form-control form-control-solid form-control-lg" name="rpassword"
+                        placeholder="Repetir contraseña" autocomplete="off" [(ngModel)]="rpassword">
+
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
+            Cerrar
+        </button>
+        <button type="submit" *ngIf="!bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonGuardarUsuarios()">
+            Guardar
+        </button>
+        <button type="submit" *ngIf="bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonActualizarUsuario()">
+            Actualizar
+        </button>
+    </div>
+</div>

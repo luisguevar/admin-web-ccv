@@ -27,6 +27,7 @@ import { AddProductoDialogComponent } from './modules/_dialog/add-producto-dialo
 import { ConfirmComponent } from './shared/confirm/confirm.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AddEditCategoriaComponent } from './modules/categorias/add-edit-categoria/add-edit-categoria.component';
 
 /* import { CreatePuntoVentaComponent } from './modules/puntoVenta/create-punto-venta/create-punto-venta.component'; */
 // #fake-end#
@@ -41,7 +42,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent,NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent],
+  declarations: [AppComponent,NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent, AddEditCategoriaComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

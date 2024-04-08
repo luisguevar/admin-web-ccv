@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Toaster } from 'ngx-toast-notifications';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
-import { CategorieService } from '../../categorie/_services/categorie.service';
 import { ProductsService } from '../_services/products.service';
 import { ProveedorService } from '../../proveedores/_service/proveedor.service';
 

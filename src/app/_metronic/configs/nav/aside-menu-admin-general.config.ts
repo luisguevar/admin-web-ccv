@@ -20,9 +20,10 @@ export const AsideMenuAdminGeneral = {
       svg: './assets/media/svg/icons/General/User.svg',
       page: '/users',
       submenu: [
+
         {
           title: 'Gestión de Usuarios',
-          page: '/users/list'
+          page: '/usuarios/listado-usuarios'
         }
       ]
     },
@@ -66,7 +67,7 @@ export const AsideMenuAdminGeneral = {
       ]
     },
 
-    
+
 
     {
       title: 'Clientes',
@@ -95,11 +96,13 @@ export const AsideMenuAdminGeneral = {
       svg: './assets/media/svg/icons/Electric/Gas-stove.svg',
       page: '/categorias',
       submenu: [
+
         {
           title: 'Gestión de Categorias',
-          page: '/categorias/lista'
+          page: '/categorias/listado-categorias'
         }
-      ]
+      ],
+
     },
     {
       title: 'Productos',
