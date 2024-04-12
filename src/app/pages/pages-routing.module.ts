@@ -86,6 +86,14 @@ const routes: Routes = [
             (m) => m.ProductsModule
           ),
       },
+
+      {
+        path: 'productos',
+        loadChildren: () =>
+          import('../modules/productos/productos.module').then(
+            (m) => m.ProductosModule
+          ),
+      },
       {
         path: 'sliders',
         loadChildren: () =>

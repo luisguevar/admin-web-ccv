@@ -42,7 +42,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent,NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent, AddEditCategoriaComponent],
+  declarations: [AppComponent, NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent, AddEditCategoriaComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -51,7 +51,7 @@ function appInitializer(authService: AuthService) {
     HttpClientModule,
     HighlightModule,
     ClipboardModule,
-    
+
     // #fake-start#
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
@@ -73,7 +73,7 @@ function appInitializer(authService: AuthService) {
     NgbDatepickerModule,
     MatPaginatorModule,
     SpinnerModule,
-    ToastNotificationsModule.forRoot({duration: 5000, position: 'top-right'}),
+    ToastNotificationsModule.forRoot({ duration: 5000, position: 'top-right' }),
     MatDialogModule, MatButtonModule
   ],
   providers: [

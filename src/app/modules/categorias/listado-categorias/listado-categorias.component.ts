@@ -30,9 +30,8 @@ export class ListadoCategoriasComponent implements OnInit {
   hasta: number = 5;
 
   //filtro
-  state: number = 1;
   cboEstado: FormControl = new FormControl(-1);
-  
+
   //listas
   lstEstados = [
     { nIdEstado: -1, cEstado: 'Todos' },
@@ -153,73 +152,7 @@ export class ListadoCategoriasComponent implements OnInit {
   public BuscarCategorias() {
 
   }
-  /*   allCategories() {
-  
-    } */
 
-  /* reset() {
-    this.search = null;
-    this.allCategories();
-  } */
-  /* addCategoria() {
-    const modalRef = this.modelService.open(AddCategorieComponent, { centered: true, size: 'lg' });
-
-    modalRef.componentInstance.clientsE.subscribe((resp: any) => {
-      if (resp) {
-        this.allCategories();
-        this.toaster.open(NoticyAlertComponent, { text: `primary-'La categoría se guardó exitosamente.'` });
-      }
-
-    });
-  } */
-
-  /*  edit(categoria) {
-     const modalRef = this.modelService.open(EditCategorieComponent, { centered: true, size: 'lg' });
-     modalRef.componentInstance.categoria_selected = categoria;
- 
-     modalRef.componentInstance.clientsE.subscribe((resp: any) => {
-       if (resp) {
-         this.allCategories();
-         this.toaster.open(NoticyAlertComponent, { text: `success-'La categoría se actualizó exitosamente.'` });
-       }
- 
-     })
-   } */
-
-
-  /*  delete(categoria) {
-     console.log('categoria: ', categoria);
-     var title = 'Remover Categoría: ' + categoria.name;
-     var mensaje = '¿Está seguro que desea remover esta categoría?';
- 
-  
-     this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
-       .subscribe(result => {
-         if (result) {
-          
- 
-           this._categorieService.removeCategoria(categoria).subscribe(
-             (resp: any) => {
- 
-               if (resp.success) {
-                 this.toaster.open(NoticyAlertComponent, { text: `info-La categoría se removió exitosamente.` });
-                 this.filteredCategorias = this.filteredCategorias.filter((item) => item != categoria);
-                 console.log('resp: ', resp);
-                 return;
-               }
-             },
-             (error: any) => {
-               console.error('Error al actualizar la categoría:', error);
-               this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al remover la categoría.` });
-               this.reset();
-               return;
-             }
-           )
-         }
- 
-       });
- 
-   } */
 
   cambiarPagina(e: PageEvent) {
 
@@ -227,16 +160,6 @@ export class ListadoCategoriasComponent implements OnInit {
     this.hasta = this.desde + e.pageSize;
   }
 
-  /* public BuscarCategorias() {
 
-    const categoriasFiltradas = this.categorias.filter(categoria =>
-      categoria.name.toLowerCase().includes(this.search.toLowerCase())
-    );
-
-
-    this.filteredCategorias = categoriasFiltradas;
-    this.desde = 0;  // Reinicia la paginación a la primera página
-    this.hasta = this.pageSize;
-  } */
 
 }

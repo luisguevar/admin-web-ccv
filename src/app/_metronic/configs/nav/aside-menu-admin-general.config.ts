@@ -125,6 +125,26 @@ export const AsideMenuAdminGeneral = {
     },
 
     {
+      title: 'Productosv2',
+      root: true,
+      name: "productos",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Home/Armchair.svg',
+      page: '/productos',
+      submenu: [
+        {
+          title: 'Crear Producto',
+          page: '/productos/add-producto'
+        },
+        {
+          title: 'Lista de Productos',
+          page: '/productos/listado-productos'
+        }
+      ]
+    },
+
+    {
       title: 'Proveedores',
       root: true,
       name: "proveedores",

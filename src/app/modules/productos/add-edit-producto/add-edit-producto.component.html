@@ -1,0 +1,157 @@
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">NUEVO PRODUCTO</h3>
+        </div>
+        <div class="card-toolbar">
+            <ul class="nav nav-bold nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_7_1">GENERAL</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_7_2">DETALLES</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_7_3">IMÁGENES</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_7_4">PROVEEDOR</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <ng-container *ngIf="isLoading$ | async">
+                <span class="spinner spinner-primary ml-5"></span>
+            </ng-container>
+
+            <div class="tab-pane fade show active" id="kt_tab_pane_7_1" role="tabpanel"
+                aria-labelledby="kt_tab_pane_7_1">
+
+
+                <div class="form-group row">
+                    <div class="col-8">
+                        <label class="form-label">Nombre del producto: *</label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="cDescripcion"
+                            placeholder="Nombre del Producto" autocomplete="off" [(ngModel)]="cDescripcion">
+                    </div>
+
+
+                    <div class="col-4">
+                        <label class="form-label">Estado : *</label>
+                        <select class="form-control" name="cboEstado" placeholder="Filtrar por Estado"
+                            [formControl]="cboEstado">
+
+                            <option *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-6">
+                        <label class="form-label">Categoría : *</label>
+                        <select name="categorie_id" class="form-control form-control-solid form-control-lg"
+                            [(ngModel)]="categoria_id">
+                            <option value="0" selected disabled>Seleccione un categoría</option>
+                            <ng-container *ngFor="let categorie of categorias">
+                                <option [value]="categorie.id">{{ categorie.cDescripcion }}</option>
+                            </ng-container>
+
+
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">SKU: *</label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="cSku"
+                            placeholder="SKU" autocomplete="off" [(ngModel)]="cSku">
+                    </div>
+
+
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label class="form-label">Precio Venta (PEN): *</label>
+                        <input type="number" class="form-control form-control-solid form-control-lg" name="nPrecioPEN"
+                            placeholder="100" autocomplete="off" [(ngModel)]="nPrecioPEN">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Precio Venta (USD): *</label>
+                        <input type="number" class="form-control form-control-solid form-control-lg" name="nPrecioUSD"
+                            placeholder="200" autocomplete="off" [(ngModel)]="nPrecioUSD">
+                    </div>
+
+                    <div class="col-4">
+                        <label class="form-label">Stock: *</label>
+                        <input type="number" class="form-control form-control-solid form-control-lg" name="nStock"
+                            placeholder="100" autocomplete="off" [(ngModel)]="nStock">
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_7_2" role="tabpanel" aria-labelledby="kt_tab_pane_7_2">
+
+
+                <div class="form-group row">
+                    <div class="col-12">
+                        <label class="form-label">Breve Resumen del Producto: *</label>
+
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="cResumen"
+                            placeholder="Breve Resumen del Producto" autocomplete="off" [(ngModel)]="cResumen">
+                    </div>
+
+
+
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-12">
+                        <label class="form-label">Descripción Detallada: *</label>
+                        <!--  <textarea [(ngModel)]="cDescripcionDetallada" class="form-control" name="cDescripcionDetallada"
+                            placeholder="" rows="4"></textarea> -->
+                        <!-- app.component.html -->
+
+                       
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_7_3" role="tabpanel" aria-labelledby="kt_tab_pane_7_3">
+                general
+                detalladas
+            </div>
+
+            <div class="tab-pane fade" id="kt_tab_pane_7_4" role="tabpanel" aria-labelledby="kt_tab_pane_7_4">
+                Proveedor
+                Precio compra
+                fecha de compra
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
+        Cerrar
+    </button>
+    <button type="submit" *ngIf="!bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonGuardarProducto()">
+        Guardar
+    </button>
+    <button type="submit" *ngIf="bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonActualizarProducto()">
+        Actualizar
+    </button>
+</div>

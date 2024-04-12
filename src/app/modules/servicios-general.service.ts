@@ -80,19 +80,48 @@ export class ServiciosGeneralService {
     );
   }
 
-  /*  deleteCategoria(categorie_id: any) {
-     this.isLoadingSubject.next(true);
-     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-     let URL = URL_SERVICIOS + "/products/categories/delete/" + categorie_id;
-     return this.http.delete(URL, { headers: headers }).pipe(
-       finalize(() => this.isLoadingSubject.next(false))
-     );
-   } */
-
   RemoveCategoria(data: any) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/productos/categorias/remove/" + data.id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  GetProductos(nEstado: number) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let URL = URL_SERVICIOS + "/productos/all?nEstado=" + nEstado;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+  allProducts(page = 1, state = '', search = '') {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let LINK = "";
+
+    LINK = LINK + "&state=" + state;
+
+
+    if (search) {
+      LINK = LINK + "&search=" + search;
+    }
+    let URL = URL_SERVICIOS + "/products/all?page=" + page + LINK;
+    console.log(URL);
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  removeProducto(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/products/remove/" + data.id;
     return this.http.put(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );

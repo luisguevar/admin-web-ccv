@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { URL_BACKEND } from 'src/app/config/config';
 import { Toaster } from 'ngx-toast-notifications';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { AuthService } from '../../auth';
 
 @Component({
   selector: 'app-add-edit-categoria',
@@ -28,21 +29,25 @@ export class AddEditCategoriaComponent implements OnInit {
 
   //Formulario
   categoria_id: number = 0;
-  descripcion: string = '';
+  descripcion: string = null;
   cboEstado: FormControl = new FormControl(1);
-  icono: string = '';
+  icono: string = null;
   imagen_previzualiza: any = null;
   imagen_file: any = null;
+  usuario_dni: any = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddEditCategoriaComponent>,
     public _service: ServiciosGeneralService,
     public toaster: Toaster,
+    public authservice: AuthService
   ) {
 
     this.bEdit = this.data.bEdit;
     this.cTitle = this.data.cTitle;
+    this.usuario_dni = this.authservice.user.cDocumento;
+    console.log('user. ', this.authservice.user)
 
   }
 
@@ -76,7 +81,7 @@ export class AddEditCategoriaComponent implements OnInit {
 
   BotonGuardarCategoria() {
 
-    if (!this.descripcion || !this.icono || this.imagen_previzualiza) {
+    if (!this.descripcion || !this.icono || !this.imagen_file) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos para continuar.'` });
       return;
     }
@@ -87,6 +92,10 @@ export class AddEditCategoriaComponent implements OnInit {
     formData.append("cDescripcion", this.descripcion);
     formData.append("nEstado", this.cboEstado.value);
     formData.append("cIcono", this.icono);
+
+    formData.append("cUsuarioCreacion", this.usuario_dni);
+    formData.append("cUsuarioModificacion", this.usuario_dni);
+   
 
     this._service.PostCategoria(formData).subscribe((resp: any) => {
       /*   console.log('CREATE: ', resp); */
@@ -114,7 +123,7 @@ export class AddEditCategoriaComponent implements OnInit {
   }
 
   BotonActualizarCategoria() {
-    if (!this.descripcion || !this.icono || this.imagen_previzualiza) {
+    if (!this.descripcion || !this.icono ) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos para continuar.'` });
       return;
     }
@@ -124,6 +133,8 @@ export class AddEditCategoriaComponent implements OnInit {
     formData.append("cDescripcion", this.descripcion);
     formData.append("nEstado", this.cboEstado.value);
     formData.append("cIcono", this.icono);
+    formData.append("cUsuarioModificacion", this.usuario_dni);
+
     this._service.PutCategoria(this.categoria_id, formData).subscribe((resp: any) => {
       /* console.log('UPDATE: ', resp); */
 
