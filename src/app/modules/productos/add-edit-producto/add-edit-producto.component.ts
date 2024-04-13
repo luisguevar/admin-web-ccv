@@ -17,6 +17,7 @@ export class AddEditProductoComponent implements OnInit {
   isLoading: boolean = false;
 
   bEdit: boolean = false;
+  bReadOnly: boolean = false;
   cTitle: string = null;
   usuario_dni: any = '';
 
@@ -79,7 +80,7 @@ export class AddEditProductoComponent implements OnInit {
       this.SetearValores();
     }
     this.usuario_dni = this.authservice.user.cDocumento;
-
+    this.bReadOnly = this.data.bReadOnly;
   }
 
   ngOnInit(): void {

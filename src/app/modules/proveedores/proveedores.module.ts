@@ -18,9 +18,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';/*
 import { SpinnerInterceptor } from 'src/app/shared/interceptors/spinner.interceptor'; */
 import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
 import { GestionarProveedorComponent } from './gestionar-proveedor/gestionar-proveedor.component';
+import { AddEditContactoComponent } from './add-edit-contacto/add-edit-contacto.component';
 
 @NgModule({
-  declarations: [ProveedoresComponent, AddNewProveedorComponent, ListProveedorComponent, EditProveedorComponent, DeleteProveedorComponent, GestionarProveedorComponent],
+  declarations: [ProveedoresComponent, AddNewProveedorComponent, ListProveedorComponent, EditProveedorComponent, DeleteProveedorComponent, GestionarProveedorComponent, AddEditContactoComponent],
   imports: [
     CommonModule,
     ProveedoresRoutingModule,

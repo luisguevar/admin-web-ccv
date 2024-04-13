@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Toaster } from 'ngx-toast-notifications';
 import { AuthService } from '../../auth';
 import { ServiciosGeneralService } from '../../servicios-general.service';
 import { PageEvent } from '@angular/material/paginator';
-import { ProveedorEntity } from 'src/app/Models/ProveedorEntity';
+import { ProveedorContactoEntity, ProveedorEntity } from 'src/app/Models/ProveedorEntity';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { ConfirmService } from 'src/app/shared/confirm/confirm.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEditContactoComponent } from '../add-edit-contacto/add-edit-contacto.component';
+import { AddEditProductoComponent } from '../../productos/add-edit-producto/add-edit-producto.component';
 
 @Component({
   selector: 'app-gestionar-proveedor',
@@ -53,19 +56,22 @@ export class GestionarProveedorComponent implements OnInit {
   cNroDocumento: string = null;
   cRazonSocial: string = null;
   cCelular: string = null;
-  cCorreo: string = null;
+  email: string = null;
   cPaginaWeb: string = null;
   cDireccion: string = null;
   cActividadPrincipal: string = null;
   cObservaciones: string = null;
   usuario_dni: string = "";
+  myForm: FormGroup;
 
   //
   itemProveedor: ProveedorEntity;
   proveedor_id: number = 0;
   bEdit: boolean = false;
-  listaContactos: any;
-  listaProductos: any;
+  listContactos: ProveedorContactoEntity[] = [];
+  listContactosEnvio: ProveedorContactoEntity[] = [];
+
+  listProductos: any;
 
   //Excel
   private _workbook: Workbook
@@ -78,15 +84,22 @@ export class GestionarProveedorComponent implements OnInit {
     public authservice: AuthService,
     public _service: ServiciosGeneralService,
     public confirmService: ConfirmService,
+    public fb: FormBuilder,
+    private _dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
 
-    this.isLoading$ = this._service.isLoading$;
+
     this.BotonListarProveedores();
     this.vendedor_nombre = this.authservice.user.name + ' ' + this.authservice.user.surname + ' / ' + this.authservice.user.email;
     this.usuario_dni = this.authservice.user.cDocumento;
+    this.myForm = this.fb.group({
+      email: [null, [Validators.required, Validators.email]],
+    })
   }
 
   ngOnInit(): void {
+    this.isLoading$ = this._service.isLoading$;
   }
 
   public BotonListarProveedores() {
@@ -110,17 +123,23 @@ export class GestionarProveedorComponent implements OnInit {
     this.ObtenerProveedorPorId(element.id);
   }
 
+  get f() { return this.myForm.controls; }
+
   public ObtenerProveedorPorId(id: number) {
+
     this._service.GetProveedorPorId(id).subscribe((resp: any) => {
       console.log('proveedor: ', resp);
       this.itemProveedor = resp.proveedor;
+      this.listContactos = resp.contactos;
+      this.listProductos = resp.productos.data;
       this.proveedor_id = resp.proveedor.id;
       this.nTipoPersona = resp.proveedor.nTipoPersona;
       this.nTipoDocumento = resp.proveedor.nTipoDocumento;
       this.cNroDocumento = resp.proveedor.cNroDocumento;
       this.cRazonSocial = resp.proveedor.cRazonSocial;
       this.cCelular = resp.proveedor.cCelular;
-      this.cCorreo = resp.proveedor.cCorreo;
+      /* this.cCorreo = resp.proveedor.cCorreo; */
+      this.f.email.setValue(resp.proveedor.cCorreo);
       this.cPaginaWeb = resp.proveedor.cPaginaWeb;
       this.cDireccion = resp.proveedor.cDireccion;
       this.cActividadPrincipal = resp.proveedor.cActividadPrincipal;
@@ -138,6 +157,8 @@ export class GestionarProveedorComponent implements OnInit {
     this._service.GetProveedorPorId(proveedor.id).subscribe((resp: any) => {
       console.log('itemProveedor: ', resp.proveedor);
       this.itemProveedor = resp.proveedor;
+      this.listContactos = resp.contactos;
+      this.listProductos = resp.productos.data;
       this.DescargarExcel();
       /*  this.listaContactos = resp.contactos;
        this.listaProductos = resp.productos.data; */
@@ -150,6 +171,17 @@ export class GestionarProveedorComponent implements OnInit {
 
   public BotonGuardarProveedor() {
 
+    if (!this.cRazonSocial || !this.cActividadPrincipal || !this.cCelular || !this.cNroDocumento) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete los campos obligatorios.'` });
+      return;
+    }
+
+    if (this.f.email.errors) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Inserte un correo válido.'` });
+      return;
+    }
+
+
     const proveedor = new ProveedorEntity();
     proveedor.id = 0;
     proveedor.cRazonSocial = this.cRazonSocial;
@@ -157,7 +189,7 @@ export class GestionarProveedorComponent implements OnInit {
     proveedor.nTipoDocumento = this.nTipoPersona;
     proveedor.cNroDocumento = this.cNroDocumento;
     proveedor.cCelular = this.cCelular;
-    proveedor.cCorreo = this.cCorreo;
+    proveedor.cCorreo = this.f.email.value;
     proveedor.cPaginaWeb = this.cPaginaWeb;
     proveedor.cDireccion = this.cDireccion;
     proveedor.cActividadPrincipal = this.cActividadPrincipal;
@@ -165,6 +197,9 @@ export class GestionarProveedorComponent implements OnInit {
     proveedor.nEstado = this.cboEstadoItem.value;
     proveedor.cUsuarioCreacion = this.usuario_dni;
     proveedor.cUsuarioModificacion = this.usuario_dni;
+    proveedor.listContactos = this.listContactosEnvio;
+
+    console.log('Modelo Para Guardar: ', proveedor);
 
     this._service.PostProveedor(proveedor).subscribe((resp: any) => {
 
@@ -174,6 +209,9 @@ export class GestionarProveedorComponent implements OnInit {
 
         this.proveedor_id = resp.proveedor.id;
         this.bEdit = true;
+
+        this.ObtenerProveedorPorId(this.proveedor_id);
+        this.listContactosEnvio = [];
 
       } else {
         this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar el Proveedor.'` });
@@ -188,6 +226,18 @@ export class GestionarProveedorComponent implements OnInit {
 
 
   public BotonActualizarProveedor() {
+
+    if (!this.cRazonSocial || !this.cActividadPrincipal || !this.cCelular || !this.cNroDocumento) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos obligatorios para continuar.'` });
+      return;
+    }
+
+    if (this.f.email.errors) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Inserte un correo válido.'` });
+      return;
+    }
+
+
     const proveedor = new ProveedorEntity();
     proveedor.id = this.proveedor_id;
     proveedor.cRazonSocial = this.cRazonSocial;
@@ -195,17 +245,23 @@ export class GestionarProveedorComponent implements OnInit {
     proveedor.nTipoDocumento = this.nTipoPersona;
     proveedor.cNroDocumento = this.cNroDocumento;
     proveedor.cCelular = this.cCelular;
-    proveedor.cCorreo = this.cCorreo;
+    proveedor.cCorreo = this.f.email.value;
     proveedor.cPaginaWeb = this.cPaginaWeb;
     proveedor.cDireccion = this.cDireccion;
     proveedor.cActividadPrincipal = this.cActividadPrincipal;
     proveedor.cObservaciones = this.cObservaciones;
     proveedor.nEstado = this.cboEstadoItem.value;
     proveedor.cUsuarioModificacion = this.usuario_dni;
+    proveedor.listContactos = this.listContactosEnvio;
+
+    console.log('Modelo Para Actualizar: ', proveedor);
 
     this._service.PutProveedor(this.proveedor_id, proveedor).subscribe((resp: any) => {
       console.log(resp);
       if (resp.success) {
+        this.ObtenerProveedorPorId(this.proveedor_id);
+        this.listContactosEnvio = [];
+
         this.toaster.open(NoticyAlertComponent, { text: `success-'Proveedor actualizado correctamente'` });
       } else {
         this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Proveedor.'` });
@@ -256,7 +312,101 @@ export class GestionarProveedorComponent implements OnInit {
 
   }
 
+  /* ************* CONTACTOS ************* */
 
+  public BotonNuevoContacto() {
+    const dialogRef = this._dialog.open(
+      AddEditContactoComponent,
+      {
+        width: '750px',
+        disableClose: true,
+        data: {
+          bEdit: false,
+          cTitle: 'AGREGAR CONTACTO',
+          cUsuarioDNI: this.usuario_dni
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+      if (result) {
+
+        this.listContactos.push(result);
+        this.listContactosEnvio.push(result);
+        this.cdr.detectChanges();
+        console.log('PUSH');
+      }
+    });
+  }
+
+  public BotonEditarContacto(contacto: ProveedorContactoEntity) {
+    const index = this.listContactos.findIndex(c => c === contacto);
+
+    const dialogRef = this._dialog.open(
+      AddEditContactoComponent,
+      {
+        width: '750px',
+        disableClose: true,
+        data: {
+          bEdit: true,
+          cTitle: 'EDITAR CONTACTO',
+          cUsuarioDNI: this.usuario_dni,
+          contacto: contacto
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+      if (result) {
+        this.listContactos[index] = result;
+
+        if (contacto.id != 0) {
+          this.listContactosEnvio.push(result);
+        } else {
+          const indexT = this.listContactosEnvio.findIndex(c => c === contacto);
+          this.listContactosEnvio[indexT] = result;
+        }
+      }
+      this.cdr.detectChanges();
+    });
+  }
+
+  public BotonRemoverContacto(contacto: ProveedorContactoEntity) {
+
+    console.log(contacto.id);
+    this.listContactos = this.listContactos.filter((item) => item != contacto);
+
+    if (contacto.id == 0) {
+      this.listContactosEnvio = this.listContactosEnvio.filter((item) => item != contacto);
+    } else {
+      this.listContactosEnvio.push({ ...contacto, nEstado: 0 });
+    }
+
+    /*  if (contacto.id != 0) {
+       this.listContactosEnvio.push({ ...contacto, nEstado: 0 });
+     } else {
+       this.listContactosEnvio = this.listContactos.filter((item) => item != contacto);
+     } */
+  }
+
+  public BotonVisualizarProducto(producto) {
+    const dialogRef = this._dialog.open(
+      AddEditProductoComponent,
+      {
+        width: '850px',
+        disableClose: true,
+        data: {
+          bEdit: true,
+          cTitle: 'VISUALIZAR PRODUCTO',
+          itemProducto: producto,
+          bReadOnly: true
+        },
+      }
+    );
+
+  }
 
   buscarProveedores() {
 
@@ -278,8 +428,9 @@ export class GestionarProveedorComponent implements OnInit {
 
   public BotonVolver() {
     this.bNuevo = false;
-    this.BotonListarProveedores();
     this.ResetForm();
+    this.BotonListarProveedores();
+
   }
 
 
@@ -290,7 +441,7 @@ export class GestionarProveedorComponent implements OnInit {
     this.cNroDocumento = null;
     this.cRazonSocial = null;
     this.cCelular = null;
-    this.cCorreo = null;
+    this.f.email.setValue('');
     this.cPaginaWeb = null;
     this.cDireccion = null;
     this.cActividadPrincipal = null;
@@ -298,6 +449,11 @@ export class GestionarProveedorComponent implements OnInit {
     this.proveedor_id = 0;
     this.bEdit = false;
     this.cboEstadoItem.setValue(1);
+    this.itemProveedor = null;
+
+    this.listContactos = [];
+    this.listProductos = [];
+    this.listContactosEnvio = [];
   }
 
 
@@ -474,20 +630,20 @@ export class GestionarProveedorComponent implements OnInit {
 
     var dataExcel =
     {
-      "nroDocumento": 0,
-      "nombre": 1,
-      "nombre1": 2,
-      "nombre2": 3,
-      "correo": 4,
-      "correo1": 5,
-      "celular": 6
+      "cNroDocumento": 0,
+      "cNombreCompleto": 1,
+      "cNombreCompleto1": 2,
+      "cNombreCompleto2": 3,
+      "cCorreo": 4,
+      "cCorreo1": 5,
+      "cCelular": 6
 
     }
 
     var i = 0;
     var u = 13;
 
-    /* for (let x1 of this.contactos) {
+    for (let x1 of this.listContactos) {
       i = i + 1;
 
       let x2 = Object.keys(dataExcel); //Object.keys(x1);
@@ -520,7 +676,7 @@ export class GestionarProveedorComponent implements OnInit {
       sheet.mergeCells(mergeStartCell2, mergeEndCell2);
 
       u = u + 1;
-    } */
+    }
 
     /* 3. LISTA DE PRODUCTOS */
     sheet.mergeCells(`A${u + 1}`, `G${u + 1}`);
@@ -546,7 +702,7 @@ export class GestionarProveedorComponent implements OnInit {
       "Categoría",
       "Categoría",
       "Fecha de compra",
-      "Precio de Compra"
+      "Compra (PEN)"
     ]
 
     let headerProductRow = sheet.addRow(headerProduct);
@@ -571,13 +727,13 @@ export class GestionarProveedorComponent implements OnInit {
 
     var dataProductExcel =
     {
-      "sku": 0,
-      "title": 1,
-      "title1": 2,
-      "categorie_name": 3,
-      "categorie_name2": 4,
-      "fecha_compra": 5,
-      "price_soles": 6
+      "cSku": 0,
+      "cDescripcion": 1,
+      "cDescripcion1": 2,
+      "cNombreCategoria": 3,
+      "cNombreCategoria2": 4,
+      "dFechaCompra": 5,
+      "nPrecioPEN": 6
 
 
 
@@ -585,7 +741,7 @@ export class GestionarProveedorComponent implements OnInit {
 
     var j = 0;
 
-    /* for (let x1 of this.productos) {
+    for (let x1 of this.listProductos) {
       j = j + 1;
 
       let x2 = Object.keys(dataProductExcel); //Object.keys(x1);
@@ -617,7 +773,7 @@ export class GestionarProveedorComponent implements OnInit {
 
 
 
-    } */
+    }
 
     this._workbook.creator = this.vendedor_nombre;
 

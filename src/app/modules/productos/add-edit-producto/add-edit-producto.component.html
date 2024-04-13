@@ -36,7 +36,8 @@
                 <div class="form-group row">
                     <div class="col-8">
                         <label class="form-label">Nombre del producto: *</label>
-                        <input type="text" class="form-control form-control-solid form-control-lg" name="cDescripcion"
+                        <input [readonly]="bReadOnly" type="text"
+                            class="form-control form-control-solid form-control-lg" name="cDescripcion"
                             placeholder="Nombre del Producto" autocomplete="off" [(ngModel)]="cDescripcion">
                     </div>
 
@@ -46,7 +47,8 @@
                         <select class="form-control" name="cboEstado" placeholder="Filtrar por Estado"
                             [formControl]="cboEstado">
 
-                            <option *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}
+                            <option [disabled]="bReadOnly" *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">
+                                {{ estado.cEstado }}
                             </option>
                         </select>
                     </div>
@@ -60,7 +62,8 @@
                             [(ngModel)]="categoria_id">
                             <option value="0" selected disabled>Seleccione un categoría</option>
                             <ng-container *ngFor="let categorie of categorias">
-                                <option [value]="categorie.id">{{ categorie.cDescripcion }}</option>
+                                <option [disabled]="bReadOnly" [value]="categorie.id">{{ categorie.cDescripcion }}
+                                </option>
                             </ng-container>
 
 
@@ -69,7 +72,7 @@
 
                     <div class="col-6">
                         <label class="form-label">SKU: *</label>
-                        <input type="text" class="form-control form-control-solid form-control-lg" name="cSku"
+                        <input [readonly]="bReadOnly"  type="text" class="form-control form-control-solid form-control-lg" name="cSku"
                             placeholder="SKU" autocomplete="off" [(ngModel)]="cSku">
                     </div>
 
@@ -81,18 +84,18 @@
                     <div class="col-4">
                         <label class="form-label">Precio Venta (PEN): *</label>
                         <input type="number" class="form-control form-control-solid form-control-lg" name="nPrecioPEN"
-                            placeholder="100" autocomplete="off" [(ngModel)]="nPrecioPEN">
+                            placeholder="100" autocomplete="off" [(ngModel)]="nPrecioPEN" [readonly]="bReadOnly" >
                     </div>
                     <div class="col-4">
                         <label class="form-label">Precio Venta (USD): *</label>
                         <input type="number" class="form-control form-control-solid form-control-lg" name="nPrecioUSD"
-                            placeholder="200" autocomplete="off" [(ngModel)]="nPrecioUSD">
+                            placeholder="200" autocomplete="off" [(ngModel)]="nPrecioUSD" [readonly]="bReadOnly" >
                     </div>
 
                     <div class="col-4">
                         <label class="form-label">Stock: *</label>
                         <input type="number" class="form-control form-control-solid form-control-lg" name="nStock"
-                            placeholder="100" autocomplete="off" [(ngModel)]="nStock">
+                            placeholder="100" autocomplete="off" [(ngModel)]="nStock" [readonly]="bReadOnly" >
                     </div>
 
                 </div>
@@ -105,7 +108,7 @@
                         <label class="form-label">Breve Resumen del Producto: *</label>
 
                         <input type="text" class="form-control form-control-solid form-control-lg" name="cResumen"
-                            placeholder="Breve Resumen del Producto" autocomplete="off" [(ngModel)]="cResumen">
+                            placeholder="Breve Resumen del Producto" autocomplete="off" [(ngModel)]="cResumen" [readonly]="bReadOnly" >
                     </div>
 
 
@@ -117,7 +120,7 @@
                     <div class="col-12">
                         <label class="form-label">Descripción Detallada: *</label>
                         <editor apiKey="amv6xvm0i1obct6ugv8qhf5z9rh6872lbej63922394obv8q"
-                            [(ngModel)]="cDescripcionDetallada" [init]="{
+                            [(ngModel)]="cDescripcionDetallada"  [init]="{
                             height: 250,
                             language: 'es',
                             plugins: [
@@ -143,7 +146,7 @@
                     <div class="col-6">
 
                         <label class="form-label">Imagen Principal: *</label>
-                        <div class="custom-file">
+                        <div class="custom-file" *ngIf="!bReadOnly">
                             <input type="file" class="custom-file-input" id="customFile"
                                 accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
                             <label class="custom-file-label" for="customFile">Choose file</label>
@@ -159,7 +162,7 @@
 
                     <div class="col-6">
                         <label class="form-label">Galería de Imágenes: *</label>
-                        <div class="d-flex">
+                        <div class="d-flex" *ngIf="!bReadOnly">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="customFile"
                                     accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="addFile($event)">
@@ -184,7 +187,7 @@
                                         </td>
                                         <td>{{ imagen_.file_name }}</td>
                                         <td>
-                                            <button class="ml-5 btn btn-sm btn-danger"
+                                            <button class="ml-5 btn btn-sm btn-danger" *ngIf="!bReadOnly"
                                                 (click)="removeImages(imagen_)">-</button>
                                         </td>
                                     </tr>
@@ -203,8 +206,8 @@
                         <label class="form-label">Proveedor : *</label>
                         <select name="categorie_id" class="form-control form-control-solid form-control-lg"
                             [(ngModel)]="proveedor_id">
-                            <option value="0" selected disabled>Seleccione un proveedor</option>
-                           <!--  <ng-container *ngFor="let categorie of categorias">
+                            <option [readonly]="bReadOnly"  value="0" selected disabled>Seleccione un proveedor</option>
+                            <!--  <ng-container *ngFor="let categorie of categorias">
                                 <option [value]="proveedor_id.id">{{ categorie.cDescripcion }}</option>
                             </ng-container>
  -->
@@ -219,14 +222,14 @@
                         <label class="form-label">Precio Compra (PEN): *</label>
                         <input type="number" class="form-control form-control-solid form-control-lg"
                             name="nPrecioCompra" placeholder="Precio Compra" autocomplete="off"
-                            [(ngModel)]="nPrecioCompra">
+                            [(ngModel)]="nPrecioCompra" [readonly]="bReadOnly" >
                     </div>
 
                     <div class="col-6">
                         <label class="form-label">Fecha Compra: *</label>
                         <div class="input-group input-group-solid">
                             <input [(ngModel)]="dFechaCompra" name="dFechaCompra" type="date"
-                                class="form-control form-control-lg form-control-solid" />
+                                class="form-control form-control-lg form-control-solid" [readonly]="bReadOnly"  />
                         </div>
                     </div>
                 </div>
@@ -242,10 +245,12 @@
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
         Cerrar
     </button>
-    <button type="submit" *ngIf="!bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonGuardarProducto()">
+    <button type="submit" *ngIf="!bEdit && !bReadOnly" class="btn btn-primary btn-elevate mr-2"
+        (click)="BotonGuardarProducto()">
         Guardar
     </button>
-    <button type="submit" *ngIf="bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonActualizarProducto()">
+    <button type="submit" *ngIf="bEdit && !bReadOnly" class="btn btn-primary btn-elevate mr-2"
+        (click)="BotonActualizarProducto()">
         Actualizar
     </button>
 </div>

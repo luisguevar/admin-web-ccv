@@ -14,6 +14,25 @@ export class ProveedorEntity {
         public nEstado?: number,
         public cUsuarioCreacion?: string,
         public cUsuarioModificacion?: string,
+        public listContactos?: Array<ProveedorContactoEntity>,
+ 
+
+
+    ) { }
+}
+
+export class ProveedorContactoEntity {
+    constructor(
+        public id?: number,
+        public proveedor_id?: number,
+        public cNombreCompleto?: string,
+        public cCelular?: string,
+        public cCorreo?: string,
+        public nTipoDocumento?: number,
+        public cNroDocumento?: string,
+        public nEstado?: number,
+        public cUsuarioCreacion?: string,
+        public cUsuarioModificacion?: string,
 
 
     ) { }
