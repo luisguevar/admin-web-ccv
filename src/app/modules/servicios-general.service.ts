@@ -99,31 +99,44 @@ export class ServiciosGeneralService {
     );
   }
 
-
-  allProducts(page = 1, state = '', search = '') {
+  PostProducto(data: any) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-    let LINK = "";
-
-    LINK = LINK + "&state=" + state;
-
-
-    if (search) {
-      LINK = LINK + "&search=" + search;
-    }
-    let URL = URL_SERVICIOS + "/products/all?page=" + page + LINK;
-    console.log(URL);
-    return this.http.get(URL, { headers: headers }).pipe(
+    let URL = URL_SERVICIOS + "/productos/add";
+    return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
 
-  removeProducto(data: any) {
+  PutProducto(producto_id: number, data: any) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
-    let URL = URL_SERVICIOS + "/products/remove/" + data.id;
-    return this.http.put(URL, data, { headers: headers }).pipe(
+    let URL = URL_SERVICIOS + "/productos/update/" + producto_id;
+    return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
+  addImagenProduct(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/productos/addImagen";
+    return this.http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  deleteImagenProduct(imagen_id: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/productos/removeImagen/" + imagen_id;
+    return this.http.delete(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+
+
+
 }

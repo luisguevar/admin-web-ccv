@@ -94,14 +94,24 @@ export class AddNewProductComponent implements OnInit {
     reader.onloadend = () => this.img_previzualizar = reader.result;
   }
 
-  addImages() {
-    this.images_files.push({
-      file: this.img_files,
-      show: this.img_previzualizar,
-    });
-    this.img_files = null;
-    this.img_previzualizar = null;
+ addImages(){
+    if(!this.img_files){
+      this.toaster.open(NoticyAlertComponent,{text:`warning-Inserte una imagen para continuar`});
+      return;
+    }
+    let formaData = new FormData();
+    const product_id = '0'
+    formaData.append("product_id",product_id);
+    formaData.append("file",this.img_files)
+    /* this._productService.addImagenProduct(formaData).subscribe((resp:any) => {
+      this.img_files = null;
+      this.img_previzualizar = null;
+      this.images_files.unshift(resp.imagen);
+    }) */
   }
+
+ 
+
 
   removeImages(index) {
     this.images_files.splice(index, 1);

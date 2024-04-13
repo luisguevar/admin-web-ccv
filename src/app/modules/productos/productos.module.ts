@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProductosRoutingModule } from './productos-routing.module';
-import { AddProductoComponent } from './add-producto/add-producto.component';
-import { EditProductoComponent } from './edit-producto/edit-producto.component';
 import { ProductosComponent } from './productos.component';
 import { ListadoProductosComponent } from './listado-productos/listado-productos.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,7 +16,7 @@ import { AddEditProductoComponent } from './add-edit-producto/add-edit-producto.
 
 
 @NgModule({
-  declarations: [AddProductoComponent, EditProductoComponent, ProductosComponent, ListadoProductosComponent, AddEditProductoComponent],
+  declarations: [ ProductosComponent, ListadoProductosComponent, AddEditProductoComponent],
   imports: [
     CommonModule,
     ProductosRoutingModule,

@@ -71,14 +71,34 @@ export class ListadoProductosComponent implements OnInit {
         disableClose: true,
         data: {
           bEdit: false,
-          cTitle: 'Crear Categoría',
+          cTitle: 'REGISTRAR PRODUCTO',
         },
       }
     );
 
     dialogRef.afterClosed().subscribe((result) => {
 
-      /*   this.BotonListarCategorias(); */
+      this.BotonListarProductos();
+    });
+  }
+
+  public BotonEditarProducto(producto) {
+    const dialogRef = this._dialog.open(
+      AddEditProductoComponent,
+      {
+        width: '850px',
+        disableClose: true,
+        data: {
+          bEdit: true,
+          cTitle: 'EDITAR PRODUCTO',
+          itemProducto: producto
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+      this.BotonListarProductos();
     });
   }
 

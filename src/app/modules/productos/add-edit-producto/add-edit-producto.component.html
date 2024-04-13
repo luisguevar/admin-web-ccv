@@ -1,7 +1,7 @@
 <div class="card card-custom">
     <div class="card-header">
         <div class="card-title">
-            <h3 class="card-label">NUEVO PRODUCTO</h3>
+            <h3 class="card-label">{{ cTitle }}</h3>
         </div>
         <div class="card-toolbar">
             <ul class="nav nav-bold nav-pills">
@@ -116,11 +116,22 @@
                 <div class="form-group row">
                     <div class="col-12">
                         <label class="form-label">Descripción Detallada: *</label>
-                        <!--  <textarea [(ngModel)]="cDescripcionDetallada" class="form-control" name="cDescripcionDetallada"
-                            placeholder="" rows="4"></textarea> -->
-                        <!-- app.component.html -->
+                        <editor apiKey="amv6xvm0i1obct6ugv8qhf5z9rh6872lbej63922394obv8q"
+                            [(ngModel)]="cDescripcionDetallada" [init]="{
+                            height: 250,
+                            language: 'es',
+                            plugins: [
+                                'advlist autolink lists link image charmap print preview anchor',
+                                'searchreplace visualblocks code fullscreen',
+                                'insertdatetime media table paste code help wordcount'
+                            ],
+                            toolbar:
+                                'undo redo | formatselect | bold italic backcolor | \
+                                alignleft aligncenter alignright alignjustify | \
+                                bullist numlist outdent indent | removeformat | help'
+                            }"></editor>
 
-                       
+
 
                     </div>
 
@@ -128,14 +139,97 @@
 
             </div>
             <div class="tab-pane fade" id="kt_tab_pane_7_3" role="tabpanel" aria-labelledby="kt_tab_pane_7_3">
-                general
-                detalladas
+                <div class="form-group row">
+                    <div class="col-6">
+
+                        <label class="form-label">Imagen Principal: *</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile"
+                                accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+
+                        <div class="contenedor-imagen">
+                            <div class="col-12 py-2" *ngIf="imagen_previzualiza">
+                                <img [src]="imagen_previzualiza" class="w-100" alt="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Galería de Imágenes: *</label>
+                        <div class="d-flex">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile"
+                                    accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="addFile($event)">
+                                <label class="custom-file-label" for="customFile">Escoge una imagen</label>
+                            </div>
+                            <button class="ml-5 btn btn-sm btn-primary" (click)="addImages()">+</button>
+                        </div>
+                        <span *ngIf="img_files"> <b>IMAGEN: {{ img_files.name }}</b> </span>
+                        <div class="table-responsive w-100">
+                            <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                                <thead>
+                                    <tr class="text-left">
+                                        <th>IMAGEN</th>
+                                        <th>NOMBRE</th>
+                                        <th>ACCIÓN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let imagen_ of images_files;let i=index">
+                                        <td style="width: 27%;">
+                                            <img [src]="imagen_.imagen" class="w-100" alt="">
+                                        </td>
+                                        <td>{{ imagen_.file_name }}</td>
+                                        <td>
+                                            <button class="ml-5 btn btn-sm btn-danger"
+                                                (click)="removeImages(imagen_)">-</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="tab-pane fade" id="kt_tab_pane_7_4" role="tabpanel" aria-labelledby="kt_tab_pane_7_4">
-                Proveedor
-                Precio compra
-                fecha de compra
+                <div class="form-group row">
+
+
+                    <div class="col-8">
+                        <label class="form-label">Proveedor : *</label>
+                        <select name="categorie_id" class="form-control form-control-solid form-control-lg"
+                            [(ngModel)]="proveedor_id">
+                            <option value="0" selected disabled>Seleccione un proveedor</option>
+                           <!--  <ng-container *ngFor="let categorie of categorias">
+                                <option [value]="proveedor_id.id">{{ categorie.cDescripcion }}</option>
+                            </ng-container>
+ -->
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-6">
+                        <label class="form-label">Precio Compra (PEN): *</label>
+                        <input type="number" class="form-control form-control-solid form-control-lg"
+                            name="nPrecioCompra" placeholder="Precio Compra" autocomplete="off"
+                            [(ngModel)]="nPrecioCompra">
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label">Fecha Compra: *</label>
+                        <div class="input-group input-group-solid">
+                            <input [(ngModel)]="dFechaCompra" name="dFechaCompra" type="date"
+                                class="form-control form-control-lg form-control-solid" />
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

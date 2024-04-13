@@ -81,7 +81,7 @@
                                 *ngIf="product.nEstado == 2">Publicado</span>
                         </td>
                         <td style="display: flex;">
-                            <a [routerLink]="['/products/edit-product',product.id]"
+                            <a (click)="BotonEditarProducto(product)"
                                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
                                 ngbTooltip="Editar Producto" ngbTooltipClass="kt-tooltip">
                                 <span class="svg-icon svg-icon-md svg-icon-primary">
