@@ -79,7 +79,7 @@ export class EditProveedorComponent implements OnInit {
 
       this.proveedor = resp.proveedor;
       this.contactos = resp.contactos;
-      this.productos = resp.productos.data;
+     /*  this.productos = resp.productos.data; */
 
       this.title = this.proveedor.razon_social;
 

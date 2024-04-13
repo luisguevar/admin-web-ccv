@@ -17,9 +17,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';/* 
 import { SpinnerInterceptor } from 'src/app/shared/interceptors/spinner.interceptor'; */
 import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
+import { GestionarProveedorComponent } from './gestionar-proveedor/gestionar-proveedor.component';
 
 @NgModule({
-  declarations: [ProveedoresComponent, AddNewProveedorComponent, ListProveedorComponent, EditProveedorComponent, DeleteProveedorComponent],
+  declarations: [ProveedoresComponent, AddNewProveedorComponent, ListProveedorComponent, EditProveedorComponent, DeleteProveedorComponent, GestionarProveedorComponent],
   imports: [
     CommonModule,
     ProveedoresRoutingModule,

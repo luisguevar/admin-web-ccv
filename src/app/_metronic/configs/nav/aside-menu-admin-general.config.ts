@@ -104,7 +104,7 @@ export const AsideMenuAdminGeneral = {
       ],
 
     },
-    {
+    /* {
       title: 'Productos',
       root: true,
       name: "products",
@@ -122,10 +122,10 @@ export const AsideMenuAdminGeneral = {
           page: '/products/list-product'
         }
       ]
-    },
+    }, */
 
     {
-      title: 'Productosv2',
+      title: 'Productos',
       root: true,
       name: "productos",
       bullet: 'dot',
@@ -133,12 +133,12 @@ export const AsideMenuAdminGeneral = {
       svg: './assets/media/svg/icons/Home/Armchair.svg',
       page: '/productos',
       submenu: [
+        /*  {
+           title: 'Crear Producto',
+           page: '/productos/add-producto'
+         }, */
         {
-          title: 'Crear Producto',
-          page: '/productos/add-producto'
-        },
-        {
-          title: 'Lista de Productos',
+          title: 'Gestión de Productos',
           page: '/productos/listado-productos'
         }
       ]
@@ -160,6 +160,10 @@ export const AsideMenuAdminGeneral = {
         {
           title: 'Lista de Proveedores',
           page: '/proveedores/list-proveedor'
+        },
+        {
+          title: 'Gestión de Proveedores',
+          page: '/proveedores/gestionar-proveedores'
         }
       ]
     },

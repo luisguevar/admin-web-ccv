@@ -44,7 +44,6 @@ export class ListadoCategoriasComponent implements OnInit {
 
 
     public confirmService: ConfirmService,
-    /*   public toaster: Toaster, */
     private _dialog: MatDialog,
     public _service: ServiciosGeneralService,
     public toaster: Toaster,
@@ -56,10 +55,10 @@ export class ListadoCategoriasComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
     this.BotonListarCategorias();
-    /*  this.allCategories(); */
   }
 
   public BotonListarCategorias() {
+    this.search = '';
     this._service.GetCategorias(this.cboEstado.value).subscribe((resp: any) => {
       console.log('CATEGORIAS. ', resp);
       this.categorias = resp.categorias;
@@ -78,7 +77,7 @@ export class ListadoCategoriasComponent implements OnInit {
         disableClose: true,
         data: {
           bEdit: false,
-          cTitle: 'Crear Categoría',
+          cTitle: 'REGISTRAR CATEGORÍA',
         },
       }
     );
@@ -99,7 +98,7 @@ export class ListadoCategoriasComponent implements OnInit {
         disableClose: true,
         data: {
           bEdit: true,
-          cTitle: 'Editar Categoría',
+          cTitle: 'EDITAR CATEGORÍA',
           categoria: categoria
         },
       }

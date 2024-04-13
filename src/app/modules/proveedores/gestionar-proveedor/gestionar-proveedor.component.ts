@@ -1,41 +1,40 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ProveedorService } from '../_service/proveedor.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { URL_BACKEND } from 'src/app/config/config';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Toaster } from 'ngx-toast-notifications';
-import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
-import { PageEvent } from '@angular/material/paginator';
-import { DeleteProveedorComponent } from '../delete-proveedor/delete-proveedor.component';
-import { Workbook } from 'exceljs';
 import { AuthService } from '../../auth';
+import { ServiciosGeneralService } from '../../servicios-general.service';
+import { PageEvent } from '@angular/material/paginator';
+import { ProveedorEntity } from 'src/app/Models/ProveedorEntity';
+import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import { ConfirmService } from 'src/app/shared/confirm/confirm.service';
-import { ServiciosGeneralService } from '../../servicios-general.service';
-import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-list-proveedor',
-  templateUrl: './list-proveedor.component.html',
-  styleUrls: ['./list-proveedor.component.scss']
+  selector: 'app-gestionar-proveedor',
+  templateUrl: './gestionar-proveedor.component.html',
+  styleUrls: ['./gestionar-proveedor.component.scss']
 })
-export class ListProveedorComponent implements OnInit {
+export class GestionarProveedorComponent implements OnInit {
+
   isLoading$;
   search: any = null;
-
-  proveedores: any = [];
-
-  filteredProveedores: any = [];
-
-
-
-
   //paginacion
   pageSize = 5;
   desde: number = 0;
   hasta: number = 5;
 
+  vendedor_nombre: string = null;
+  cTitle: string = "";
+
+  proveedores: any = [];
+  filteredProveedores: any = [];
+
+
+  bNuevo: boolean = false;
   //filtro
-  cboEstado: FormControl = new FormControl(-1);
+  cboEstado: FormControl = new FormControl(1);
+  cboEstadoItem: FormControl = new FormControl(1);
 
   //listas
   lstEstados = [
@@ -43,27 +42,52 @@ export class ListProveedorComponent implements OnInit {
     { nIdEstado: 1, cEstado: 'Activo' },
     { nIdEstado: 0, cEstado: 'Inactivo' },
   ];
+  lstEstadosItem = [
+    { nIdEstado: 1, cEstado: 'Activo' },
+    { nIdEstado: 0, cEstado: 'Inactivo' },
+  ];
 
+  //form
+  nTipoPersona: number = 2;
+  nTipoDocumento: number = 2;
+  cNroDocumento: string = null;
+  cRazonSocial: string = null;
+  cCelular: string = null;
+  cCorreo: string = null;
+  cPaginaWeb: string = null;
+  cDireccion: string = null;
+  cActividadPrincipal: string = null;
+  cObservaciones: string = null;
+  usuario_dni: string = "";
 
-  vendedor_nombre: string = null;
+  //
+  itemProveedor: ProveedorEntity;
+  proveedor_id: number = 0;
+  bEdit: boolean = false;
+  listaContactos: any;
+  listaProductos: any;
+
+  //Excel
+  private _workbook: Workbook
+  proveedor: any = null;
+  contactos: any = [];
+  productos: any = [];
 
   constructor(
-    public _proveedorService: ProveedorService,
-    public modelService: NgbModal,
     public toaster: Toaster,
-    private cdr: ChangeDetectorRef,
     public authservice: AuthService,
-    public confirmService: ConfirmService,
     public _service: ServiciosGeneralService,
-  ) { }
+    public confirmService: ConfirmService,
+  ) {
 
-  ngOnInit(): void {
-    /*   this.spinnerService.startSpinner(); */
     this.isLoading$ = this._service.isLoading$;
     this.BotonListarProveedores();
     this.vendedor_nombre = this.authservice.user.name + ' ' + this.authservice.user.surname + ' / ' + this.authservice.user.email;
+    this.usuario_dni = this.authservice.user.cDocumento;
   }
 
+  ngOnInit(): void {
+  }
 
   public BotonListarProveedores() {
     this.search = '';
@@ -74,28 +98,174 @@ export class ListProveedorComponent implements OnInit {
     })
   }
 
+  public BotonNuevoProveedor() {
+    this.bNuevo = true;
+    this.cTitle = "REGISTRAR PROVEEDOR";
+  }
 
-  allProveedores() {
+  public BotonEditarProveedor(element: ProveedorEntity) {
+    this.bNuevo = true;
+    this.cTitle = "EDITAR PROVEEDOR";
+    this.bEdit = true;
+    this.ObtenerProveedorPorId(element.id);
+  }
 
-    this._proveedorService.allProveedores(1, this.search).subscribe((resp: any) => {
-      /*  console.log('Proveedores: ', resp); */
-      this.proveedores = resp.proveedores;
-      this.filteredProveedores = [...this.proveedores];
+  public ObtenerProveedorPorId(id: number) {
+    this._service.GetProveedorPorId(id).subscribe((resp: any) => {
+      console.log('proveedor: ', resp);
+      this.itemProveedor = resp.proveedor;
+      this.proveedor_id = resp.proveedor.id;
+      this.nTipoPersona = resp.proveedor.nTipoPersona;
+      this.nTipoDocumento = resp.proveedor.nTipoDocumento;
+      this.cNroDocumento = resp.proveedor.cNroDocumento;
+      this.cRazonSocial = resp.proveedor.cRazonSocial;
+      this.cCelular = resp.proveedor.cCelular;
+      this.cCorreo = resp.proveedor.cCorreo;
+      this.cPaginaWeb = resp.proveedor.cPaginaWeb;
+      this.cDireccion = resp.proveedor.cDireccion;
+      this.cActividadPrincipal = resp.proveedor.cActividadPrincipal;
+      this.cObservaciones = resp.proveedor.cObservaciones;
+      this.cboEstadoItem.setValue(resp.proveedor.nEstado);
+
+
     })
   }
 
+
+
+
+  public BotonDescargarFicha(proveedor: ProveedorEntity) {
+    this._service.GetProveedorPorId(proveedor.id).subscribe((resp: any) => {
+      console.log('itemProveedor: ', resp.proveedor);
+      this.itemProveedor = resp.proveedor;
+      this.DescargarExcel();
+      /*  this.listaContactos = resp.contactos;
+       this.listaProductos = resp.productos.data; */
+    })
+
+
+  }
+
+
+
+  public BotonGuardarProveedor() {
+
+    const proveedor = new ProveedorEntity();
+    proveedor.id = 0;
+    proveedor.cRazonSocial = this.cRazonSocial;
+    proveedor.nTipoPersona = this.nTipoPersona;
+    proveedor.nTipoDocumento = this.nTipoPersona;
+    proveedor.cNroDocumento = this.cNroDocumento;
+    proveedor.cCelular = this.cCelular;
+    proveedor.cCorreo = this.cCorreo;
+    proveedor.cPaginaWeb = this.cPaginaWeb;
+    proveedor.cDireccion = this.cDireccion;
+    proveedor.cActividadPrincipal = this.cActividadPrincipal;
+    proveedor.cObservaciones = this.cObservaciones;
+    proveedor.nEstado = this.cboEstadoItem.value;
+    proveedor.cUsuarioCreacion = this.usuario_dni;
+    proveedor.cUsuarioModificacion = this.usuario_dni;
+
+    this._service.PostProveedor(proveedor).subscribe((resp: any) => {
+
+      console.log(resp);
+      if (resp.success) {
+        this.toaster.open(NoticyAlertComponent, { text: `primary-El Proveedor se registró exitosamente.` });
+
+        this.proveedor_id = resp.proveedor.id;
+        this.bEdit = true;
+
+      } else {
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar el Proveedor.'` });
+      }
+    },
+      (error: any) => {
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar el Proveedor.'` });
+        return;
+      }
+    )
+  }
+
+
+  public BotonActualizarProveedor() {
+    const proveedor = new ProveedorEntity();
+    proveedor.id = this.proveedor_id;
+    proveedor.cRazonSocial = this.cRazonSocial;
+    proveedor.nTipoPersona = this.nTipoPersona;
+    proveedor.nTipoDocumento = this.nTipoPersona;
+    proveedor.cNroDocumento = this.cNroDocumento;
+    proveedor.cCelular = this.cCelular;
+    proveedor.cCorreo = this.cCorreo;
+    proveedor.cPaginaWeb = this.cPaginaWeb;
+    proveedor.cDireccion = this.cDireccion;
+    proveedor.cActividadPrincipal = this.cActividadPrincipal;
+    proveedor.cObservaciones = this.cObservaciones;
+    proveedor.nEstado = this.cboEstadoItem.value;
+    proveedor.cUsuarioModificacion = this.usuario_dni;
+
+    this._service.PutProveedor(this.proveedor_id, proveedor).subscribe((resp: any) => {
+      console.log(resp);
+      if (resp.success) {
+        this.toaster.open(NoticyAlertComponent, { text: `success-'Proveedor actualizado correctamente'` });
+      } else {
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Proveedor.'` });
+      }
+    },
+      (error: any) => {
+        console.log(error);
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Proveedor.'` });
+        return;
+      }
+
+    )
+
+  }
+
+  BotonEliminarProveedor(proveedor: ProveedorEntity) {
+
+    var title = 'Remover Proveedor: ' + proveedor.cRazonSocial;
+    var mensaje = '¿Está seguro que desea remover este proveedor?';
+
+    //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
+    this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
+      .subscribe(result => {
+        if (result) {
+          /* Colocar aquí procedimiento al confirmar elimninación */
+
+          this._service.RemoveProveedor(proveedor).subscribe(
+            (resp: any) => {
+
+              if (resp.success) {
+                this.toaster.open(NoticyAlertComponent, { text: `info-El Proveedor se removió exitosamente.` });
+                proveedor.nEstado = 0;
+
+
+              } else {
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al remover El Proveedor.'` });
+              }
+            },
+            (error: any) => {
+              console.error('Error al actualizar el Proveedor:', error);
+              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al remover El Proveedor.` });
+
+            }
+          )
+        }
+
+      });
+
+  }
+
+
+
   buscarProveedores() {
-    // Filtra la lista completa de clientes según el término de búsqueda
+
     const proveedoresFiltrados = this.proveedores.filter(proveedor =>
-      proveedor.cRazonSocial.toLowerCase().includes(this.search.toLowerCase())||
+      proveedor.cRazonSocial.toLowerCase().includes(this.search.toLowerCase()) ||
       proveedor.cActividadPrincipal.toLowerCase().includes(this.search.toLowerCase())
     );
-
-
-
-    // Asigna la lista filtrada a filteredClientes y luego aplica la paginación
     this.filteredProveedores = proveedoresFiltrados;
-    this.desde = 0;  // Reinicia la paginación a la primera página
+    this.desde = 0;
     this.hasta = this.pageSize;
   }
 
@@ -106,73 +276,32 @@ export class ListProveedorComponent implements OnInit {
   }
 
 
-  reset() {
-    this.search = null;
-    this.proveedores = [];
-    this.filteredProveedores = [];
-    this.allProveedores();
-  }
-
-  /*  probarAlerta() {
-     this.toaster.open(NoticyAlertComponent, { text: `primary-La cotización se registró exitosamente.` });
- 
-   } */
-
-  delete(proveedor) {
-
-    var title = 'Eliminar Proveedor';
-    var mensaje = '¿Está seguro que desea eliminar este proveedor?';
-
-    this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
-      .subscribe(result => {
-        if (result) {
-          /* Colocar aquí procedimiento al confirmar elimninación */
-
-          this._proveedorService.removeProveedor(proveedor).subscribe(
-            (resp: any) => {
-
-              if (resp.success) {
-                this.toaster.open(NoticyAlertComponent, { text: `info-El proveedor se removió exitosamente.` });
-                this.filteredProveedores = this.filteredProveedores.filter((item) => item != proveedor)
-                return;
-              }
-            },
-            (error: any) => {
-              console.error('Error al actualizar el proveedor:', error);
-              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al eliminar el proveedor.` });
-              this.reset();
-              return;
-            }
-          )
-        }
-
-      });
-
-  }
-
-  private _workbook: Workbook
-  proveedor: any = null;
-  contactos: any = [];
-  productos: any = [];
-
-  descargarFicha(proveedor) {
-    this.toaster.open(NoticyAlertComponent, { text: `success-Descargando Ficha de Proveedor.` });
-
-    this._proveedorService.showProveedor(proveedor.id).subscribe((resp: any) => {
-      console.log('proveedor: ', resp);
-
-      this.proveedor = resp.proveedor;
-      this.contactos = resp.contactos;
-      this.productos = resp.productos.data;
-      this.descargar();
-
-    })
+  public BotonVolver() {
+    this.bNuevo = false;
+    this.BotonListarProveedores();
+    this.ResetForm();
   }
 
 
+  public ResetForm() {
+    //form
+    this.nTipoPersona = 2;
+    this.nTipoDocumento = 2;
+    this.cNroDocumento = null;
+    this.cRazonSocial = null;
+    this.cCelular = null;
+    this.cCorreo = null;
+    this.cPaginaWeb = null;
+    this.cDireccion = null;
+    this.cActividadPrincipal = null;
+    this.cObservaciones = null;
+    this.proveedor_id = 0;
+    this.bEdit = false;
+    this.cboEstadoItem.setValue(1);
+  }
 
 
-  descargar() {
+  DescargarExcel() {
 
     this._workbook = new Workbook();
     const sheet = this._workbook.addWorksheet('Reporte');
@@ -257,15 +386,15 @@ export class ListProveedorComponent implements OnInit {
 
     const celdasBody = [
 
-      { rango: 'B3', contenido: this.proveedor.razon_social },
-      { rango: 'B4', contenido: this.proveedor.correo },
-      { rango: 'B5', contenido: this.proveedor.direccion },
-      { rango: 'B6', contenido: this.proveedor.web },
-      { rango: 'B7', contenido: '' },
-      { rango: 'B9', contenido: this.proveedor.observaciones },
+      { rango: 'B3', contenido: this.itemProveedor.cRazonSocial },
+      { rango: 'B4', contenido: this.itemProveedor.cCorreo },
+      { rango: 'B5', contenido: this.itemProveedor.cDireccion },
+      { rango: 'B6', contenido: this.itemProveedor.cPaginaWeb },
+      { rango: 'B7', contenido: this.itemProveedor.cActividadPrincipal },
+      { rango: 'B9', contenido: this.itemProveedor.cObservaciones },
 
-      { rango: 'G3', contenido: this.proveedor.nroDocumento },
-      { rango: 'G4', contenido: this.proveedor.celular }
+      { rango: 'G3', contenido: this.itemProveedor.cNroDocumento },
+      { rango: 'G4', contenido: this.itemProveedor.cCelular }
     ];
 
     // Agregar contenido a las celdas y aplicar estilos
@@ -358,7 +487,7 @@ export class ListProveedorComponent implements OnInit {
     var i = 0;
     var u = 13;
 
-    for (let x1 of this.contactos) {
+    /* for (let x1 of this.contactos) {
       i = i + 1;
 
       let x2 = Object.keys(dataExcel); //Object.keys(x1);
@@ -391,7 +520,7 @@ export class ListProveedorComponent implements OnInit {
       sheet.mergeCells(mergeStartCell2, mergeEndCell2);
 
       u = u + 1;
-    }
+    } */
 
     /* 3. LISTA DE PRODUCTOS */
     sheet.mergeCells(`A${u + 1}`, `G${u + 1}`);
@@ -456,7 +585,7 @@ export class ListProveedorComponent implements OnInit {
 
     var j = 0;
 
-    for (let x1 of this.productos) {
+    /* for (let x1 of this.productos) {
       j = j + 1;
 
       let x2 = Object.keys(dataProductExcel); //Object.keys(x1);
@@ -488,11 +617,11 @@ export class ListProveedorComponent implements OnInit {
 
 
 
-    }
+    } */
 
     this._workbook.creator = this.vendedor_nombre;
 
-    const nombreArchivo = 'ccv(ficha_proveedor)' + this.proveedor.razon_social.replace(/\s/g, '') + '.xlsx';
+    const nombreArchivo = 'ccv(ficha_proveedor)' + this.itemProveedor.cRazonSocial.replace(/\s/g, '') + '.xlsx';
 
 
     this._workbook.xlsx.writeBuffer().then((data) => {
@@ -501,4 +630,5 @@ export class ListProveedorComponent implements OnInit {
     })
 
   }
+
 }
