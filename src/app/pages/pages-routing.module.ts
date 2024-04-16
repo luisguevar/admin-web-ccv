@@ -60,7 +60,7 @@ const routes: Routes = [
           ),
       },
       //Mis Modulos
-     
+
 
       {
         path: 'usuarios',
@@ -70,7 +70,13 @@ const routes: Routes = [
           ),
       },
 
-
+      {
+        path: 'clientes',
+        loadChildren: () =>
+          import('../modules/clientes/clientes.module').then(
+            (m) => m.ClientesModule
+          ),
+      },
 
       {
         path: 'categorias',
@@ -79,13 +85,7 @@ const routes: Routes = [
             (m) => m.CategoriasModule
           ),
       },
-      {
-        path: 'products',
-        loadChildren: () =>
-          import('../modules/products/products.module').then(
-            (m) => m.ProductsModule
-          ),
-      },
+
 
       {
         path: 'productos',
@@ -147,13 +147,13 @@ const routes: Routes = [
           ),
       },
 
-      {
+   /*    {
         path: 'clientes',
         loadChildren: () =>
           import('../modules/clientes/clientes.module').then(
             (m) => m.ClientesModule
           ),
-      },
+      }, */
 
 
 

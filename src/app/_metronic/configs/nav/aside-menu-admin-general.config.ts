@@ -10,7 +10,9 @@ export const AsideMenuAdminGeneral = {
       translate: 'MENU.DASHBOARD',
       bullet: 'dot',
     },
+
     { section: 'Usuario' },
+    
     {
       title: 'Usuarios',
       root: true,
@@ -27,6 +29,81 @@ export const AsideMenuAdminGeneral = {
         }
       ]
     },
+
+    {
+      title: 'Clientes',
+      root: true,
+      name: "clientes",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Communication/Group.svg',
+      page: '/clientes',
+      submenu: [
+
+        {
+          title: 'Gestionar clientes',
+          page: '/clientes/lista'
+        }
+      ]
+    },
+
+    { section: 'Productos' },
+    {
+      title: 'Categorias',
+      root: true,
+      name: "categorias",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Electric/Gas-stove.svg',
+      page: '/categorias',
+      submenu: [
+
+        {
+          title: 'Gestión de Categorias',
+          page: '/categorias/listado-categorias'
+        }
+      ],
+
+    },
+
+
+    {
+      title: 'Productos',
+      root: true,
+      name: "productos",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Home/Armchair.svg',
+      page: '/productos',
+      submenu: [
+        /*  {
+           title: 'Crear Producto',
+           page: '/productos/add-producto'
+         }, */
+        {
+          title: 'Gestión de Productos',
+          page: '/productos/listado-productos'
+        }
+      ]
+    },
+
+    {
+      title: 'Proveedores',
+      root: true,
+      name: "proveedores",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Shopping/Box2.svg',
+      page: '/proveedores',
+      submenu: [
+
+        {
+          title: 'Gestión de Proveedores',
+          page: '/proveedores/gestionar-proveedores'
+        }
+      ]
+    },
+
     { section: 'Comercial' },
     {
       title: 'Ventas',
@@ -69,104 +146,9 @@ export const AsideMenuAdminGeneral = {
 
 
 
-    {
-      title: 'Clientes',
-      root: true,
-      name: "clientes",
-      bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Communication/Group.svg',
-      page: '/clientes',
-      submenu: [
 
-        {
-          title: 'Gestionar clientes',
-          page: '/clientes/lista'
-        }
-      ]
-    },
 
-    { section: 'Productos' },
-    {
-      title: 'Categorias',
-      root: true,
-      name: "categorias",
-      bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Electric/Gas-stove.svg',
-      page: '/categorias',
-      submenu: [
 
-        {
-          title: 'Gestión de Categorias',
-          page: '/categorias/listado-categorias'
-        }
-      ],
-
-    },
-    /* {
-      title: 'Productos',
-      root: true,
-      name: "products",
-      bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Home/Armchair.svg',
-      page: '/products',
-      submenu: [
-        {
-          title: 'Crear Producto',
-          page: '/products/add-product'
-        },
-        {
-          title: 'Lista de Productos',
-          page: '/products/list-product'
-        }
-      ]
-    }, */
-
-    {
-      title: 'Productos',
-      root: true,
-      name: "productos",
-      bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Home/Armchair.svg',
-      page: '/productos',
-      submenu: [
-        /*  {
-           title: 'Crear Producto',
-           page: '/productos/add-producto'
-         }, */
-        {
-          title: 'Gestión de Productos',
-          page: '/productos/listado-productos'
-        }
-      ]
-    },
-
-    {
-      title: 'Proveedores',
-      root: true,
-      name: "proveedores",
-      bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Shopping/Box2.svg',
-      page: '/proveedores',
-      submenu: [
-        {
-          title: 'Registrar Proveedor',
-          page: '/proveedores/add-new-proveedor'
-        },
-        {
-          title: 'Lista de Proveedores',
-          page: '/proveedores/list-proveedor'
-        },
-        {
-          title: 'Gestión de Proveedores',
-          page: '/proveedores/gestionar-proveedores'
-        }
-      ]
-    },
 
     { section: 'Ecommerce' },
     {

@@ -3,7 +3,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toaster } from 'ngx-toast-notifications';
 import { CotizacionService } from '../../cotizaciones/_service/cotizacion.service';
-import { ProductsService } from '../../products/_services/products.service';
 
 @Component({
   selector: 'app-add-producto-dialog',
@@ -17,7 +16,6 @@ export class AddProductoDialogComponent implements OnInit {
     public _CotizacionService: CotizacionService,
     public modelService: NgbModal,
     public modal: NgbActiveModal,
-    public _productServices: ProductsService
   ) { }
   //paginacion
   pageSize = 3;
@@ -47,10 +45,10 @@ export class AddProductoDialogComponent implements OnInit {
     if (this.search) {
       LINK = LINK + "&search=" + this.search;
     }
-    this._productServices.allProducts(page, LINK).subscribe((resp: any) => {
+    /* this._productServices.allProducts(page, LINK).subscribe((resp: any) => {
       console.log(resp);
       this.listProductosall = resp.products.data.filter(x => (x.state != 3));
-    })
+    }) */
   }
 
   buscarProductos() {

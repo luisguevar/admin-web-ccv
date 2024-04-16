@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { ProveedoresRoutingModule } from './proveedores-routing.module';
 import { ProveedoresComponent } from './proveedores.component';
-import { AddNewProveedorComponent } from './add-new-proveedor/add-new-proveedor.component';
-import { ListProveedorComponent } from './list-proveedor/list-proveedor.component';
-import { EditProveedorComponent } from './edit-proveedor/edit-proveedor.component';
-import { DeleteProveedorComponent } from './delete-proveedor/delete-proveedor.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,7 +17,7 @@ import { GestionarProveedorComponent } from './gestionar-proveedor/gestionar-pro
 import { AddEditContactoComponent } from './add-edit-contacto/add-edit-contacto.component';
 
 @NgModule({
-  declarations: [ProveedoresComponent, AddNewProveedorComponent, ListProveedorComponent, EditProveedorComponent, DeleteProveedorComponent, GestionarProveedorComponent, AddEditContactoComponent],
+  declarations: [ProveedoresComponent,GestionarProveedorComponent, AddEditContactoComponent],
   imports: [
     CommonModule,
     ProveedoresRoutingModule,

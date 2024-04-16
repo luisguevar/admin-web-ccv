@@ -4,7 +4,6 @@ import { Toaster } from 'ngx-toast-notifications';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 import { CotizacionService } from '../_service/cotizacion.service';
 import { error } from 'console';
-import { AddClienteComponent } from '../../clientes/add-cliente/add-cliente.component';
 import { AuthService } from '../../auth';
 import { AddClienteDialogComponent } from '../../_dialog/add-cliente-dialog/add-cliente-dialog.component';
 import { AddProductoDialogComponent } from '../../_dialog/add-producto-dialog/add-producto-dialog.component';
