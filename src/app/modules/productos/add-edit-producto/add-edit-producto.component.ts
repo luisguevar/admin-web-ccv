@@ -5,6 +5,7 @@ import { Toaster } from 'ngx-toast-notifications';
 import { AuthService } from '../../auth';
 import { FormControl } from '@angular/forms';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { ProveedorEntity } from 'src/app/Models/ProveedorEntity';
 
 @Component({
   selector: 'app-add-edit-producto',
@@ -25,6 +26,7 @@ export class AddEditProductoComponent implements OnInit {
 
   itemProducto: any = null;
   categorias: any = [];
+  proveedores: ProveedorEntity[] = [];
 
   imagen_file: any = null;
   imagen_previzualiza: any = null;
@@ -73,11 +75,13 @@ export class AddEditProductoComponent implements OnInit {
   ) {
 
     this.ListarCategorias();
+    this.ListarProductos();
     this.cTitle = this.data.cTitle;
     this.bEdit = this.data.bEdit;
     if (this.bEdit) {
       this.itemProducto = this.data.itemProducto;
-      this.SetearValores();
+      /*  this.SetearValores(); */
+      this.ObtenerProductoPorId(this.itemProducto.id);
     }
     this.usuario_dni = this.authservice.user.cDocumento;
     this.bReadOnly = this.data.bReadOnly;
@@ -87,25 +91,33 @@ export class AddEditProductoComponent implements OnInit {
     this.isLoading$ = this._service.isLoading$;
   }
 
-
-  SetearValores() {
-    console.log('itemProducto:', this.itemProducto);
-    this.producto_id = this.itemProducto.id;
-    this.cDescripcion = this.itemProducto.cDescripcion;
-    this.cboEstado.setValue(this.itemProducto.nEstado);
-    this.categoria_id = this.itemProducto.categoria_id;
-    this.cSku = this.itemProducto.cSku;
-    this.nPrecioPEN = this.itemProducto.nPrecioPEN;
-    this.nPrecioUSD = this.itemProducto.nPrecioUSD;
-    this.nStock = this.itemProducto.nStock;
-    this.cResumen = this.itemProducto.cResumen;
-    this.cDescripcionDetallada = this.itemProducto.cDescripcionDetallada;
-    this.cImagen = this.itemProducto.cImagen;
-    this.imagen_previzualiza = this.itemProducto.cImagen;
-    this.images_files = this.itemProducto.images;
-    this.nPrecioCompra = this.itemProducto.nPrecioCompra;
-    this.dFechaCompra = this.itemProducto.dFechaCompra;
+  ObtenerProductoPorId(id) {
+    this._service.GetProductoPorId(id).subscribe((resp: any) => {
+      console.log('producto: ', resp.product);
+      this.itemProducto = resp.product;
+      this.producto_id = this.itemProducto.id;
+      this.cDescripcion = this.itemProducto.cDescripcion;
+      this.cboEstado.setValue(this.itemProducto.nEstado);
+      this.categoria_id = this.itemProducto.categoria_id;
+      this.proveedor_id = this.itemProducto.proveedor_id;
+      this.cSku = this.itemProducto.cSku;
+      this.nPrecioPEN = this.itemProducto.nPrecioPEN;
+      this.nPrecioUSD = this.itemProducto.nPrecioUSD;
+      this.nStock = this.itemProducto.nStock;
+      this.cResumen = this.itemProducto.cResumen;
+      this.cDescripcionDetallada = this.itemProducto.cDescripcionDetallada;
+      this.cImagen = this.itemProducto.cImagen;
+      this.imagen_previzualiza = this.itemProducto.cImagen;
+      this.images_files = this.itemProducto.images;
+      this.nPrecioCompra = this.itemProducto.nPrecioCompra;
+      this.dFechaCompra = this.itemProducto.dFechaCompra;
+    })
   }
+
+  /*  SetearValores() {
+     console.log('itemProducto:', this.itemProducto);
+ 
+   } */
 
   BotonActualizarProducto() {
     if (!this.cDescripcion || this.categoria_id == 0 || !this.cSku || !this.nPrecioPEN || !this.nPrecioUSD || !this.nStock) {
@@ -131,7 +143,7 @@ export class AddEditProductoComponent implements OnInit {
     let formaData = new FormData();
     formaData.append("cDescripcion", this.cDescripcion)
     formaData.append("categoria_id", this.categoria_id.toString())
-    formaData.append("proveedor_id", '1')
+    formaData.append("proveedor_id", this.proveedor_id.toString())
     formaData.append("cSku", this.cSku)
     formaData.append("nPrecioPEN", this.nPrecioPEN.toString())
     formaData.append("nPrecioUSD", this.nPrecioUSD.toString())
@@ -155,6 +167,7 @@ export class AddEditProductoComponent implements OnInit {
       console.log(resp);
       if (resp.success) {
         this.toaster.open(NoticyAlertComponent, { text: `success-'Producto actualizado correctamente'` });
+        this.ObtenerProductoPorId(this.producto_id);
       } else {
         this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Producto.'` });
       }
@@ -202,7 +215,7 @@ export class AddEditProductoComponent implements OnInit {
     let formaData = new FormData();
     formaData.append("cDescripcion", this.cDescripcion)
     formaData.append("categoria_id", this.categoria_id.toString())
-    formaData.append("proveedor_id", '1')
+    formaData.append("proveedor_id", this.proveedor_id.toString())
     formaData.append("cSku", this.cSku)
     formaData.append("nPrecioPEN", this.nPrecioPEN.toString())
     formaData.append("nPrecioUSD", this.nPrecioUSD.toString())
@@ -230,6 +243,7 @@ export class AddEditProductoComponent implements OnInit {
         this.toaster.open(NoticyAlertComponent, { text: `primary-El producto se registró exitosamente.` });
 
         this.producto_id = resp.producto.id;
+        this.ObtenerProductoPorId(this.producto_id);
         this.bEdit = true;
       } else {
         this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar el Producto.'` });
@@ -245,6 +259,12 @@ export class AddEditProductoComponent implements OnInit {
   public ListarCategorias() {
     this._service.GetCategorias(1).subscribe((resp: any) => {
       this.categorias = resp.categorias;
+    })
+  }
+
+  ListarProductos() {
+    this._service.GetProveedores(1).subscribe((resp: any) => {
+      this.proveedores = resp.proveedores;
     })
   }
 
