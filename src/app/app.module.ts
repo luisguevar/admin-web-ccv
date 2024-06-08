@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,7 +28,10 @@ import { ConfirmComponent } from './shared/confirm/confirm.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddEditCategoriaComponent } from './modules/categorias/add-edit-categoria/add-edit-categoria.component';
+import localEsPeru from '@angular/common/locales/es-PE';
+import { registerLocaleData } from '@angular/common';
 
+registerLocaleData(localEsPeru);
 /* import { CreatePuntoVentaComponent } from './modules/puntoVenta/create-punto-venta/create-punto-venta.component'; */
 // #fake-end#
 
@@ -83,9 +86,12 @@ function appInitializer(authService: AuthService) {
     //   multi: true,
     //   deps: [AuthService],
     // },
+    
     {
+    /*   provide: LOCALE_ID, useValue: 'es-PE', */
       provide: HIGHLIGHT_OPTIONS,
       useValue: {
+     
         coreLibraryLoader: () => import('highlight.js/lib/core'),
         languages: {
           xml: () => import('highlight.js/lib/languages/xml'),

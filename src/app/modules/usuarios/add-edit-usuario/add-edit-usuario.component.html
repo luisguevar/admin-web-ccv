@@ -10,7 +10,7 @@
             <i class="icon-2x text-dark-50 flaticon-user-add mx-2"></i> {{ cTitle }}
         </div>
     </div>
-    <div class="overlay overlay-block cursor-default modal-body" >
+    <div class="overlay overlay-block cursor-default modal-body">
         <ng-container *ngIf="isLoading$ | async">
             <div class="overlay-layer bg-transparent">
                 <div class="spinner spinner-lg spinner-success"></div>
@@ -20,14 +20,14 @@
         <form action="#" class="form form-label-right">
             <div class="form-group row">
                 <div class="col-lg-6">
-                    <label class="form-label">Nombres Completos: *</label>
+                    <label class="form-label">Nombres Completos: <span class="text-danger" *ngIf="!name">*</span>
+                    </label>
                     <input type="text" class="form-control form-control-solid form-control-lg" name="name"
                         placeholder="Nombre" autocomplete="off" [(ngModel)]="name">
-
-
                 </div>
                 <div class="col-lg-6">
-                    <label class="form-label">Apellidos Completos: *</label>
+                    <label class="form-label">Apellidos Completos: <span class="text-danger" *ngIf="!surname">*</span>
+                    </label>
                     <input type="text" class="form-control form-control-solid form-control-lg" name="surname"
                         placeholder="Apellido" autocomplete="off" [(ngModel)]="surname">
 
@@ -36,8 +36,9 @@
 
 
             <div class="form-group row ">
-                <div class="col-lg-8" [formGroup]="myForm" >
-                    <label class="form-label">Correo electrónico: *</label>
+                <div class="col-lg-8" [formGroup]="myForm">
+                    <label class="form-label">Correo electrónico: <span class="text-danger"
+                            *ngIf="!f.email.value">*</span> </label>
                     <input type="text" class="form-control form-control-solid form-control-lg" formControlName="email"
                         placeholder="Email" autocomplete="off">
                     <div *ngIf="f.email.errors && (f.email.dirty || f.email.touched)" class="text-danger">
@@ -48,7 +49,8 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <label class="form-label">Documento Identidad: *</label>
+                    <label class="form-label">Documento Identidad: <span class="text-danger"
+                            *ngIf="!documentIdentity">*</span> </label>
                     <input type="text" class="form-control form-control-solid form-control-lg" name="documentIdentity"
                         placeholder="Documento Identidad" autocomplete="off" [(ngModel)]="documentIdentity">
 
@@ -59,7 +61,8 @@
             <div class="form-group row ">
 
                 <div class="col-lg-8 ">
-                    <label class="form-label">Rol : *</label>
+                    <label class="form-label">Rol :
+                    </label>
                     <select class="form-control" name="cboRol" placeholder="Selecciona un Rol" [formControl]="cboRol">
 
                         <option *ngFor="let rol of lstRoles" [value]="rol.nIdRol">{{ rol.cRol }}
@@ -68,7 +71,8 @@
                 </div>
 
                 <div class="col-lg-4 ">
-                    <label class="form-label">Estado : *</label>
+                    <label class="form-label">Estado :
+                    </label>
                     <select class="form-control" name="cboEstado" placeholder="seleccione un estado"
                         [formControl]="cboEstado">
 
@@ -78,20 +82,34 @@
                 </div>
             </div>
             <div class="form-group row" *ngIf="!bEdit">
-                <div class="col-lg-6">
-                    <label class="form-label">Contraseña: *</label>
-                    <input type="password" class="form-control form-control-solid form-control-lg" name="password"
-                        placeholder="Contraseña" autocomplete="off" [(ngModel)]="password">
-
-
-                </div>
-                <div class="col-lg-6">
-                    <label class="form-label">Repetir Contraseña: *</label>
-                    <input type="password" class="form-control form-control-solid form-control-lg" name="rpassword"
-                        placeholder="Repetir contraseña" autocomplete="off" [(ngModel)]="rpassword">
-
+                <div class="col-lg-6" [formGroup]="myForm">
+                    <label class="form-label">Contraseña: <span class="text-danger" *ngIf="!f.password.value">*</span>
+                    </label>
+                    <input type="password" class="form-control form-control-solid form-control-lg"
+                        formControlName="password" placeholder="Contraseña" autocomplete="off">
+                    <div *ngIf="f.password.errors && (f.password.dirty || f.password.touched)" class="text-danger">
+                        <div *ngIf="f.password.errors.required">La contraseña es requerida</div>
+                        <div *ngIf="f.password.errors.minlength">La contraseña debe ser mayor a 6 caracteres</div>
+                    </div>
 
                 </div>
+
+                <div class="col-lg-6" [formGroup]="myForm">
+                    <label class="form-label">Repetir Contraseña: <span class="text-danger"
+                            *ngIf="!f.repetPassword.value">*</span>
+                    </label>
+                    <input type="password" class="form-control form-control-solid form-control-lg"
+                        formControlName="repetPassword" placeholder="Repetir Contraseña" autocomplete="off">
+                    <div *ngIf="f.repetPassword.errors && (f.repetPassword.dirty || f.repetPassword.touched)"
+                        class="text-danger">
+                        <div *ngIf="f.repetPassword.errors.required">La contraseña es requerida</div>
+                        <div *ngIf="f.repetPassword.errors.minlength">La contraseña debe ser mayor a 6 caracteres</div>
+                        <div *ngIf="f.repetPassword.errors.mismatch">Las contraseñas no coinciden</div>
+                    </div>
+                  
+                </div>
+
+
             </div>
         </form>
 
@@ -100,10 +118,12 @@
         <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
             Cerrar
         </button>
-        <button type="submit" *ngIf="!bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonGuardarUsuarios()">
+        <button [disabled]="(f.email.errors && (f.email.dirty || f.email.touched)) || !f.email.value" type="submit"
+            *ngIf="!bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonGuardarUsuarios()">
             Guardar
         </button>
-        <button type="submit" *ngIf="bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonActualizarUsuario()">
+        <button [disabled]="(f.email.errors && (f.email.dirty || f.email.touched)) || !f.email.value" type="submit"
+            *ngIf="bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonActualizarUsuario()">
             Actualizar
         </button>
     </div>

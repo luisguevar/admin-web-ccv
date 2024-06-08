@@ -9,6 +9,7 @@ import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-ale
 import { MatDialog } from '@angular/material/dialog';
 import { ServiciosGeneralService } from '../../servicios-general.service';
 import { AddEditUsuarioComponent } from '../add-edit-usuario/add-edit-usuario.component';
+import { AuthService } from '../../auth';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class ListadoUsuariosComponent implements OnInit {
   usuarios: any = [];
   filteredUsuarios: any = [];
   usuario_id: any;
+  usuario_dni: string = '';
 
   constructor(
     public fb: FormBuilder,
@@ -53,7 +55,12 @@ export class ListadoUsuariosComponent implements OnInit {
     private _dialog: MatDialog,
     public _service: ServiciosGeneralService,
     public toaster: Toaster,
-  ) { }
+    public authservice: AuthService
+  ) {
+    this.usuario_dni = this.authservice.user.cDocumento;
+
+
+  }
 
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
@@ -113,48 +120,101 @@ export class ListadoUsuariosComponent implements OnInit {
 
   BotonRemoverReiniciarUsuario(user, nAccion) {
 
-    var data: any = null;
-    this.usuario_id = user.id;
-
-    if (nAccion == 1) {
-      user.nEstado = 0
-      data = {
-        'nEstado': 0
-      }
-    } else {
-
-      data = {
-        'nEstado': 0,
-        'password': user.cDocumento
-      }
+    if (this.usuario_dni== user.cDocumento) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'No puede efectuar cambios en su propio usuario.'` });
+      return;
     }
-    this._service.PutUsuarios(this.usuario_id, data).subscribe((resp: any) => {
-      /*   console.log('CREATE: ', resp); */
-
-      if (resp.success) {
-
-        if (nAccion == 1) {
-          this.toaster.open(NoticyAlertComponent, { text: `info-'Estado actualizado correctamente'` });
-        }
-
-        if (nAccion == 2) {
-          this.toaster.open(NoticyAlertComponent, { text: `info-'Contraseña reiniciada correctamente'` });
-        }
-
-      } else {
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
-      }
 
 
-    },
-      (error: any) => {
-        /* console.error('Error al guardar la categoría:', error); */
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
-        return;
-      }
+    var title = '';
+    var mensaje = ' ';
+    if (nAccion == 1) {
+      title = 'Eliminar Usuario: ' + user.cNombres + ' ' + user.cApellidos;
+      mensaje = '¿Está seguro que desea eliminar este usuario?';
+
+      //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
+      this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
+        .subscribe(result => {
+          if (result) {
+
+            var data: any = null;
+            this.usuario_id = user.id;
+
+            data = {
+              'nEstado': 0,
+              'cUsuarioModificacion': this.usuario_id
+            }
+            this._service.PutUsuarios(this.usuario_id, data).subscribe((resp: any) => {
+              /*   console.log('CREATE: ', resp); */
+
+              if (resp.success) {
+                user.nEstado = 0;
+                this.toaster.open(NoticyAlertComponent, { text: `info-'Estado actualizado correctamente'` });
+
+              } else {
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
+              }
 
 
-    )
+            },
+              (error: any) => {
+                /* console.error('Error al guardar la categoría:', error); */
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
+                return;
+              }
+
+
+            )
+          }
+
+        });
+
+    } else {
+      title = 'Restablecer Contraseña de: ' + user.cNombres + ' ' + user.cApellidos;
+      mensaje = '¿Está seguro que desea restablecer esta contraseña?';
+
+      //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
+      this.confirmService.confirmarGrabacion({ title: title, message: mensaje })
+        .subscribe(result => {
+          if (result) {
+
+            var data: any = null;
+            this.usuario_id = user.id;
+
+            data = {
+              'password': user.cDocumento,
+              'cUsuarioModificacion': this.usuario_id
+            }
+
+            this._service.PutUsuarios(this.usuario_id, data).subscribe((resp: any) => {
+              /*   console.log('CREATE: ', resp); */
+
+              if (resp.success) {
+                this.toaster.open(NoticyAlertComponent, { text: `info-'Contraseña reiniciada correctamente'` });
+
+              } else {
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
+              }
+
+
+            },
+              (error: any) => {
+                /* console.error('Error al guardar la categoría:', error); */
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
+                return;
+              }
+
+
+            )
+          }
+
+        });
+
+    }
+
+
+
+
   }
 
 

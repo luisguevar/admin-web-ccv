@@ -130,7 +130,7 @@ export class ListadoCategoriasComponent implements OnInit {
               if (resp.success) {
                 this.toaster.open(NoticyAlertComponent, { text: `info-La categoría se removió exitosamente.` });
                 categoria.nEstado = 0;
-                console.log('resp: ', resp);
+               /*  console.log('resp: ', resp); */
 
               } else {
                 this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al remover la Categoría.'` });

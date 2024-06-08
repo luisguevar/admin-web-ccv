@@ -4,6 +4,7 @@ import { ServiciosGeneralService } from '../../servicios-general.service';
 import { Toaster } from 'ngx-toast-notifications';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { AuthService } from '../../auth';
 
 @Component({
   selector: 'app-add-edit-usuario',
@@ -34,15 +35,16 @@ export class AddEditUsuarioComponent implements OnInit {
   usuario_id: number = 0;
   name: string = null;
   surname: string = null;
-  email: string = null;
+  /*  email: string = null; */
   documentIdentity: string = null;
   role_id: number = 0;
-  password: string = null;
-  rpassword: string = null;
+  /*   password: string = null;
+    rpassword: string = null; */
   cboRol: FormControl = new FormControl(0);
   cboEstado: FormControl = new FormControl(1);
 
   myForm: FormGroup;
+  usuario_dni: string = '';
 
   constructor(
 
@@ -51,13 +53,29 @@ export class AddEditUsuarioComponent implements OnInit {
     public _service: ServiciosGeneralService,
     public toaster: Toaster,
     public fb: FormBuilder,
+    public authservice: AuthService
   ) {
+
+    this.usuario_dni = this.authservice.user.cDocumento;
 
     this.bEdit = this.data.bEdit;
     this.cTitle = this.data.cTitle;
     this.myForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
-    })
+      password: [null, [Validators.required, Validators.minLength(6)]],
+      repetPassword: [null, [Validators.required, Validators.minLength(6)]],
+    }, { validator: this.passwordsMatchValidator });
+  }
+
+  passwordsMatchValidator(formGroup: FormGroup) {
+    const password = formGroup.get('password').value;
+    const repeatPassword = formGroup.get('repetPassword').value;
+
+    if (password !== repeatPassword) {
+      formGroup.get('repetPassword').setErrors({ mismatch: true });
+    } else {
+      formGroup.get('repetPassword').setErrors(null);
+    }
   }
 
   ngOnInit(): void {
@@ -86,15 +104,16 @@ export class AddEditUsuarioComponent implements OnInit {
 
   BotonGuardarUsuarios() {
 
-    if (!this.name || !this.surname || !this.email || !this.documentIdentity || !this.password || !this.rpassword) {
+    if (!this.name || !this.surname || !this.f.email.value || !this.documentIdentity || !this.f.password.value || !this.f.repetPassword.value) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos para continuar.'` });
       return;
     }
 
-    if (this.password != this.rpassword) {
+    if (this.f.password.value != this.f.repetPassword.value) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Las contraseñas no coinciden.'` });
       return;
     }
+
     const data = {
 
       'role_id': this.cboRol.value,
@@ -111,10 +130,13 @@ export class AddEditUsuarioComponent implements OnInit {
       'name': this.name,
       'email': this.f.email.value,
       'surname': this.surname,
-      'password': this.password,
+      'password': this.f.password.value,
+      'cUsuarioCreacion': this.usuario_dni,
+      'cUsuarioModificacion': this.usuario_dni
 
     }
 
+    console.log('data: ', data);
     this._service.PostUsuarios(data).subscribe((resp: any) => {
       /* console.log('CREATE: ', resp); */
 
@@ -125,15 +147,21 @@ export class AddEditUsuarioComponent implements OnInit {
         this.bEdit = true;
         this.cTitle = 'Editar Usuario';
       } else {
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al editar el Usuario.'` });
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al guardar el Usuario.'` });
       }
 
 
     },
       (error: any) => {
 
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al editar el Usuario.'` });
-        return;
+        console.log(error);
+        if (error.status === 400 && error.error.message) {
+          let messages = '';
+
+          this.toaster.open(NoticyAlertComponent, { text: `danger-'${error.error.message}'` });
+        } else {
+          this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al guardar el Usuario.'` });
+        }
       }
 
 
@@ -161,16 +189,16 @@ export class AddEditUsuarioComponent implements OnInit {
       'name': this.name,
       'email': this.f.email.value,
       'surname': this.surname,
-
+      'cUsuarioModificacion': this.usuario_dni
     }
-
-    this._service.PutUsuarios(this.usuario_id, data ).subscribe((resp: any) => {
+    console.log('data: ', data);
+    this._service.PutUsuarios(this.usuario_id, data).subscribe((resp: any) => {
       /*   console.log('CREATE: ', resp); */
 
       if (resp.success) {
 
         this.toaster.open(NoticyAlertComponent, { text: `success-'Usuario actualizado correctamente'` });
-       
+
       } else {
         this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
       }
@@ -178,9 +206,14 @@ export class AddEditUsuarioComponent implements OnInit {
 
     },
       (error: any) => {
-        /* console.error('Error al guardar la categoría:', error); */
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
-        return;
+        console.log(error);
+        if (error.status === 400 && error.error.message) {
+
+
+          this.toaster.open(NoticyAlertComponent, { text: `danger-'${error.error.message}'` });
+        } else {
+          this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Usuario.'` });
+        }
       }
 
 
