@@ -85,7 +85,7 @@ export class ListadoUsuariosComponent implements OnInit {
         disableClose: true,
         data: {
           bEdit: false,
-          cTitle: 'Crear Usuario',
+          cTitle: 'Registrar Nuevo Usuario',
         },
       }
     );
@@ -97,7 +97,10 @@ export class ListadoUsuariosComponent implements OnInit {
   }
 
   BotonEditarUsuario(usuario: any) {
-    /*   console.log('Categoria Padre: ', categoria); */
+    if (this.usuario_dni == usuario.cDocumento) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'No puede efectuar cambios en su propio usuario.'` });
+      return;
+    }
     const dialogRef = this._dialog.open(
       AddEditUsuarioComponent,
       {
@@ -120,7 +123,7 @@ export class ListadoUsuariosComponent implements OnInit {
 
   BotonRemoverReiniciarUsuario(user, nAccion) {
 
-    if (this.usuario_dni== user.cDocumento) {
+    if (this.usuario_dni == user.cDocumento) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'No puede efectuar cambios en su propio usuario.'` });
       return;
     }

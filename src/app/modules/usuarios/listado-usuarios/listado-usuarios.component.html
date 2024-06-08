@@ -47,7 +47,7 @@
             <th class="pr-0" style="width: 50px">Nro</th>
             <th class="pr-0">Nombres</th>
             <th class="pr-0">Apellidos</th>
-            <th class="pr-0">Email</th>
+            <th class="pr-0">Correo Electrónico</th>
             <th class="pr-0">Rol</th>
             <th>Estado</th>
             <th class="pr-0">Acciones</th>
@@ -70,8 +70,9 @@
                 <span class="label label-lg label-inline label-light-danger" *ngIf="user.nEstado == 0">Inactivo</span>
               </td>
               <td>
-                <a (click)="BotonEditarUsuario(user)" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
-                  ngbTooltip="Editar Usuario" ngbTooltipClass="kt-tooltip">
+                <a (click)="BotonEditarUsuario(user)"
+                  class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1" ngbTooltip="Editar Usuario"
+                  ngbTooltipClass="kt-tooltip">
                   <span class="svg-icon svg-icon-md svg-icon-primary">
 
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"

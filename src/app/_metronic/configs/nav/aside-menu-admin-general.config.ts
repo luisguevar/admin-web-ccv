@@ -41,8 +41,8 @@ export const AsideMenuAdminGeneral = {
       submenu: [
 
         {
-          title: 'Gestionar clientes',
-          page: '/clientes/lista'
+          title: 'Gestión de clientes',
+          page: '/clientes/listado-clientes'
         }
       ]
     },

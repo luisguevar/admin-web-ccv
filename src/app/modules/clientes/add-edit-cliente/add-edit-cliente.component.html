@@ -1,1 +1,148 @@
-<p>add-edit-cliente works!</p>
+<ng-container *ngIf="isLoading">
+    <div class="progress progress-modal">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+            style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</ng-container>
+<div class="p-5">
+    <div class="d-flex">
+        <i class="icon-2x text-dark-50 flaticon-user-add mx-2"></i>
+        <h4 class="d-flex align-items-center">{{ cTitle }}</h4>
+
+    </div>
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+            <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+    </ng-container>
+    <hr class="divider">
+
+    <div class="form-group row">
+        <div class="col-lg-6 mb-3">
+            <label class="form-label">Nombres Completos: <span class="text-danger" *ngIf="!name">*</span>
+            </label>
+            <input type="text" class="form-control form-control-solid form-control-lg" name="name" placeholder="Nombres"
+                autocomplete="off" [(ngModel)]="name">
+        </div>
+        <div class="col-lg-6 mb-3">
+            <label class="form-label">Apellidos Completos: <span class="text-danger" *ngIf="!surname">*</span>
+            </label>
+            <input type="text" class="form-control form-control-solid form-control-lg" name="surname"
+                placeholder="Apellidos" autocomplete="off" [(ngModel)]="surname">
+
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-8 mb-3" [formGroup]="myForm">
+            <label class="form-label">Correo electrónico: <span class="text-danger" *ngIf="!f.email.value">*</span>
+            </label>
+            <input type="text" class="form-control form-control-solid form-control-lg" formControlName="email"
+                placeholder="Email" autocomplete="off">
+            <div *ngIf="f.email.errors && (f.email.dirty || f.email.touched)" class="text-danger">
+                <div *ngIf="f.email.errors.required">El correo es requerido.</div>
+                <div *ngIf="f.email.errors.email">Correo no válido.</div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <label class="form-label">Celular: <span class="text-danger" *ngIf="!phone">*</span>
+            </label>
+            <input type="text" class="form-control form-control-solid form-control-lg" name="phone"
+                placeholder="Celular" autocomplete="off" [(ngModel)]="phone">
+
+
+        </div>
+
+    </div>
+    <div class="form-group row ">
+
+        <div class="col-lg-4 mb-3">
+            <label class="form-label">Tipo Persona:</label>
+
+            <select [(ngModel)]="personType" name="personType" class="form-control form-control-solid form-control-lg">
+                <option value="1">Natural</option>
+                <option value="2">Jurídico</option>
+            </select>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <label class="form-label">Tipo Documento:</label>
+
+            <select [(ngModel)]="documentType" name="documentType"
+                class="form-control form-control-solid form-control-lg">
+                <!-- <option value="0">Inactivo</option> -->
+                <option value="1">DNI</option>
+                <option value="2">RUC</option>
+                <option value="3">CE</option>
+            </select>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <label class="form-label">Nro Documento: <span class="text-danger" *ngIf="!documentNumber">*</span>
+            </label>
+            <input type="text" class="form-control form-control-solid form-control-lg" name="documentNumber"
+                placeholder="Nro Documento" autocomplete="off" [(ngModel)]="documentNumber">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6 mb-3">
+            <label class="form-label">País:</label>
+
+            <select [formControl]="cboPais" name="cboPais" class="form-control form-control-solid form-control-lg">
+
+                <option *ngFor="let pais of paises" [value]="pais.id">{{ pais.nombre_pais }}</option>
+            </select>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+            <label class="form-label">Ciudad:</label>
+
+            <select [formControl]="cboCiudad" name="cboCiudad" class="form-control form-control-solid form-control-lg">
+                <option value="0" [disabled]="true">--seleccione una ciudad--</option>
+                <option *ngFor="let ciudad of ciudades" [value]="ciudad.id">{{ ciudad?.nombre_ciudad}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-8 mb-3">
+            <label class="form-label">Dirección:
+            </label>
+            <input type="text" class="form-control form-control-solid form-control-lg" name="address"
+                placeholder="Dirección" autocomplete="off" [(ngModel)]="address">
+
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <label class="form-label">Estado :
+            </label>
+            <select class="form-control" name="cboEstado" placeholder="seleccione un estado" [formControl]="cboEstado">
+
+                <option *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}
+                </option>
+            </select>
+
+        </div>
+    </div>
+    <hr class="divider">
+
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
+            Cerrar
+        </button>
+        <button [disabled]="(f.email.errors && (f.email.dirty || f.email.touched)) || !f.email.value" type="submit"
+            *ngIf="!bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonGuardarCliente()">
+            Guardar
+        </button>
+        <button [disabled]="(f.email.errors && (f.email.dirty || f.email.touched)) || !f.email.value" type="submit"
+            *ngIf="bEdit" class="btn btn-primary btn-elevate mr-2" (click)="BotonActualizarCliente()">
+            Actualizar
+        </button>
+    </div>
+
+
+</div>

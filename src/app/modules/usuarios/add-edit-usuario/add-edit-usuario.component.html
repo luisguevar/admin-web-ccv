@@ -65,7 +65,7 @@
                     </label>
                     <select class="form-control" name="cboRol" placeholder="Selecciona un Rol" [formControl]="cboRol">
 
-                        <option *ngFor="let rol of lstRoles" [value]="rol.nIdRol">{{ rol.cRol }}
+                        <option [disabled]="bBloqueo" *ngFor="let rol of lstRoles" [value]="rol.nIdRol">{{ rol.cRol }}
                         </option>
                     </select>
                 </div>
@@ -76,7 +76,7 @@
                     <select class="form-control" name="cboEstado" placeholder="seleccione un estado"
                         [formControl]="cboEstado">
 
-                        <option *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}
+                        <option [disabled]="bBloqueo" *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}
                         </option>
                     </select>
                 </div>

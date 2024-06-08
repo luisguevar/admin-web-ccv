@@ -46,6 +46,8 @@ export class AddEditUsuarioComponent implements OnInit {
   myForm: FormGroup;
   usuario_dni: string = '';
 
+  bBloqueo:boolean = false;
+
   constructor(
 
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -57,9 +59,9 @@ export class AddEditUsuarioComponent implements OnInit {
   ) {
 
     this.usuario_dni = this.authservice.user.cDocumento;
-
     this.bEdit = this.data.bEdit;
     this.cTitle = this.data.cTitle;
+    this.bBloqueo = this.data.bMismoUsuario;
     this.myForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(6)]],

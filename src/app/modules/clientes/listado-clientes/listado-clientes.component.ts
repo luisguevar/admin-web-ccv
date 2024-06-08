@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { ServiciosGeneralService } from '../../servicios-general.service';
 import { Toaster } from 'ngx-toast-notifications';
+import { AddEditClienteComponent } from '../add-edit-cliente/add-edit-cliente.component';
+import { ConfirmService } from 'src/app/shared/confirm/confirm.service';
+import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 
 @Component({
   selector: 'app-listado-clientes',
@@ -36,12 +39,14 @@ export class ListadoClientesComponent implements OnInit {
   ];
   filteredClientes: any = [];
   clientes: any;
+  cliente_id: number = 0;
 
 
   constructor(
     private _dialog: MatDialog,
     public _service: ServiciosGeneralService,
     public toaster: Toaster,
+    public confirmService: ConfirmService,
   ) { }
 
   ngOnInit(): void {
@@ -50,18 +55,97 @@ export class ListadoClientesComponent implements OnInit {
   }
 
   public BotonListarClientes() {
-
+    this.search = '';
+    this._service.GetClientes(this.cboEstado.value).subscribe((resp: any) => {
+      /* console.log(resp); */
+      this.clientes = resp.clientes;
+      this.filteredClientes = [...this.clientes];
+    });
   }
 
   public BotonNuevoCliente() {
+    const dialogRef = this._dialog.open(
+      AddEditClienteComponent,
+      {
+        width: '650px',
+        disableClose: true,
+        data: {
+          bEdit: false,
+          cTitle: 'Registrar Nuevo Cliente',
+        },
+      }
+    );
 
+    dialogRef.afterClosed().subscribe((result) => {
+
+      this.BotonListarClientes();
+    });
   }
 
   public BotonEditarCliente(cliente) {
+    const dialogRef = this._dialog.open(
+      AddEditClienteComponent,
+      {
+        width: '650px',
+        disableClose: true,
+        data: {
+          bEdit: true,
+          cTitle: 'Editar Cliente',
+          cliente: cliente
+        },
+      }
+    );
 
+    dialogRef.afterClosed().subscribe((result) => {
+
+      this.BotonListarClientes();
+    });
   }
 
   public BotonRemoverCliente(cliente) {
+    var title = '';
+    var mensaje = ' ';
+
+    title = 'Eliminar Cliente: ' + cliente.cNombres + ' ' + cliente.cApellidos;
+    mensaje = '¿Está seguro que desea eliminar este cliente?';
+
+    //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
+    this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
+      .subscribe(result => {
+        if (result) {
+
+          var data: any = null;
+          this.cliente_id = cliente.id;
+
+          data = {
+            'nEstado': 0,
+            'cUsuarioModificacion': this.cliente_id
+          }
+          this._service.PutClientes(this.cliente_id, data).subscribe((resp: any) => {
+            /*   console.log('CREATE: ', resp); */
+
+            if (resp.success) {
+              cliente.nEstado = 0;
+              this.toaster.open(NoticyAlertComponent, { text: `info-'Estado actualizado correctamente'` });
+
+            } else {
+              this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Cliente.'` });
+            }
+
+
+          },
+            (error: any) => {
+              /* console.error('Error al guardar la categoría:', error); */
+              this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Cliente.'` });
+              return;
+            }
+
+
+          )
+        }
+
+      });
+
 
   }
 
@@ -70,7 +154,8 @@ export class ListadoClientesComponent implements OnInit {
     const usuariosFiltrados = this.clientes.filter(user =>
       user.cNombres.toLowerCase().includes(this.search.toLowerCase()) ||
       user.cApellidos.toLowerCase().includes(this.search.toLowerCase()) ||
-      user.cCorreo.toLowerCase().includes(this.search.toLowerCase())
+      user.cCorreo.toLowerCase().includes(this.search.toLowerCase()) ||
+      user.cNroDocumento.toLowerCase().includes(this.search.toLowerCase())
     );
 
     // Asigna la lista filtrada a filteredClientes y luego aplica la paginación
