@@ -114,9 +114,9 @@ export class ListadoCategoriasComponent implements OnInit {
 
 
   BotonEliminarCategoria(categoria) {
-    console.log('categoria: ', categoria);
-    var title = 'Remover Categoría: ' + categoria.name;
-    var mensaje = '¿Está seguro que desea remover esta categoría?';
+    /*  console.log('categoria: ', categoria); */
+    var title = 'Eliminar Categoría: ' + categoria.cDescripcion;
+    var mensaje = '¿Está seguro que desea eliminar esta categoría?';
 
     //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
     this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
@@ -128,17 +128,20 @@ export class ListadoCategoriasComponent implements OnInit {
             (resp: any) => {
 
               if (resp.success) {
-                this.toaster.open(NoticyAlertComponent, { text: `info-La categoría se removió exitosamente.` });
+                this.toaster.open(NoticyAlertComponent, { text: `info-La categoría se actualizó exitosamente.` });
                 categoria.nEstado = 0;
-               /*  console.log('resp: ', resp); */
+                if (this.cboEstado.value == 1) {
+                  this.filteredCategorias = this.filteredCategorias.filter(x => x != categoria);
+                }
+                /*  console.log('resp: ', resp); */
 
               } else {
-                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al remover la Categoría.'` });
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizó la Categoría.'` });
               }
             },
             (error: any) => {
               console.error('Error al actualizar la categoría:', error);
-              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al remover la categoría.` });
+              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al actualizar la categoría.` });
 
             }
           )
@@ -149,7 +152,16 @@ export class ListadoCategoriasComponent implements OnInit {
   }
 
   public BuscarCategorias() {
+    // Filtra la lista completa de clientes según el término de búsqueda
+    const categoriasFiltradas = this.categorias.filter(user =>
+      user.cDescripcion.toLowerCase().includes(this.search.toLowerCase()) ||
+      user.cIcono.toLowerCase().includes(this.search.toLowerCase()) 
+    );
 
+    // Asigna la lista filtrada a filteredClientes y luego aplica la paginación
+    this.filteredCategorias = categoriasFiltradas;
+    this.desde = 0;  // Reinicia la paginación a la primera página
+    this.hasta = this.pageSize;
   }
 
 

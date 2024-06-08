@@ -126,6 +126,9 @@ export class ListadoClientesComponent implements OnInit {
 
             if (resp.success) {
               cliente.nEstado = 0;
+              if (this.cboEstado.value == 1) {
+                this.filteredClientes = this.filteredClientes.filter(x => x != cliente);
+              }
               this.toaster.open(NoticyAlertComponent, { text: `info-'Estado actualizado correctamente'` });
 
             } else {

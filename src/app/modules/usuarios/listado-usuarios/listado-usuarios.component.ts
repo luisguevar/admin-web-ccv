@@ -152,6 +152,10 @@ export class ListadoUsuariosComponent implements OnInit {
 
               if (resp.success) {
                 user.nEstado = 0;
+                if (this.cboEstado.value == 1) {
+                  this.filteredUsuarios = this.filteredUsuarios.filter(x => x != user);
+                }
+
                 this.toaster.open(NoticyAlertComponent, { text: `info-'Estado actualizado correctamente'` });
 
               } else {

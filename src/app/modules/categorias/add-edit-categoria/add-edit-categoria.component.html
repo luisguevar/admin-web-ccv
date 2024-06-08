@@ -21,19 +21,19 @@
             <div class="form-group row">
 
                 <div class="col-6">
-                    <div class="col-12">
-                        <label class="form-label">Nombre de categoria: *</label>
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Nombre de categoria: <span class="text-danger" *ngIf="!descripcion">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-lg" name="descripcion"
                             placeholder="Nombre" autocomplete="off" [(ngModel)]="descripcion">
                     </div>
-                    <div class="col-12 py-2">
-                        <label class="form-label">Icono de categoria: *</label>
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Icono de categoria:  <span class="text-danger" *ngIf="!icono">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-lg" name="icono"
                             placeholder="Icono" autocomplete="off" [(ngModel)]="icono">
                     </div>
 
                     <div class="col-12 py-2">
-                        <label class="form-label">Estado : *</label>
+                        <label class="form-label">Estado:</label>
                         <select class="form-control" name="cboEstado" placeholder="Filtrar por Estado"
                             [formControl]="cboEstado">
 
@@ -45,7 +45,7 @@
 
                 <div class="col-6">
                     <div class="col-12 py-2">
-                        <label class="form-label">Sube tu imagen: *</label>
+                        <label class="form-label">Sube tu imagen:  <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="customFile"
                                 accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
