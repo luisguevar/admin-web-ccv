@@ -117,15 +117,31 @@ export class ServiciosGeneralService {
     );
   }
 
-  GetProductos(nEstado: number) {
+  GetProductos(nEstado: number, categoria_id: number, nTipoStock: number, startDate: any, endDate: any) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
 
-    let URL = URL_SERVICIOS + "/productos/all?nEstado=" + nEstado;
+    let URL = URL_SERVICIOS + "/productos/sp_all?nEstado=" + nEstado
+      + "&categoria_id=" + categoria_id
+      + "&nTipoStock=" + nTipoStock;
+
+    // Verificar si startDate y endDate son válidos y convertirlos a string
+    if (startDate) {
+      const start = new Date(startDate);
+      URL += "&fechaInicio=" + start.toISOString().split('T')[0];
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+      URL += "&fechaFin=" + end.toISOString().split('T')[0];
+    }
+
     return this.http.get(URL, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
+
 
   GetProductoPorId(producto_id) {
     this.isLoadingSubject.next(true);

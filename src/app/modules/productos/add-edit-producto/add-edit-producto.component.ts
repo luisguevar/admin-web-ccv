@@ -41,9 +41,9 @@ export class AddEditProductoComponent implements OnInit {
   cboEstado: FormControl = new FormControl(1);
   categoria_id: number = 0;
   cSku: string = '';
-  nPrecioPEN: number = null;
-  nPrecioUSD: number = null;
-  nStock: number = null;
+  nPrecioPEN: number = 0;
+  nPrecioUSD: number = 0;
+  nStock: number = 0;
 
   //DETALLES
   cResumen: string = null;
@@ -53,7 +53,7 @@ export class AddEditProductoComponent implements OnInit {
   cImagen: string = null;
   //PROVEEDOR
   proveedor_id: number = 0;
-  nPrecioCompra: number = null;
+  nPrecioCompra: number = 0;
   dFechaCompra: any = null;
 
   //listas
@@ -120,8 +120,23 @@ export class AddEditProductoComponent implements OnInit {
    } */
 
   BotonActualizarProducto() {
-    if (!this.cDescripcion || this.categoria_id == 0 || !this.cSku || !this.nPrecioPEN || !this.nPrecioUSD || !this.nStock) {
+    if (!this.cDescripcion || this.categoria_id == 0 || !this.cSku) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos de 'GENERAL' para continuar.'` });
+      return;
+    }
+
+    if (this.nPrecioPEN <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Precio en PEN válido para continuar.'` });
+      return;
+    }
+
+    if (this.nPrecioUSD <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Precio en USD válido para continuar.'` });
+      return;
+    }
+
+    if (this.nStock <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Stock válido para continuar.'` });
       return;
     }
 
@@ -135,8 +150,14 @@ export class AddEditProductoComponent implements OnInit {
       return;
     } */
 
-    if (!this.nPrecioCompra || !this.dFechaCompra) {
+    if (!this.dFechaCompra) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos de proveedor para continuar.'` });
+      return;
+    }
+
+
+    if (this.nPrecioCompra <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Precio de compra válido para continuar.'` });
       return;
     }
 
@@ -186,8 +207,23 @@ export class AddEditProductoComponent implements OnInit {
 
   BotonGuardarProducto() {
 
-    if (!this.cDescripcion || this.categoria_id == 0 || !this.cSku || !this.nPrecioPEN || !this.nPrecioUSD || !this.nStock) {
+    if (!this.cDescripcion || this.categoria_id == 0 || !this.cSku) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos de 'GENERAL' para continuar.'` });
+      return;
+    }
+
+    if (this.nPrecioPEN <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Precio en PEN válido para continuar.'` });
+      return;
+    }
+
+    if (this.nPrecioUSD <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Precio en USD válido para continuar.'` });
+      return;
+    }
+
+    if (this.nStock <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Stock válido para continuar.'` });
       return;
     }
 
@@ -201,10 +237,17 @@ export class AddEditProductoComponent implements OnInit {
       return;
     }
 
-    if (!this.nPrecioCompra || !this.dFechaCompra) {
+    if (!this.dFechaCompra) {
       this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos de proveedor para continuar.'` });
       return;
     }
+
+
+    if (this.nPrecioCompra <= 0) {
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Ingrese un Precio de compra válido para continuar.'` });
+      return;
+    }
+
 
 
     if (this.images_files.length == 0) {

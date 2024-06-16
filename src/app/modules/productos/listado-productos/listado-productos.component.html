@@ -10,9 +10,11 @@
             <a type="button" class="btn btn-primary" (click)="BotonNuevoProducto()"><i
                     class="icon-2x text-white flaticon-file-1"></i> Nuevo Producto</a>
 
-            
+
         </div>
     </div>
+
+
     <div class="card-body">
 
         <!--  <ng-container *ngIf="isLoading$ | async">
@@ -44,19 +46,63 @@
                     (click)="BotonListarProductos()">
                     <i class="icon text-white flaticon-refresh"></i>
                 </button>
+
+                <button class="btn btn-secondary ml-2" placement="top" [ngbTooltip]="'Limpiar Filtros'"
+                    (click)="BotonLimpiarFiltros()">
+                    <!--   <i class="icon text-white flaticon-refresh"></i>  -->Limpiar Filtros
+                </button>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="row my-4">
+
+            <div class="col-3 ">
+                <select class="form-control" name="cboEstado" placeholder="Filtrar por Categoría"
+                    [formControl]="cboCategoria">
+                    <option [value]="0">Todos los stocks</option>
+                    <option *ngFor="let categorie of categorias" [value]="categorie.id">{{ categorie.cDescripcion }}
+                    </option>
+                </select>
+                <small class="form-text text-muted"><b>Filtrar</b> por
+                    Categoría</small>
+            </div>
+
+            <div class="col-3 ">
+                <select class="form-control" name="cboTipoStock" placeholder="Filtrar por Categoría"
+                    [formControl]="cboTipoStock">
+
+                    <option *ngFor="let stock of lstTipoStock" [value]="stock.id">{{ stock.cDescripcion }}
+                    </option>
+                </select>
+                <small class="form-text text-muted"><b>Filtrar</b> por
+                    Tipo Stock</small>
+            </div>
+
+            <div class="col-3">
+
+                <input type="date" class="form-control" id="startDate" name="startDate" [formControl]="startDate">
+                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Inicio</small>
+            </div>
+            <div class="col-3">
+                <input type="date" class="form-control" id="endDate" name="endDate" [formControl]="endDate">
+                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Fin</small>
+            </div>
+
+        </div>
+
+        <br>
+        <div class="table-responsive my-4">
             <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
                 <thead>
                     <tr class="text-left">
                         <th class="pr-0" style="width: 50px">Imagen</th>
-                        <th style="min-width: 150px">Nombre del producto</th>
-                        <th style="min-width: 150px">Categoría</th>
-                        <th style="min-width: 150px">Precio PEN</th>
-                        <th style="min-width: 150px">Precio USD</th>
-                        <th style="min-width: 150px">Estado</th>
+                        <th>Nombre del producto</th>
+                        <th>Categoría</th>
+                        <th>Precio PEN</th>
+                        <th>Precio USD</th>
+                        <th>Stock</th>
+                        <th>Fecha Compra</th>
+                        <th>Estado</th>
                         <th class="pr-0 ">Acciones</th>
                     </tr>
                 </thead>
@@ -64,14 +110,18 @@
                     <tr *ngFor="let product of filteredProductos | slice:desde:hasta; let i = index">
                         <td>
                             <div class="symbol symbol-50 flex-shrink-0 mr-4">
-                                <div class="symbol-label" [ngStyle]="{'background-image': 'url('+product.cImagen+')'}">
+                                <div class="symbol-label"
+                                    [ngStyle]="{'background-image': 'url('+URL_BACKEND+'storage/'+product.cImagen+')'}">
                                 </div>
                             </div>
                         </td>
-                        <td>{{ product.cDescripcion }}</td>
-                        <td>{{ product.categoria .cDescripcion }}</td>
+                        <td style="width: 20%;">{{ product.cDescripcion }}</td>
+                        <td>{{ product.cNombreCategoria }}</td>
                         <td>{{ product.nPrecioPEN }} PEN</td>
                         <td>{{ product.nPrecioUSD }} USD</td>
+                        <td *ngIf="product.nStock != 0">{{ product.nStock }}</td>
+                        <td *ngIf="product.nStock == 0"><span class="text-danger">Agotado</span></td>
+                        <td>{{ product.dFechaCompra }}</td>
                         <td>
                             <span class="label label-lg label-inline label-light-danger"
                                 *ngIf="product.nEstado == 0">Inactivo</span>
@@ -80,7 +130,7 @@
                             <span class="label label-lg label-inline label-light-success"
                                 *ngIf="product.nEstado == 2">Publicado</span>
                         </td>
-                        <td style="display: flex;">
+                        <td >
                             <a (click)="BotonEditarProducto(product)"
                                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
                                 ngbTooltip="Editar Producto" ngbTooltipClass="kt-tooltip">
@@ -103,7 +153,7 @@
                                 </span>
                             </a>
 
-                         <!--    <a (click)="delete(product)" class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                            <!--    <a (click)="delete(product)" class="btn btn-icon btn-light btn-hover-primary btn-sm"
                                 ngbTooltip="Eliminar Producto" ngbTooltipClass="kt-tooltip">
                                 <span class="svg-icon svg-icon-md svg-icon-danger">
                                  

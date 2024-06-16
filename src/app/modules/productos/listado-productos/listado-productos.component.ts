@@ -8,6 +8,7 @@ import { ServiciosGeneralService } from '../../servicios-general.service';
 import { FormControl } from '@angular/forms';
 import { AddEditProductoComponent } from '../add-edit-producto/add-edit-producto.component';
 import { MatDialog } from '@angular/material/dialog';
+import { URL_BACKEND } from 'src/app/config/config';
 
 @Component({
   selector: 'app-listado-productos',
@@ -16,7 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ListadoProductosComponent implements OnInit {
 
-
+  URL_BACKEND: any = URL_BACKEND;
   isLoading$: any = null;
 
   search: any = null;
@@ -27,6 +28,10 @@ export class ListadoProductosComponent implements OnInit {
   productos: any = [];
   //filtro
   cboEstado: FormControl = new FormControl(-1);
+  cboCategoria: FormControl = new FormControl(0);
+  cboTipoStock: FormControl = new FormControl(-1);
+  startDate: FormControl = new FormControl(null);
+  endDate: FormControl = new FormControl(null);
 
   //listas
   lstEstados = [
@@ -36,11 +41,19 @@ export class ListadoProductosComponent implements OnInit {
     { nIdEstado: 0, cEstado: 'Inactivo' },
   ];
 
+  lstTipoStock = [
+    { id: -1, cDescripcion: 'Todos los tipos de stocks' },
+    { id: 1, cDescripcion: 'Con Stock' },
+    { id: 0, cDescripcion: 'Sin Stock' },
+  ];
+
+
 
   //paginacion
   pageSize = 5;
   desde: number = 0;
   hasta: number = 5;
+  categorias: any;
 
   constructor(
     public _service: ServiciosGeneralService,
@@ -52,13 +65,22 @@ export class ListadoProductosComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoadingSubject;
     this.BotonListarProductos();
+    this.ListarCategorias();
   }
 
   public BotonListarProductos() {
     this.search = null;
-    this._service.GetProductos(this.cboEstado.value).subscribe((resp: any) => {
+    this._service.GetProductos(this.cboEstado.value,
+      this.cboCategoria.value,
+      this.cboTipoStock.value,
+      this.startDate.value,
+      this.endDate.value
+
+
+    ).subscribe((resp: any) => {
       console.log('PRODUCTOS. ', resp);
-      this.productos = resp.productos.data;
+      /*  this.productos = resp.productos.data; */
+      this.productos = resp.productos;
       this.filteredProductos = [...this.productos];
     })
   }
@@ -119,6 +141,23 @@ export class ListadoProductosComponent implements OnInit {
     /*   console.log(e); */
     this.desde = e.pageIndex * e.pageSize;
     this.hasta = this.desde + e.pageSize;
+  }
+
+  public ListarCategorias() {
+    this._service.GetCategorias(1).subscribe((resp: any) => {
+      this.categorias = resp.categorias;
+    })
+  }
+
+  public BotonLimpiarFiltros() {
+    this.search = null;
+
+    this.cboEstado.setValue(-1);
+    this.cboCategoria.setValue(0);
+    this.cboTipoStock.setValue(-1);
+    this.startDate.setValue(null);
+    this.endDate.setValue(null);
+    this.BotonListarProductos();
   }
 
 
