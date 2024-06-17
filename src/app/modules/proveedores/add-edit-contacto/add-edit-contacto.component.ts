@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Toaster } from 'ngx-toast-notifications';
 import { ProveedorContactoEntity } from 'src/app/Models/ProveedorEntity';
@@ -28,6 +28,13 @@ export class AddEditContactoComponent implements OnInit {
 
   itemContacto: ProveedorContactoEntity = null;
 
+  lstEstados = [
+
+    { nIdEstado: 1, cEstado: 'Activo' },
+    { nIdEstado: 0, cEstado: 'Inactivo' },
+  ];
+  cboEstado: FormControl = new FormControl(1);
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddEditContactoComponent>,
@@ -57,6 +64,7 @@ export class AddEditContactoComponent implements OnInit {
       this.f.email.setValue(this.itemContacto.cCorreo);
       this.nTipoDocumento = this.itemContacto.nTipoDocumento;
       this.cNroDocumento = this.itemContacto.cNroDocumento;
+      this.cboEstado.setValue(this.itemContacto.nEstado);
     }
   }
   get f() { return this.myForm.controls; }
@@ -80,7 +88,7 @@ export class AddEditContactoComponent implements OnInit {
     contacto.cCorreo = this.f.email.value;
     contacto.nTipoDocumento = this.nTipoDocumento;
     contacto.cNroDocumento = this.cNroDocumento;
-    contacto.nEstado = 1;
+    contacto.nEstado = this.cboEstado.value;
     contacto.cUsuarioCreacion = this.cUsuarioDNI;
     contacto.cUsuarioModificacion = this.cUsuarioDNI;
 
@@ -106,7 +114,7 @@ export class AddEditContactoComponent implements OnInit {
     contacto.cCorreo = this.f.email.value;
     contacto.nTipoDocumento = this.nTipoDocumento;
     contacto.cNroDocumento = this.cNroDocumento;
-    contacto.nEstado = 1;
+    contacto.nEstado = this.cboEstado.value;
     contacto.cUsuarioCreacion = this.itemContacto.cUsuarioCreacion;
     contacto.cUsuarioModificacion = this.cUsuarioDNI;
 

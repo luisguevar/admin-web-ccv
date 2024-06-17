@@ -136,7 +136,7 @@ export class ListadoCategoriasComponent implements OnInit {
                 /*  console.log('resp: ', resp); */
 
               } else {
-                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizó la Categoría.'` });
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar la Categoría.'` });
               }
             },
             (error: any) => {
@@ -155,7 +155,7 @@ export class ListadoCategoriasComponent implements OnInit {
     // Filtra la lista completa de clientes según el término de búsqueda
     const categoriasFiltradas = this.categorias.filter(user =>
       user.cDescripcion.toLowerCase().includes(this.search.toLowerCase()) ||
-      user.cIcono.toLowerCase().includes(this.search.toLowerCase()) 
+      user.cIcono.toLowerCase().includes(this.search.toLowerCase())
     );
 
     // Asigna la lista filtrada a filteredClientes y luego aplica la paginación

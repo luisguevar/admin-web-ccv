@@ -65,7 +65,22 @@ export const AsideMenuAdminGeneral = {
       ],
 
     },
+    {
+      title: 'Proveedores',
+      root: true,
+      name: "proveedores",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Shopping/Box2.svg',
+      page: '/proveedores',
+      submenu: [
 
+        {
+          title: 'Gestión de Proveedores',
+          page: '/proveedores/gestionar-proveedores'
+        }
+      ]
+    },
 
     {
       title: 'Productos',
@@ -87,22 +102,7 @@ export const AsideMenuAdminGeneral = {
       ]
     },
 
-    {
-      title: 'Proveedores',
-      root: true,
-      name: "proveedores",
-      bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Shopping/Box2.svg',
-      page: '/proveedores',
-      submenu: [
-
-        {
-          title: 'Gestión de Proveedores',
-          page: '/proveedores/gestionar-proveedores'
-        }
-      ]
-    },
+    
 
     { section: 'Comercial' },
     {

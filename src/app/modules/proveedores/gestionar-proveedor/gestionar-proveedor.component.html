@@ -1,12 +1,12 @@
 <div class="card card-custom gutter-b" *ngIf="!bNuevo">
     <div class="card-header">
         <div class="card-title">
-            <h3 class="card-label"><i class="icon-2x text-dark-50 flaticon-open-box mx-2"></i> Listado de
+            <h3 class="card-label"><i class="icon-2x text-dark-50 flaticon-open-box mx-2"></i> Lista de
                 Proveedores</h3>
         </div>
         <div class="card-toolbar">
             <a type="button" class="btn btn-primary" (click)="BotonNuevoProveedor()"><i
-                    class="icon-2x text-white flaticon-file-1"></i> Nuevo
+                    class="icon-2x text-white flaticon-file-1"></i> Registrar
                 Proveedor</a>
         </div>
     </div>
@@ -182,7 +182,8 @@
         <div class="form-group row">
 
             <div class="col-9">
-                <label class="form-label">Nombre / Razon Social: <span style="color: red;">*</span> </label>
+                <label class="form-label">Nombre / Razon Social: <span style="color: red;"
+                        *ngIf="!cRazonSocial">*</span> </label>
                 <input type="text" class="form-control form-control-solid form-control-lg" name="cRazonSocial"
                     placeholder="Nombre / Razon Social" autocomplete="off" [(ngModel)]="cRazonSocial">
             </div>
@@ -202,7 +203,8 @@
         <div class="form-group row">
 
             <div class="col-12">
-                <label class="form-label">Actividad Principal: <span style="color: red;">*</span> </label>
+                <label class="form-label">Actividad Principal: <span style="color: red;"
+                        *ngIf="!cActividadPrincipal">*</span> </label>
                 <input type="text" class="form-control form-control-solid form-control-lg" name="cActividadPrincipal"
                     placeholder="Actividad Principal" autocomplete="off" [(ngModel)]="cActividadPrincipal">
             </div>
@@ -214,12 +216,13 @@
 
 
             <div class="col-4" [formGroup]="myForm">
-                <label class="form-label">Correo Electrónico: <span style="color: red;">*</span> </label>
+                <label class="form-label">Correo Electrónico: <span class="text-danger"
+                        *ngIf="!f.email.value">*</span></label>
                 <input type="text" class="form-control form-control-solid form-control-lg" formControlName="email"
                     placeholder="Correo" autocomplete="off">
                 <div *ngIf="f.email.errors && (f.email.dirty || f.email.touched)" class="text-danger">
-                    <div *ngIf="f.email.errors.required">El correo es requerido</div>
-                    <div *ngIf="f.email.errors.email">Correo no válido</div>
+                    <div *ngIf="f.email.errors.required">El correo es requerido.</div>
+                    <div *ngIf="f.email.errors.email">Correo no válido.</div>
                 </div>
 
 
@@ -230,7 +233,8 @@
                     placeholder="Web" autocomplete="off" [(ngModel)]="cPaginaWeb">
             </div>
             <div class="col-3">
-                <label class="form-label">Celular: <span style="color: red;">*</span></label>
+                <label class="form-label">Celular: <span style="color: red;" *ngIf="!cCelular">*</span>
+                </label>
                 <input type="text" class="form-control form-control-solid form-control-lg" name="cCelular"
                     placeholder="Celular" autocomplete="off" [(ngModel)]="cCelular">
             </div>
@@ -270,7 +274,8 @@
             </div>
 
             <div class="col-4">
-                <label class="form-label">Nro Documento: <span style="color: red;">*</span></label>
+                <label class="form-label">Nro Documento: <span style="color: red;"
+                        *ngIf="!cNroDocumento">*</span></label>
                 <input type="text" class="form-control form-control-solid form-control-lg" name="cNroDocumento"
                     placeholder="Nro Documento" autocomplete="off" [(ngModel)]="cNroDocumento">
             </div>
@@ -300,7 +305,7 @@
                                 CONTACTOS
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" *ngIf="bEdit">
                             <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
 
                                 GAMA DE PRODUCTOS
@@ -336,8 +341,10 @@
                                                     <th scope="col">Nombre Completo</th>
                                                     <th scope="col">Celular</th>
                                                     <th scope="col">Correo</th>
-                                                    <th scope="col">Tipo Documento</th>
+                                                    <th scope="col">Tipo</th>
+
                                                     <th scope="col">Nro Documento</th>
+                                                    <th scope="col">Estado</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                             </thead>
@@ -349,24 +356,36 @@
                                                         <td>{{ contacto.cNombreCompleto }}</td>
                                                         <td>{{ contacto.cCelular }}</td>
                                                         <td>{{ contacto.cCorreo }}</td>
+
                                                         <td>
                                                             <span *ngIf="contacto.nTipoDocumento === 2">RUC</span>
                                                             <span *ngIf="contacto.nTipoDocumento === 1">DNI</span>
                                                         </td>
                                                         <td>{{ contacto.cNroDocumento }}</td>
+
                                                         <td>
-                                                            <a class="btn" (click)="BotonEditarContacto(contacto)">
+                                                            <span
+                                                                class="label label-lg label-inline label-light-success"
+                                                                *ngIf="contacto.nEstado === 1">Activo</span>
+                                                            <span class="label label-lg label-inline label-light-danger"
+                                                                *ngIf="contacto.nEstado === 0">Inactivo</span>
+                                                        </td>
+
+                                                        <td>
+                                                            <a class="btn" ngbTooltip="Editar Contacato"
+                                                                ngbTooltipClass="kt-tooltip"
+                                                                (click)="BotonEditarContacto(contacto)">
                                                                 <i class="flaticon-edit-1 text-primary"></i>
                                                             </a>
 
-                                                            <a class="btn" (click)="BotonRemoverContacto(contacto)">
+                                                            <a *ngIf="contacto.nEstado == 1" class="btn"
+                                                                ngbTooltip="Eliminar Contacto"
+                                                                ngbTooltipClass="kt-tooltip"
+                                                                (click)="BotonRemoverContacto(contacto)">
                                                                 <i class="flaticon-delete-1 text-danger"></i>
                                                             </a>
 
-
-
                                                         </td>
-
                                                     </tr>
                                                 </ng-container>
 
@@ -428,7 +447,7 @@
                             </div>
 
                         </div>
-                        <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel"
+                        <div *ngIf="bEdit" class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel"
                             aria-labelledby="kt_tab_pane_2_4">
                             <div class="form-group row mt-5">
                                 <div class="col-12">

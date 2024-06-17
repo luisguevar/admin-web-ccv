@@ -69,6 +69,7 @@ export class GestionarProveedorComponent implements OnInit {
   proveedor_id: number = 0;
   bEdit: boolean = false;
   listContactos: ProveedorContactoEntity[] = [];
+  listContactosv2: ProveedorContactoEntity[] = [];
   listContactosEnvio: ProveedorContactoEntity[] = [];
 
   listProductos: any;
@@ -158,6 +159,7 @@ export class GestionarProveedorComponent implements OnInit {
       console.log('itemProveedor: ', resp.proveedor);
       this.itemProveedor = resp.proveedor;
       this.listContactos = resp.contactos;
+      this.listContactosv2 = resp.contactos.filter(x => x.nEstado == 1);
       this.listProductos = resp.productos.data;
       this.DescargarExcel();
       /*  this.listaContactos = resp.contactos;
@@ -172,7 +174,7 @@ export class GestionarProveedorComponent implements OnInit {
   public BotonGuardarProveedor() {
 
     if (!this.cRazonSocial || !this.cActividadPrincipal || !this.cCelular || !this.cNroDocumento) {
-      this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete los campos obligatorios.'` });
+      this.toaster.open(NoticyAlertComponent, { text: `warning-'Complete todos los campos obligatorios para continuar.'` });
       return;
     }
 
@@ -199,7 +201,7 @@ export class GestionarProveedorComponent implements OnInit {
     proveedor.cUsuarioModificacion = this.usuario_dni;
     proveedor.listContactos = this.listContactosEnvio;
 
-    console.log('Modelo Para Guardar: ', proveedor);
+    /* console.log('Modelo Para Guardar: ', proveedor); */
 
     this._service.PostProveedor(proveedor).subscribe((resp: any) => {
 
@@ -214,7 +216,7 @@ export class GestionarProveedorComponent implements OnInit {
         this.listContactosEnvio = [];
 
       } else {
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar el Proveedor.'` });
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al guardar el Proveedor.'` });
       }
     },
       (error: any) => {
@@ -254,8 +256,6 @@ export class GestionarProveedorComponent implements OnInit {
     proveedor.cUsuarioModificacion = this.usuario_dni;
     proveedor.listContactos = this.listContactosEnvio;
 
-    console.log('Modelo Para Actualizar: ', proveedor);
-
     this._service.PutProveedor(this.proveedor_id, proveedor).subscribe((resp: any) => {
       console.log(resp);
       if (resp.success) {
@@ -279,8 +279,9 @@ export class GestionarProveedorComponent implements OnInit {
 
   BotonEliminarProveedor(proveedor: ProveedorEntity) {
 
-    var title = 'Remover Proveedor: ' + proveedor.cRazonSocial;
-    var mensaje = '¿Está seguro que desea remover este proveedor?';
+    var title = 'Eliminar Proveedor: ' + proveedor.cRazonSocial;
+    var mensaje = '¿Está seguro que desea eliminar este proveedor?';
+
 
     //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
     this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
@@ -292,17 +293,20 @@ export class GestionarProveedorComponent implements OnInit {
             (resp: any) => {
 
               if (resp.success) {
-                this.toaster.open(NoticyAlertComponent, { text: `info-El Proveedor se removió exitosamente.` });
+                this.toaster.open(NoticyAlertComponent, { text: `info-El proveedor se actualizó exitosamente.` });
                 proveedor.nEstado = 0;
+                if (this.cboEstado.value == 1) {
+                  this.filteredProveedores = this.filteredProveedores.filter(x => x != proveedor);
+                }
 
 
               } else {
-                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al remover El Proveedor.'` });
+                this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Proveedor.'` });
               }
             },
             (error: any) => {
               console.error('Error al actualizar el Proveedor:', error);
-              this.toaster.open(NoticyAlertComponent, { text: `danger-Ocurrió un error al remover El Proveedor.` });
+              this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el Proveedor.'` });
 
             }
           )
@@ -374,15 +378,27 @@ export class GestionarProveedorComponent implements OnInit {
   }
 
   public BotonRemoverContacto(contacto: ProveedorContactoEntity) {
+    var title = 'Eliminar Contacto: ' + contacto.cNombreCompleto;
+    var mensaje = '¿Está seguro que desea eliminar este contacto?';
 
-    console.log(contacto.id);
-    this.listContactos = this.listContactos.filter((item) => item != contacto);
 
-    if (contacto.id == 0) {
-      this.listContactosEnvio = this.listContactosEnvio.filter((item) => item != contacto);
-    } else {
-      this.listContactosEnvio.push({ ...contacto, nEstado: 0 });
-    }
+    //llamamos al servicio de confirmarEliminacion y le pasamos parámetros
+    this.confirmService.confirmarEliminacion({ title: title, message: mensaje })
+      .subscribe(result => {
+        if (result) {
+          console.log(contacto.id);
+          /*  this.listContactos = this.listContactos.filter((item) => item != contacto); */
+          contacto.nEstado = 0;
+          if (contacto.id == 0) {
+            this.listContactosEnvio = this.listContactosEnvio.filter((item) => item != contacto);
+          } else {
+            this.listContactosEnvio.push({ ...contacto, nEstado: 0 });
+          }
+
+
+        }
+
+      });
 
     /*  if (contacto.id != 0) {
        this.listContactosEnvio.push({ ...contacto, nEstado: 0 });
@@ -643,7 +659,7 @@ export class GestionarProveedorComponent implements OnInit {
     var i = 0;
     var u = 13;
 
-    for (let x1 of this.listContactos) {
+    for (let x1 of this.listContactosv2) {
       i = i + 1;
 
       let x2 = Object.keys(dataExcel); //Object.keys(x1);
@@ -786,5 +802,7 @@ export class GestionarProveedorComponent implements OnInit {
     })
 
   }
+
+
 
 }
