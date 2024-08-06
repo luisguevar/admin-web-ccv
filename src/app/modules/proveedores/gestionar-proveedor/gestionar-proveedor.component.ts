@@ -114,12 +114,12 @@ export class GestionarProveedorComponent implements OnInit {
 
   public BotonNuevoProveedor() {
     this.bNuevo = true;
-    this.cTitle = "REGISTRAR PROVEEDOR";
+    this.cTitle = "Registrar Nuevo Proveedor";
   }
 
   public BotonEditarProveedor(element: ProveedorEntity) {
     this.bNuevo = true;
-    this.cTitle = "EDITAR PROVEEDOR";
+    this.cTitle = "Editar Proveedor";
     this.bEdit = true;
     this.ObtenerProveedorPorId(element.id);
   }

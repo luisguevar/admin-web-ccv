@@ -93,7 +93,7 @@ export class ListadoProductosComponent implements OnInit {
         disableClose: true,
         data: {
           bEdit: false,
-          cTitle: 'REGISTRAR PRODUCTO',
+          cTitle: 'Registrar Nuevo Producto',
         },
       }
     );
@@ -125,7 +125,7 @@ export class ListadoProductosComponent implements OnInit {
   }
 
 
-  buscarProductos() {
+  InputBuscarProductos() {
 
     const productosFiltrados = this.productos.filter(p =>
       p.cDescripcion.toLowerCase().includes(this.search.toLowerCase())

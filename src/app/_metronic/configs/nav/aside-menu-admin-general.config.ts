@@ -12,7 +12,7 @@ export const AsideMenuAdminGeneral = {
     },
 
     { section: 'Usuario' },
-    
+
     {
       title: 'Usuarios',
       root: true,
@@ -102,9 +102,9 @@ export const AsideMenuAdminGeneral = {
       ]
     },
 
-    
 
-    { section: 'Comercial' },
+
+    { section: 'Ventas' },
     {
       title: 'Ventas',
       root: true,
@@ -130,25 +130,16 @@ export const AsideMenuAdminGeneral = {
       name: "cotizaciones",
       bullet: 'dot',
       icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Files/Selected-file.svg',
+      svg: './assets/media/svg/icons/Shopping/Box2.svg',
       page: '/cotizaciones',
       submenu: [
+
         {
-          title: 'Crear Cotización',
-          page: '/cotizaciones/add-new-cotizacion'
-        },
-        {
-          title: 'Lista de Cotizaciones',
-          page: '/cotizaciones/list-cotizacion'
+          title: 'Gestión de Cotizaciones',
+          page: '/cotizaciones/gestionar-cotizaciones'
         }
       ]
     },
-
-
-
-
-
-
 
     { section: 'Ecommerce' },
     {

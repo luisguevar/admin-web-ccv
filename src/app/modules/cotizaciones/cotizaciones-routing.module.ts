@@ -4,28 +4,23 @@ import { CotizacionesComponent } from './cotizaciones.component';
 import { AddNewCotizacionComponent } from './add-new-cotizacion/add-new-cotizacion.component';
 import { ListCotizacionComponent } from './list-cotizacion/list-cotizacion.component';
 import { EditCotizacionComponent } from './edit-cotizacion/edit-cotizacion.component';
+import { GestionarCotizacionComponent } from './gestionar-cotizacion/gestionar-cotizacion.component';
 
 const routes: Routes = [{
   path: '',
   component: CotizacionesComponent,
   children: [
+
+
     {
-      path: 'add-new-cotizacion',
-      component: AddNewCotizacionComponent
+      path: 'gestionar-cotizaciones',
+      component: GestionarCotizacionComponent
     },
     {
-      path: 'list-cotizacion',
-      component: ListCotizacionComponent
+      path: '', redirectTo: 'gestionar-cotizaciones', pathMatch: 'full',
     },
     {
-      path: 'edit-cotizacion/:id',
-      component: EditCotizacionComponent
-    },
-    {
-      path: '', redirectTo: 'add-cotizacion', pathMatch: 'full',
-    },
-    {
-      path: '**', redirectTo: 'add-cotizacion', pathMatch: 'full',
+      path: '**', redirectTo: 'gestionar-cotizaciones', pathMatch: 'full',
     }
   ]
 }];

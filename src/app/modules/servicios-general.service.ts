@@ -12,6 +12,7 @@ export class ServiciosGeneralService {
 
   isLoading$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
+  
 
   constructor(
     private http: HttpClient,
@@ -65,6 +66,15 @@ export class ServiciosGeneralService {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/clientes/add";
+    return this.http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PostClientesRapido(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/addClienteRapido";
     return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -231,6 +241,78 @@ export class ServiciosGeneralService {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/proveedores/remove/" + data.id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  /* GetCotizaciones(nEstado: number, cCorrelativo: string,) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let URL = URL_SERVICIOS + "/cotizaciones/all?nEstado=" + nEstado;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  } */
+
+  GetCotizaciones(nEstado: number, cCorrelativo: string, startDate: any, endDate: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let URL = URL_SERVICIOS + "/cotizaciones/all?nEstado=" + nEstado
+
+    if (cCorrelativo) {
+      const corrrelativo = cCorrelativo;
+      URL += "&dFechaEmisionInicio=" + cCorrelativo;
+    }
+    if (startDate) {
+      const start = new Date(startDate);
+      URL += "&dFechaEmisionInicio=" + start.toISOString().split('T')[0];
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+      URL += "&dFechaEmisionFin=" + end.toISOString().split('T')[0];
+    }
+
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  GetCotizacionPorId(cotizacion_id) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/show_cotizacion/" + cotizacion_id;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PostCotizacion(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/add";
+    return this.http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+  PutCotizacion(cotizacion_id: number, data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/update/" + cotizacion_id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  RemoveCotizacion(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/remove/" + data.id;
     return this.http.put(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );

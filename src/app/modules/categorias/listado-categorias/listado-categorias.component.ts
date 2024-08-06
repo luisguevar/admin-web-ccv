@@ -77,7 +77,7 @@ export class ListadoCategoriasComponent implements OnInit {
         disableClose: true,
         data: {
           bEdit: false,
-          cTitle: 'REGISTRAR CATEGORÍA',
+          cTitle: 'Registar Nueva Categoría',
         },
       }
     );

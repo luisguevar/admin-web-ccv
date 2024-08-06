@@ -8,7 +8,7 @@
             <!-- <a type="button" class="btn btn-primary" routerLink="/productos/add-producto"><i
                     class="icon-2x text-white flaticon-file-1"></i> Nuevo Producto</a> -->
             <a type="button" class="btn btn-primary" (click)="BotonNuevoProducto()"><i
-                    class="icon-2x text-white flaticon-file-1"></i> Nuevo Producto</a>
+                    class="icon-2x text-white flaticon-file-1"></i> Registrar Producto</a>
 
 
         </div>
@@ -34,7 +34,7 @@
 
             <div class="col-6">
                 <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
-                    [(ngModel)]="search" (input)="buscarProductos()" />
+                    [(ngModel)]="search" (input)="InputBuscarProductos()" />
                 <small class="form-text text-muted">
                     <b>Buscar</b>
                     Producto
@@ -59,7 +59,7 @@
             <div class="col-3 ">
                 <select class="form-control" name="cboEstado" placeholder="Filtrar por Categoría"
                     [formControl]="cboCategoria">
-                    <option [value]="0">Todos los stocks</option>
+                    <option [value]="0">Todas las categorías</option>
                     <option *ngFor="let categorie of categorias" [value]="categorie.id">{{ categorie.cDescripcion }}
                     </option>
                 </select>
@@ -81,11 +81,11 @@
             <div class="col-3">
 
                 <input type="date" class="form-control" id="startDate" name="startDate" [formControl]="startDate">
-                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Inicio</small>
+                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Desde</small>
             </div>
             <div class="col-3">
                 <input type="date" class="form-control" id="endDate" name="endDate" [formControl]="endDate">
-                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Fin</small>
+                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Hasta</small>
             </div>
 
         </div>

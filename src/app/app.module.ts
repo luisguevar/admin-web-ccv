@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddEditCategoriaComponent } from './modules/categorias/add-edit-categoria/add-edit-categoria.component';
 import localEsPeru from '@angular/common/locales/es-PE';
 import { registerLocaleData } from '@angular/common';
+import { BuscadorProductosComponent } from './modules/_dialog/buscador-productos/buscador-productos.component';
 
 registerLocaleData(localEsPeru);
 /* import { CreatePuntoVentaComponent } from './modules/puntoVenta/create-punto-venta/create-punto-venta.component'; */
@@ -45,7 +46,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent, NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent, AddEditCategoriaComponent],
+  declarations: [AppComponent, NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent, AddEditCategoriaComponent, BuscadorProductosComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

@@ -7,7 +7,7 @@ const routes: Routes = [{
   path: '',
   component: ProveedoresComponent,
   children: [
-  
+
 
     {
       path: 'gestionar-proveedores',

@@ -13,9 +13,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { GestionarCotizacionComponent } from './gestionar-cotizacion/gestionar-cotizacion.component';
+import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
 
 @NgModule({
-  declarations: [CotizacionesComponent, AddNewCotizacionComponent, ListCotizacionComponent, EditCotizacionComponent, DeleteCotizacionComponent],
+  declarations: [CotizacionesComponent, AddNewCotizacionComponent, ListCotizacionComponent, EditCotizacionComponent, DeleteCotizacionComponent, GestionarCotizacionComponent],
   imports: [
     CommonModule,
     CotizacionesRoutingModule,
@@ -28,7 +30,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    SpinnerModule
   ]
 })
 export class CotizacionesModule { }

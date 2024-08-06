@@ -1,0 +1,250 @@
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <i class="icon-2x text-dark-50 flaticon2-box mx-2"></i>
+            <h3 class="card-label">BUSCAR PRODUCTOS</h3>
+        </div>
+        <!-- <div class="card-toolbar">
+            <ul class="nav nav-bold nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_7_1"
+                        (click)="BotonEstadoHeader(false)">Buscar Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_7_2"
+                        (click)="BotonEstadoHeader(true)">Registro Rápido</a>
+                </li>
+
+
+            </ul>
+        </div> -->
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3 ">
+                <select class="form-control" name="cboEstado" placeholder="Filtrar por Categoría"
+                    [formControl]="cboCategoria">
+                    <option [value]="0">Todas</option>
+                    <option *ngFor="let categorie of categorias" [value]="categorie.id">{{ categorie.cDescripcion }}
+                    </option>
+                </select>
+                <small class="form-text text-muted"><b>Filtrar</b> por
+                    Categoría</small>
+            </div>
+
+
+            <div class="col-6">
+                <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                    [(ngModel)]="search" (input)="InputBuscarProductos()" />
+                <small class="form-text text-muted">
+                    <b>Buscar</b>
+                    Producto
+                </small>
+            </div>
+            <div class="col-3">
+
+                <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Refrescar'"
+                    (click)="BotonListarProductos()">
+                    <i class="icon text-white flaticon-refresh"></i>
+                </button>
+
+                <button class="btn btn-secondary ml-2" placement="top" [ngbTooltip]="'Limpiar Filtros'"
+                    (click)="BotonLimpiarFiltros()">
+                    <!--   <i class="icon text-white flaticon-refresh"></i>  -->Limpiar
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive my-4">
+            <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                <thead>
+                    <tr class="text-left">
+                        <th class="pr-0" style="width: 50px">Imagen</th>
+                        <th>producto</th>
+                        <th>Categoría</th>
+                        <th>Precio PEN/USD</th>
+                        <th>Stock</th>
+
+                        <th class="pr-0 ">Seleccionar</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!(isLoading$ | async)">
+                    <tr *ngFor="let product of filteredProductos | slice:desde:hasta; let i = index">
+                        <td>
+                            <div class="symbol symbol-50 flex-shrink-0 mr-4">
+                                <div class="symbol-label"
+                                    [ngStyle]="{'background-image': 'url('+URL_BACKEND+'storage/'+product.cImagen+')'}">
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 20%;">{{ product.cDescripcion }}</td>
+                        <td>{{ product.cNombreCategoria }}</td>
+                        <td>{{ product.nPrecioPEN }} PEN - {{ product.nPrecioUSD }} USD</td>
+                        <td *ngIf="product.nStock != 0">{{ product.nStock }}</td>
+                        <td *ngIf="product.nStock == 0"><span class="text-danger">Agotado</span></td>
+
+                        <td>
+                            <a (click)="BotonSeleccionarProducto(product)" class=" btn font-weight-bold mr-2"><i class="
+                                    flaticon-add-circular-button text-primary"></i></a>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Spinner -->
+        <ng-container *ngIf="isLoading$ | async">
+            <app-spinner></app-spinner>
+        </ng-container>
+
+        <mat-paginator [length]="filteredProductos.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+        </mat-paginator>
+
+
+    </div>
+    <!-- <div class="card-body">
+        <div class="tab-content">
+            <ng-container *ngIf="isLoading$ | async">
+                <span class="spinner spinner-primary ml-5"></span>
+            </ng-container>
+
+            <div class="tab-pane fade show active" id="kt_tab_pane_7_1" role="tabpanel"
+                aria-labelledby="kt_tab_pane_7_1">
+
+
+                <div class="form form-label-right">
+
+
+                    <div class="form-group row">
+
+                        <div class="col-11">
+                            <input type="text" class="form-control" name="searchText" placeholder="Buscar"
+                                [(ngModel)]="search" (input)="InputBuscarClientes()" />
+                            <small class="form-text text-muted"><b>Buscar</b> por nro
+                                Documento /
+                                correo /
+                                nombre</small>
+                        </div>
+
+
+                        <div class="col-1">
+                            <button class="btn btn-dark" placement="top" [ngbTooltip]="'Reiniciar'"
+                                (click)="BotonReiniciar()">
+                                <i class="icon text-white flaticon-refresh"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                        <thead>
+                            <tr class="text-left">
+                                <th>Nro Documento</th>
+                                <th class="pr-0">Nombres</th>
+                                <th class="pr-0">Email</th>
+
+                                <th class="pr-0">Seleccionar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cliente of filteredClientes | slice:desde:hasta; let i=index">
+                                <td>{{ cliente.cNroDocumento }}</td>
+                                <td>{{ cliente.cNombres}} {{ cliente.cApellidos }}</td>
+
+                                <td>{{ cliente.cCorreo }}</td>
+
+
+
+                                <td>
+                                    <a (click)="BotonSeleccionarCliente(cliente)" class=" btn font-weight-bold mr-2"><i
+                                            class="
+                                            flaticon-add-circular-button text-primary"></i></a>
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <mat-paginator [length]="filteredClientes.length" [pageSize]="pageSize"
+                        (page)="cambiarPagina($event)">
+                    </mat-paginator>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_7_2" role="tabpanel" aria-labelledby="kt_tab_pane_7_2">
+
+
+                <div class="form-group row">
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nombres Completos: <span class="text-danger" *ngIf="!name">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="name"
+                            placeholder="Nombres" autocomplete="off" [(ngModel)]="name">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Apellidos Completos: <span class="text-danger"
+                                *ngIf="!surname">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="surname"
+                            placeholder="Apellidos" autocomplete="off" [(ngModel)]="surname">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-lg-6 mb-3" [formGroup]="myForm">
+                        <label class="form-label">Correo electrónico: <span class="text-danger"
+                                *ngIf="!f.email.value">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-solid form-control-lg"
+                            formControlName="email" placeholder="Email" autocomplete="off">
+                        <div *ngIf="f.email.errors && (f.email.dirty || f.email.touched)" class="text-danger">
+                            <div *ngIf="f.email.errors.required">El correo es requerido.</div>
+                            <div *ngIf="f.email.errors.email">Correo no válido.</div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <label class="form-label">Celular: <span class="text-danger" *ngIf="!phone">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="phone"
+                            placeholder="Celular" autocomplete="off" [(ngModel)]="phone">
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <label class="form-label">Nro Documento: <span class="text-danger"
+                                *ngIf="!documentNumber">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="documentNumber"
+                            placeholder="Nro Documento" autocomplete="off" [(ngModel)]="documentNumber">
+                        <ng-container *ngIf="documentNumber">
+                            <span class="text-success" *ngIf="documentNumber.length == 8 ">Tipo Documento: DNI </span>
+                            <span class="text-success" *ngIf="documentNumber.length == 10 ">Tipo Documento: RUC </span>
+                            <span class="text-success" *ngIf="documentNumber.length > 10 "> Tipo Documento: CE</span>
+                        </ng-container>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div> -->
+
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
+        Cerrar
+    </button>
+
+
+</div>
