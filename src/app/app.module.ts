@@ -18,12 +18,10 @@ import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/sp
 import { FakeAPIService } from './_fake/fake-api.service';
 import { NoticyAlertComponent } from './componets/notifications/noticy-alert/noticy-alert.component';
 import { ToastNotificationsModule } from 'ngx-toast-notifications';
-import { AddClienteDialogComponent } from './modules/_dialog/add-cliente-dialog/add-cliente-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CRUDTableModule } from './_metronic/shared/crud-table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SpinnerModule } from './shared/spinner/spinner.module';
-import { AddProductoDialogComponent } from './modules/_dialog/add-producto-dialog/add-producto-dialog.component';
 import { ConfirmComponent } from './shared/confirm/confirm.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -46,7 +44,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent, NoticyAlertComponent, AddClienteDialogComponent, AddProductoDialogComponent, ConfirmComponent, AddEditCategoriaComponent, BuscadorProductosComponent],
+  declarations: [AppComponent, NoticyAlertComponent, ConfirmComponent, AddEditCategoriaComponent, BuscadorProductosComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -105,8 +103,6 @@ function appInitializer(authService: AuthService) {
   ],
   exports: [
     NoticyAlertComponent,
-    AddClienteDialogComponent,
-    AddProductoDialogComponent
   ],
   bootstrap: [AppComponent],
 })

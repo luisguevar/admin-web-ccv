@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddClienteDialogComponent } from '../../_dialog/add-cliente-dialog/add-cliente-dialog.component';
-import { AddProductoDialogComponent } from '../../_dialog/add-producto-dialog/add-producto-dialog.component';
 import { AuthService } from '../../auth';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
 import { Toaster } from 'ngx-toast-notifications';
+import { BuscadorRegistradorClientesComponent } from '../../_dialog/buscador-registrador-clientes/buscador-registrador-clientes.component';
+import { BuscadorProductosComponent } from '../../_dialog/buscador-productos/buscador-productos.component';
 
 @Component({
   selector: 'app-create-punto-venta',
@@ -78,7 +78,7 @@ export class CreatePuntoVentaComponent implements OnInit {
   }
 
   addClienteDialog() {
-    const modalRef = this.modelService.open(AddClienteDialogComponent, { centered: true, size: 'lg' });
+    const modalRef = this.modelService.open(BuscadorRegistradorClientesComponent, { centered: true, size: 'lg' });
     // Capturar el resultado cuando se cierra el modal
     modalRef.componentInstance.clienteE.subscribe((resp: any) => {
       console.log(resp);
@@ -92,7 +92,7 @@ export class CreatePuntoVentaComponent implements OnInit {
   }
 
   addProductoDialog() {
-    const modalRef = this.modelService.open(AddProductoDialogComponent, { centered: true, size: 'lg' });
+    const modalRef = this.modelService.open(BuscadorProductosComponent, { centered: true, size: 'lg' });
     // Capturar el resultado cuando se cierra el modal
 
     modalRef.componentInstance.productoE.subscribe((resp: any) => {
