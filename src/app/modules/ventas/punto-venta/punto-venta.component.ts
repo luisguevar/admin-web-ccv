@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { BuscadorRegistradorClientesComponent } from '../../_dialog/buscador-registrador-clientes/buscador-registrador-clientes.component';
 import { AuthService } from '../../auth';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,9 +8,10 @@ import { ConfirmService } from 'src/app/shared/confirm/confirm.service';
 import { BuscadorProductosComponent } from '../../_dialog/buscador-productos/buscador-productos.component';
 import { CotizacionProductoEntity } from 'src/app/Models/CotizacionEntity';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGV } from 'src/app/config/config';
 import { VentaEntity } from 'src/app/Models/VentaEntity';
+import { ProgressComponent } from '../progress/progress.component';
 
 @Component({
   selector: 'app-punto-venta',
@@ -18,6 +19,13 @@ import { VentaEntity } from 'src/app/Models/VentaEntity';
   styleUrls: ['./punto-venta.component.scss']
 })
 export class PuntoVentaComponent implements OnInit {
+  @ViewChild('progress') progress: ProgressComponent;
+
+  testForm = new FormGroup({
+    food: new FormControl('', Validators.required),
+    comment: new FormControl('', Validators.required),
+  });
+
   isLoading$;
   usuario_dni: string = "";
   vendedor_id: number = 0;
@@ -76,6 +84,17 @@ export class PuntoVentaComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
   }
+
+  goNext(progress: ProgressComponent) {
+    console.log(progress);
+    progress.next();
+  }
+
+  onStateChange(event) {
+    console.log(event);
+  }
+
+  ngAfterViewInit() { }
 
   BotonAbrirModalCliente() {
     const dialogRef = this._dialog.open(
@@ -317,6 +336,14 @@ export class PuntoVentaComponent implements OnInit {
         this.listProducto = resp.listProductos;
         this.cliente_nombre = this.venta.cClienteCorreo;
         this.vendedor_nombre = this.venta.cVendedorCorreo;
+        setTimeout(() => {
+          if (this.progress) {
+            // Avanzar hasta el paso 3 (hacer clic 3 veces en "Avanzar")
+            for (let i = 0; i < this.venta.nEstado; i++) {
+              this.progress.next();
+            }
+          }
+        }, 100);
 
         this.cdr.detectChanges();
 
@@ -327,6 +354,15 @@ export class PuntoVentaComponent implements OnInit {
 
       })
     }, 10);
+  }
+
+  setToStep3() {
+    if (this.progress) {
+      // Avanzar hasta el paso 3 (hacer clic 3 veces en "Avanzar")
+      for (let i = 0; i < 3; i++) {
+        this.progress.next();
+      }
+    }
   }
 
 }

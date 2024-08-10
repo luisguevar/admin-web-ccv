@@ -12,10 +12,17 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
+import { ProgressComponent } from './progress/progress.component';
+import { ProgressStepComponent } from './progress/progress-step/progress-step.component';
+import { ProgressStepDirective } from './progress/progress-step.directive';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
-  declarations: [VentasComponent, ListadoVentasComponent, PuntoVentaComponent],
+  declarations: [VentasComponent, ListadoVentasComponent, PuntoVentaComponent, ProgressComponent, ProgressStepComponent, ProgressStepDirective],
   imports: [
     CommonModule,
     VentasRoutingModule,
@@ -28,7 +35,11 @@ import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
     NgbModalModule,
     NgbDatepickerModule,
     MatPaginatorModule,
-    SpinnerModule
+    SpinnerModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatInputModule
   ]
 })
 export class VentasModule { }
