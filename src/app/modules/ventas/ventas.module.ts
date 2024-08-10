@@ -1,22 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PuntoVentaRoutingModule } from './punto-venta-routing.module';
-import { PuntoVentaComponent } from './punto-venta.component';
+import { VentasRoutingModule } from './ventas-routing.module';
+import { VentasComponent } from './ventas.component';
+import { ListadoVentasComponent } from './listado-ventas/listado-ventas.component';
+import { PuntoVentaComponent } from './punto-venta/punto-venta.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
-import { CreatePuntoVentaComponent } from './create-punto-venta/create-punto-venta.component';
-import { GestionarVentaComponent } from './gestionar-venta/gestionar-venta.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
+
 
 @NgModule({
-  declarations: [PuntoVentaComponent, CreatePuntoVentaComponent, GestionarVentaComponent],
+  declarations: [VentasComponent, ListadoVentasComponent, PuntoVentaComponent],
   imports: [
     CommonModule,
-    PuntoVentaRoutingModule,
-
+    VentasRoutingModule,
     HttpClientModule,
     FormsModule,
     NgbModule,
@@ -25,9 +27,8 @@ import { GestionarVentaComponent } from './gestionar-venta/gestionar-venta.compo
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
-   
+    MatPaginatorModule,
+    SpinnerModule
   ]
-
- 
 })
-export class PuntoVentaModule { }
+export class VentasModule { }

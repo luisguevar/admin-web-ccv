@@ -1,0 +1,210 @@
+<div class="card card-custom gutter-b" *ngIf="!bDetalleVenta">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label"><i class="icon-2x flaticon-cart flaticon-doc mx-2"></i> Lista de ventas</h3>
+        </div>
+        <div class="card-toolbar">
+            <a type="button" class="btn btn-primary" (click)="BotonRegistrarPuntoVenta()"><i
+                    class="icon-2x text-white flaticon-file-1"></i> Punto de Venta</a>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <!--  <ng-container *ngIf="isLoading$ | async">
+            <span class="spinner spinner-primary ml-5"></span>
+        </ng-container> -->
+
+        <div class="row">
+
+            <div class="col-3">
+
+                <input type="text" placeholder="Ingrese un código" class="form-control" id="cCorrelativo"
+                    name="cCorrelativo" [formControl]="txtcCorrelativo">
+                <small class="form-text text-muted"><b>Filtrar</b> por Correlativo</small>
+            </div>
+
+            <div class="col-3">
+
+                <input type="text" placeholder="Ingrese un DNI" class="form-control" id="cCorrelativo"
+                    name="cCorrelativo" [formControl]="txtDniCliente">
+                <small class="form-text text-muted"><b>Filtrar</b> por DNI Cliente</small>
+            </div>
+
+
+            <div class="col-3">
+
+                <input type="text" placeholder="Ingrese un DNI" class="form-control" id="cCorrelativo"
+                    name="cCorrelativo" [formControl]="txtDniVendedor">
+                <small class="form-text text-muted"><b>Filtrar</b> por DNI Vendedor</small>
+            </div>
+
+            <div class="col-2">
+                <select class="form-control" name="cboEstado" placeholder="Filtrar por Estado"
+                    [formControl]="cboEstado">
+
+                    <option *ngFor="let estado of lstEstados" [value]="estado.nIdEstado">{{ estado.cEstado }}</option>
+                </select>
+                <small class="form-text text-muted"><b>Filtrar</b> por
+                    Estado</small>
+            </div>
+
+
+        </div>
+
+        <div class="row my-4">
+
+            <div class="col-3">
+
+                <input type="date" class="form-control" id="startDate" name="startDate" [formControl]="startDate">
+                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Desde</small>
+            </div>
+            <div class="col-3">
+                <input type="date" class="form-control" id="endDate" name="endDate" [formControl]="endDate">
+                <small class="form-text text-muted"><b>Filtrar</b> por Fecha Compra Hasta</small>
+            </div>
+
+            <div class="col-6">
+                <button class="btn btn-primary ml-2" placement="top" [ngbTooltip]="'Refrescar'"
+                    (click)="BotonListarVentas()">
+                    <i class="icon text-white flaticon-refresh"></i>
+                </button>
+
+                <button class="btn btn-secondary ml-2" placement="top" [ngbTooltip]="'Limpiar Filtros'"
+                    (click)="BotonLimpiarFiltros()">
+                    Limpiar Filtros
+                </button>
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive my-10">
+            <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                <thead>
+                    <tr class="text-left">
+                        <th class="pr-0" style="width: 50px">Nro</th>
+                        <th style="min-width: 100px">Correlativo</th>
+                        <th style="min-width: 150px">Cliente</th>
+                        <th style="min-width: 100px">Fecha Venta</th>
+                        <th style="min-width: 100px">Total</th>
+                        <th style="min-width: 150px">Vendedor</th>
+                        <th style="min-width: 100px">Estado</th>
+                        <th class="pr-0 ">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!(isLoading$ | async)">
+                    <ng-container *ngFor="let venta of ventas | slice:desde:hasta; let i = index">
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ venta.cCorrelativo }}</td>
+                            <td>{{ venta.cNombreCliente }}</td>
+                            <td>{{ venta.dFechaVenta | date: 'dd-MM-yyyy HH:mm' }}</td>
+                            <td>{{ venta.nTotal }} PEN</td>
+                            <td>{{ venta.cNombreVendedor }}</td>
+
+
+
+                            <td>
+                                <span class="label label-lg label-inline label-light-secondary text-black-50"
+                                    *ngIf="venta.nEstado == 1">Pendiente</span>
+                                <span class="label label-lg label-inline label-light-primary"
+                                    *ngIf="venta.nEstado == 2">Enviado</span>
+                                <span class="label label-lg label-inline label-light-success"
+                                    *ngIf="venta.nEstado == 3">Aceptado</span>
+                                <span class="label label-lg label-inline label-light-info"
+                                    *ngIf="venta.nEstado == 4">Rechazado</span>
+
+                                <span class="label label-lg label-inline label-light-danger"
+                                    *ngIf="venta.nEstado == 0">Inactivo</span>
+                            </td>
+                            <td style="display: flex;">
+                                <a (click)="BotonVisualizarVenta(venta.id)" class=" btn btn-icon btn-light
+                            btn-hover-primary btn-sm mx-1" ngbTooltip="Detalle de la Venta"
+                                    ngbTooltipClass="kt-tooltip">
+                                    <span class="svg-icon svg-icon-md svg-icon-primary">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path
+                                                    d="M18.1446364,11.84388 L17.4471627,16.0287218 C17.4463569,16.0335568 17.4455155,16.0383857 17.4446387,16.0432083 C17.345843,16.5865846 16.8252597,16.9469884 16.2818833,16.8481927 L4.91303792,14.7811299 C4.53842737,14.7130189 4.23500006,14.4380834 4.13039941,14.0719812 L2.30560137,7.68518803 C2.28007524,7.59584656 2.26712532,7.50338343 2.26712532,7.4104669 C2.26712532,6.85818215 2.71484057,6.4104669 3.26712532,6.4104669 L16.9929851,6.4104669 L17.606173,3.78251876 C17.7307772,3.24850086 18.2068633,2.87071314 18.7552257,2.87071314 L20.8200821,2.87071314 C21.4717328,2.87071314 22,3.39898039 22,4.05063106 C22,4.70228173 21.4717328,5.23054898 20.8200821,5.23054898 L19.6915238,5.23054898 L18.1446364,11.84388 Z"
+                                                    fill="#000000" opacity="0.3" />
+                                                <path
+                                                    d="M6.5,21 C5.67157288,21 5,20.3284271 5,19.5 C5,18.6715729 5.67157288,18 6.5,18 C7.32842712,18 8,18.6715729 8,19.5 C8,20.3284271 7.32842712,21 6.5,21 Z M15.5,21 C14.6715729,21 14,20.3284271 14,19.5 C14,18.6715729 14.6715729,18 15.5,18 C16.3284271,18 17,18.6715729 17,19.5 C17,20.3284271 16.3284271,21 15.5,21 Z"
+                                                    fill="#000000" />
+                                            </g>
+                                        </svg>
+
+                                    </span>
+
+
+                                </a>
+
+                                <!-- <a (click)="BotonEliminarCotizacion(cotizacion)" *ngIf="cotizacion.nEstado != 0" class=" btn btn-icon btn-light
+                            btn-hover-primary btn-sm mx-1" ngbTooltip="Eliminar Cotización"
+                                    ngbTooltipClass="kt-tooltip">
+                                    <span class="svg-icon svg-icon-md svg-icon-danger">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path
+                                                    d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z"
+                                                    fill="#000000" fill-rule="nonzero" />
+                                                <path
+                                                    d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z"
+                                                    fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+
+                                    </span>
+                                </a> -->
+
+
+
+
+                                <!-- <a class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                                    ngbTooltip="Exportar Cotización" ngbTooltipClass="kt-tooltip">
+                                    <span class="svg-icon svg-icon-success svg-icon-2x"><svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <polygon points="0 0 24 0 24 24 0 24" />
+                                                <path
+                                                    d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z"
+                                                    fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                <path
+                                                    d="M14.8875071,11.8306874 L12.9310336,11.8306874 L12.9310336,9.82301606 C12.9310336,9.54687369 12.707176,9.32301606 12.4310336,9.32301606 L11.4077349,9.32301606 C11.1315925,9.32301606 10.9077349,9.54687369 10.9077349,9.82301606 L10.9077349,11.8306874 L8.9512614,11.8306874 C8.67511903,11.8306874 8.4512614,12.054545 8.4512614,12.3306874 C8.4512614,12.448999 8.49321518,12.5634776 8.56966458,12.6537723 L11.5377874,16.1594334 C11.7162223,16.3701835 12.0317191,16.3963802 12.2424692,16.2179453 C12.2635563,16.2000915 12.2831273,16.1805206 12.3009811,16.1594334 L15.2691039,12.6537723 C15.4475388,12.4430222 15.4213421,12.1275254 15.210592,11.9490905 C15.1202973,11.8726411 15.0058187,11.8306874 14.8875071,11.8306874 Z"
+                                                    fill="#000000" />
+                                            </g>
+                                        </svg></span>
+                                </a> -->
+
+
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+
+            <ng-container *ngIf="isLoading$ | async">
+                <app-spinner></app-spinner>
+            </ng-container>
+
+            <mat-paginator [length]="ventas.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+            </mat-paginator>
+
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="bDetalleVenta">
+    <app-punto-venta></app-punto-venta>
+</div>

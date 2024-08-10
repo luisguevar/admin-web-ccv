@@ -132,7 +132,8 @@
                                 </a>
 
                                 <a (click)="BotonEliminarCotizacion(cotizacion)" *ngIf="cotizacion.nEstado != 0" class=" btn btn-icon btn-light
-                            btn-hover-primary btn-sm mx-1" ngbTooltip="Eliminar Cotización" ngbTooltipClass="kt-tooltip">
+                            btn-hover-primary btn-sm mx-1" ngbTooltip="Eliminar Cotización"
+                                    ngbTooltipClass="kt-tooltip">
                                     <span class="svg-icon svg-icon-md svg-icon-danger">
 
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +154,7 @@
                                 </a>
 
 
-                               <!--  <a (click)="BotonEliminarCotización(cotizacion)" *ngIf="cotizacion.nEstado != 0"
+                                <!--  <a (click)="BotonEliminarCotización(cotizacion)" *ngIf="cotizacion.nEstado != 0"
                                     class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
                                     ngbTooltip="Eliminar Cotización" ngbTooltipClass="kt-tooltip">
                                     <span class="svg-icon svg-icon-md svg-icon-danger">
@@ -437,25 +438,25 @@
                                                         <div class="seccion-resumen-detalle">
                                                             <div class="seccion-resumen-titulo">
                                                                 Subtotal</div>
-                                                            <div class="seccion-resumen-resultado">s/.
+                                                            <div class="seccion-resumen-resultado">S/
                                                                 {{nValorSubTotal}}</div>
                                                         </div>
                                                         <div class="seccion-resumen-detalle">
                                                             <div class="seccion-resumen-titulo">
                                                                 Impuesto (IGV 18%)</div>
-                                                            <div class="seccion-resumen-resultado">s/. {{nValorIGV}}
+                                                            <div class="seccion-resumen-resultado">S/ {{nValorIGV}}
                                                             </div>
                                                         </div>
                                                         <div class="seccion-resumen-detalle">
                                                             <div class="seccion-resumen-titulo">
                                                                 Descuento General</div>
-                                                            <div class="seccion-resumen-resultado"> s/.
+                                                            <div class="seccion-resumen-resultado"> S/
                                                                 {{nValorDescuentoGeneral}} </div>
                                                         </div>
                                                         <div class="seccion-resumen-total">
                                                             <div class="seccion-resumen-titulo">
                                                                 Total</div>
-                                                            <div class="seccion-resumen-resultado">s/. {{ nTotal }}
+                                                            <div class="seccion-resumen-resultado">S/ {{ nTotal }}
                                                             </div>
                                                         </div>
                                                     </div>

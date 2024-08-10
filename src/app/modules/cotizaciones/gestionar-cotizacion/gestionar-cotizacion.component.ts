@@ -280,7 +280,7 @@ export class GestionarCotizacionComponent implements OnInit {
       }
     },
       (error: any) => {
-        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar el Proveedor.'` });
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar la Cotización.'` });
         return;
       }
     )

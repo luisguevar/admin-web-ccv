@@ -121,9 +121,30 @@ export const AsideMenuAdminGeneral = {
         {
           title: 'Ordenes',
           page: '/ventas/lista-de-ordenes'
+        },
+        {
+          title: 'Punto de venta',
+          page: '/ventas/punto-venta'
+        },
+        {
+          title: 'Gestionar ventas',
+          page: '/ventas/gestionar-ventas/ventas'
         }
       ]
     },
+
+   /*  {
+      title: 'Ventas',
+      root: true,
+      name: "ventas",
+      bullet: 'dot',
+      icon: 'flaticon2-user-outline-symbol',
+      svg: './assets/media/svg/icons/Communication/Clipboard-list.svg',
+      page: '/ventas',
+      submenu: [
+
+      ]
+    }, */
     {
       title: 'Cotizaciones',
       root: true,

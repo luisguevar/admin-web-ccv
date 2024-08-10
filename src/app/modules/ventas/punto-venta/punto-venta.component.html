@@ -1,0 +1,414 @@
+<div style="display: flex; width: 100%;">
+    <div class="card-70">
+        <div class="card card-custom gutter-b ">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        <h3 class="card-label"> <i class="icon-2x text-dark-50 flaticon-cart  mx-2"></i> Punto de venta
+                        </h3>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+                </div>
+            </div>
+
+
+            <div class="card-body" *ngIf="!(isLoading$ | async)">
+                <!-- Contenido del primer card -->
+                <div class="form-group row">
+                    <div class="col-6">
+                        <label class="form-label">
+                            <span *ngIf="!cliente_nombre">
+                                Seleccionar cliente:
+                            </span>
+
+                            <span *ngIf="cliente_nombre">
+                                Cliente:
+                            </span>
+                            <span class="text-danger" *ngIf="!cliente_nombre">*</span></label>
+
+                        <div style="display: flex;">
+                            <input readonly type="text" class="form-control form-control-solid form-control-lg"
+                                name="cliente_nombre" placeholder="Agregar cliente" autocomplete="off"
+                                [(ngModel)]="cliente_nombre">
+
+                            <a onclick="return false" (click)="BotonAbrirModalCliente()"
+                                class="btn font-weight-bold mr-2 " *ngIf="!bVentaRealizada">
+                                <i class=" flaticon2-add  text-primary"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Atendido por:</label>
+                        <input type="text" class="form-control form-control-solid form-control-lg" name="vendedor"
+                            placeholder="vendedor" autocomplete="off" [(ngModel)]="vendedor_nombre"
+                            [disabled]="bVentaRealizada">
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="card card-custom gutter-b ">
+
+
+
+            <div class="card-body" *ngIf="!(isLoading$ | async)">
+                <!-- Contenido del primer card -->
+
+
+                <div class="form-group row">
+                    <div class="col-12">
+
+
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde error est aspernatur mollitia.
+                        Accusamus quibusdam asperiores nesciunt facilis incidunt eveniet sequi odit distinctio quaerat,
+                        et, consectetur, placeat error laboriosam ullam!
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="card card-custom gutter-b ">
+
+
+
+            <div class="card-body" *ngIf="!(isLoading$ | async)">
+                <!-- Contenido del primer card -->
+
+
+                <div class="form-group row">
+                    <div class="col-12">
+
+
+                        <ul class="nav nav-tabs nav-tabs-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">CONTENIDO</a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content mt-5" id="myTabContent">
+                            <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel"
+                                aria-labelledby="kt_tab_pane_2">
+
+
+                                <div class="form-group row" *ngIf="!bVentaRealizada">
+                                    <div class="col-7">
+                                        <label class="form-label">
+                                            <span *ngIf="!producto_nombre">Seleccionar Producto: </span>
+                                            <span *ngIf="producto_nombre">Producto: </span>
+                                            <span class="text-danger" *ngIf="!producto_nombre">*</span></label>
+                                        <div style="display: flex;">
+                                            <input readonly type="text"
+                                                class="form-control form-control-solid form-control-lg"
+                                                name="producto_nombre" placeholder="Agregar Producto" autocomplete="off"
+                                                [(ngModel)]="producto_nombre">
+                                            <a onclick="return false" (click)="BotonAbrirModalProducto()"
+                                                class="btn font-weight-bold mr-2 ">
+                                                <i class=" flaticon2-add  text-primary"></i>
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-2">
+                                        <label class="form-label">Cantidad: <span class="text-danger"
+                                                *ngIf="cantidad == 0">*</span></label>
+                                        <input type="number" class="form-control form-control-solid form-control-lg"
+                                            min="1" name="cantidad" placeholder="Ex: 1" autocomplete="off"
+                                            [(ngModel)]="cantidad" min="0">
+                                    </div>
+
+                                    <div class="col-2">
+                                        <label class="form-label">Descuento (%): <span class="text-danger"
+                                                *ngIf="bTieneDescuento && nValorDescuento == 0">*</span></label>
+                                        <div class="input-group">
+
+                                            <div class="input-group-append">
+                                                <label class="input-group-text">
+                                                    <input type="checkbox" [(ngModel)]="bTieneDescuento">
+                                                </label>
+                                            </div>
+
+                                            <input type="number" class="form-control form-control-solid form-control-lg"
+                                                name="nValorDescuento" placeholder="Ex: 10" autocomplete="off"
+                                                [(ngModel)]="nValorDescuento" [disabled]="!bTieneDescuento" min="0"
+                                                max="100">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-1" style="  align-items: center;display: flex; margin-top: 3%;">
+
+                                        <a onclick="return false" (click)="BotonAgregarProducto()"
+                                            class="btn btn-success font-weight-bold mr-2 ">
+                                            <i class=" flaticon2-add"></i> <!-- Agregar -->
+                                        </a>
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                                <div class="form-group row mt-5">
+                                    <div class="col-12">
+                                        <div class="table-responsive">
+
+                                            <table class=".table-bordered table table-head-custom table-vertical-center"
+                                                id="kt_advance_table_widget_1">
+                                                <thead>
+                                                    <tr class="text-left">
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Producto</th>
+                                                        <th scope="col">Cantidad</th>
+                                                        <th scope="col">Precio/u</th>
+                                                        <th scope="col">Descuento</th>
+                                                        <th scope="col">Total</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <ng-container *ngFor="let producto of listProducto; let i=index">
+                                                        <tr>
+                                                            <th scope="row">{{i+1}}</th>
+                                                            <td>{{producto.producto_nombre}}</td>
+                                                            <td>{{producto.nCantidad}} u.</td>
+                                                            <td>
+                                                                {{producto.nPrecioUnitario}} PEN
+                                                            </td>
+                                                            <td *ngIf="producto.nDescuento != 0">
+                                                                {{producto.nDescuento}} %
+                                                            </td>
+                                                            <td *ngIf="producto.nDescuento == 0">
+                                                                -
+                                                            </td>
+                                                            <td>
+                                                                s/. {{producto.nTotalConDescuento}}
+                                                            </td>
+                                                            <td *ngIf="!bVentaRealizada">
+                                                                <a class="btn" ngbTooltip="Eliminar Producto"
+                                                                    ngbTooltipClass="kt-tooltip"
+                                                                    (click)="BotonEliminarProducto(producto)">
+                                                                    <i class="flaticon-delete-1 text-danger"></i>
+                                                                </a>
+
+
+
+                                                            </td>
+                                                        </tr>
+
+                                                    </ng-container>
+
+
+
+
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-custom gutter-b card-30" style="min-height: 450px; max-height: 550px;">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <label class="form-label"><i class="flaticon2-paper icon-md"></i> Documento: </label>
+                    <select class="form-control" name="cboTipoDocumento" placeholder="Tipo Documento"
+                        [formControl]="cboTipoDocumento">
+
+                        <option [disabled]="bVentaRealizada" *ngFor="let documento of lstTiposDocumento"
+                            [value]="documento.nIdTipoDocumento">
+                            {{ documento.cNombreDocumento }}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <label class="form-label"><i class="far fa-money-bill-alt icon-md"></i> Tipo Pago: </label>
+                    <select class="form-control" name="cboTipoPago" placeholder="Tipo Pago" [formControl]="cboTipoPago">
+
+                        <option [disabled]="bVentaRealizada" *ngFor="let pago of lstTipoPago"
+                            [value]="pago.nIdTipoPago">
+                            {{ pago.cNombreTipoPago }}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row mt-5" *ngIf="cboTipoPago.value == 1">
+                <div class="col-12">
+                    <label class="form-label"><b>Efectivo Recibido:</b> </label>
+                    <input class="form-control" type="number" [formControl]="txtEfectivoRecibido"
+                        [disabled]="bVentaRealizada" min="0" max="100000">
+
+                </div>
+
+            </div>
+
+            <div class="row mt-3" *ngIf="cboTipoPago.value == 1">
+                <div class="col-12">
+                    <div style="display: flex;">
+                        <div style="width: 40%;align-items: center; display: flex;">
+                            <input type="checkbox" [(ngModel)]="bEfectivoExacto" [disabled]="bVentaRealizada">
+                            <span style="margin-left: 1%;"> Efectivo Exacto</span>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-5" *ngIf="cboTipoPago.value == 1">
+                <div class="col-12">
+
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Monto Efectivo: <span *ngIf="txtEfectivoRecibido.value">S/</span> {{
+                                txtEfectivoRecibido.value }} </th>
+
+                        </tr>
+
+                        <tr *ngIf="!bEfectivoExacto">
+                            <th style="color: red;">Vuelto: <ng-container
+                                    *ngIf="(txtEfectivoRecibido.value && nTotal) && txtEfectivoRecibido.value > nTotal">
+                                    S/ {{ (txtEfectivoRecibido.value - nTotal) | number: '1.2-2' }}
+                                </ng-container>
+
+
+                                <ng-container
+                                    *ngIf="(txtEfectivoRecibido.value && nTotal) && txtEfectivoRecibido.value < nTotal ">Efectivo
+                                    Recibido Insuficiente</ng-container>
+
+                                <ng-container
+                                    *ngIf="(txtEfectivoRecibido.value && nTotal) && txtEfectivoRecibido.value == nTotal ">Efectivo
+                                    Exacto</ng-container>
+                            </th>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="row mt-5" *ngIf="cboTipoPago.value == 2">
+                <div class="col-12">
+                    <label class="form-label"><b>Código Operación:</b> </label>
+                    <input class="form-control" type="text" [formControl]="txtCodigoOperacion">
+
+                </div>
+
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+
+                    <table style="width: 100%;">
+
+
+
+
+                        <tr>
+                            <th>SubTotal</th>
+                            <td>S/
+                                {{nValorSubTotal}}</td>
+
+                        </tr>
+                        <tr>
+                            <th>IGV</th>
+                            <td>S/ {{nValorIGV}}</td>
+
+                        </tr>
+
+                        <tr>
+                            <th>Descuento</th>
+                            <td>S/ {{nValorDescuentoGeneral}}</td>
+
+                        </tr>
+                        <br>
+                        <tr>
+
+                            <th>TOTAL</th>
+                            <td>S/ {{nTotal}}</td>
+
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="row mt-5" style="justify-content: end;" *ngIf="!bVentaRealizada">
+                <div style="display: flex; ">
+                    <a (click)="GuardarVenta()" class="btn btn-primary font-weight-bold mr-2">
+                        <i class="fas fa-shopping-cart"></i> Efectuar venta
+                    </a>
+
+
+
+
+
+                    <!--  <a href="#" class="btn btn-light-danger font-weight-bold mr-2">
+                        <i class="fa fa-envelope-open-text"></i> Button example 2
+                    </a> -->
+                </div>
+            </div>
+
+            <div class="row mt-5" style="justify-content: end; " *ngIf="bVentaRealizada">
+                <div style="display: flex; ">
+                    <!--  <a class="btn btn-success font-weight-bold mr-2"
+                        [routerLink]="[ '/ventas/gestionar-ventas/', venta.cCorrelativo ]">
+                        <i class="fas fa-list-alt"></i> ver en lista
+                    </a> -->
+
+
+
+
+
+                    <!--  <a href="#" class="btn btn-light-danger font-weight-bold mr-2">
+                        <i class="fa fa-envelope-open-text"></i> Button example 2
+                    </a> -->
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

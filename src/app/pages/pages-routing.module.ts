@@ -115,11 +115,18 @@ const routes: Routes = [
             (m) => m.DiscountModule
           ),
       },
-      {
+      /* {
         path: 'ventas',
         loadChildren: () =>
           import('../modules/sales/sales.module').then(
             (m) => m.SalesModule
+          ),
+      }, */
+      {
+        path: 'ventas',
+        loadChildren: () =>
+          import('../modules/ventas/ventas.module').then(
+            (m) => m.VentasModule
           ),
       },
 
@@ -147,13 +154,13 @@ const routes: Routes = [
           ),
       },
 
-   /*    {
-        path: 'clientes',
-        loadChildren: () =>
-          import('../modules/clientes/clientes.module').then(
-            (m) => m.ClientesModule
-          ),
-      }, */
+      /*    {
+           path: 'clientes',
+           loadChildren: () =>
+             import('../modules/clientes/clientes.module').then(
+               (m) => m.ClientesModule
+             ),
+         }, */
 
 
 

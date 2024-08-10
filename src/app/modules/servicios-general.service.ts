@@ -12,7 +12,7 @@ export class ServiciosGeneralService {
 
   isLoading$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
-  
+
 
   constructor(
     private http: HttpClient,
@@ -264,7 +264,7 @@ export class ServiciosGeneralService {
 
     if (cCorrelativo) {
       const corrrelativo = cCorrelativo;
-      URL += "&dFechaEmisionInicio=" + cCorrelativo;
+      URL += "&cCorrelativo=" + cCorrelativo;
     }
     if (startDate) {
       const start = new Date(startDate);
@@ -332,6 +332,49 @@ export class ServiciosGeneralService {
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
     let URL = URL_SERVICIOS + "/paises/show/" + pais_id;
     return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  GetVentas(nEstado: number, cCorrelativo: string, startDate: any, endDate: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let URL = URL_SERVICIOS + "/ventas/all?nEstado=" + nEstado
+
+    if (cCorrelativo) {
+      const corrrelativo = cCorrelativo;
+      URL += "&cCorrelativo=" + cCorrelativo;
+    }
+    if (startDate) {
+      const start = new Date(startDate);
+      URL += "&dFechaInicio=" + start.toISOString().split('T')[0];
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+      URL += "&dFechaFin=" + end.toISOString().split('T')[0];
+    }
+
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  GetVentaPorId(venta_id) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/ventas/show/" + venta_id;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PostVenta(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/ventas/add";
+    return this.http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
