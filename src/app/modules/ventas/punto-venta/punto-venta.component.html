@@ -4,16 +4,32 @@
             <div class="card-header">
                 <div class="card-title">
                     <h3 class="card-label">
-                        <h3 class="card-label"> <i class="icon-2x text-dark-50 flaticon-cart  mx-2"></i> Punto de venta
+                        <h3 class="card-label"> <i class="icon-2x text-dark-50 flaticon-cart  mx-2"></i>
+                            <span *ngIf="!bVentaRealizada">Punto de venta</span>
+                            <span *ngIf="bVentaRealizada">Detalle de la venta</span>
+
                         </h3>
+
+                        <!--  <div style="   align-items: center;  display: flex; margin-right: 40px;">
+                           
+                        </div> -->
                     </h3>
+                    <!--   <div>
+                        <ng-container *ngIf="isLoading$ | async">
+                            <span class="spinner spinner-primary ml-1 mt-5"></span>
+                        </ng-container>
+                    </div> -->
                 </div>
                 <div class="card-toolbar">
                 </div>
             </div>
 
 
-            <div class="card-body" *ngIf="!(isLoading$ | async)">
+            <!--      <ng-container *ngIf="isLoading$ | async">
+                <app-spinner></app-spinner>
+            </ng-container> -->
+
+            <div class="card-body">
                 <!-- Contenido del primer card -->
                 <div class="form-group row">
                     <div class="col-6">
@@ -55,11 +71,11 @@
             </div>
         </div>
 
-        <div class="card card-custom gutter-b ">
+        <div class="card card-custom gutter-b" *ngIf="bVentaRealizada">
 
 
 
-            <div class="card-body" *ngIf="!(isLoading$ | async)">
+            <div class="card-body">
                 <!-- Contenido del primer card -->
 
 
@@ -68,7 +84,10 @@
 
                         <ul class="nav nav-tabs nav-tabs-line">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">ESTADO DEL PEDIDO</a>
+                                <a *ngIf="!bPedidoCancelado" class="nav-link active" data-toggle="tab"
+                                    href="#kt_tab_pane_1">ESTADO DEL PEDIDO</a>
+                                <a *ngIf="bPedidoCancelado" class="nav-link active" data-toggle="tab"
+                                    href="#kt_tab_pane_1"><span class="text-danger">PEDIDO CANCELADO</span></a>
                             </li>
 
 
@@ -78,52 +97,88 @@
                         <div class="tab-content mt-5" id="myTabContent">
                             <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel"
                                 aria-labelledby="kt_tab_pane_2">
-                                <app-progress #progress (stateChange)="onStateChange($event)">
+                                <ng-container *ngIf="!bCompletado">
+                                    <span *ngIf="!bPedidoCancelado" class="text-cancelar-pedido"><a
+                                            (click)="BotonCancelarPedido()">
+                                            <span class=" cursor-pointer"> Cancelar Pedido</span>
+                                        </a>
+                                    </span>
+                                </ng-container>
+
+
+
+                                <div class="col-11" *ngIf="bPedidoCancelado">
+                                    <label class="form-label">Motivo: </label>
+                                    <textarea [(ngModel)]="cObservaciones" class="form-control" name="cObservaciones"
+                                        placeholder="" rows="4" [readonly]="true"></textarea>
+                                </div>
+                                <app-progress #progress (stateChange)="onStateChange($event)" *ngIf="!bPedidoCancelado">
+
                                     <app-progress-step>
-                                        <!--  <h1>Recibido</h1>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, velit
-                                            eius expedita quis tempore suscipit minima repudiandae. Magnam tempore,
-                                            nostrum facilis quas, cumque dicta eveniet vero, nisi cum ipsa eos.
-                                        </p> -->
-                                        <button mat-raised-button color="primary" (click)="goNext(progress)">
-                                            Avanzar
-                                        </button>
+                                        <ng-container *ngIf="!bCompletado">
+                                            <a progressStepNext class="btn btn-success font-weight-bold mr-2">
+                                                <i class=" flaticon2-next"></i>
+                                            </a>
+                                            <button mat-raised-button color="primary" (click)="GuardarEstado()">
+                                                Guardar
+                                            </button>
+                                        </ng-container>
+
+
                                     </app-progress-step>
 
                                     <app-progress-step>
-                                        <!--  <h1>Confirmado</h1>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, velit
-                                            eius expedita quis tempore suscipit minima repudiandae. Magnam tempore,
-                                            nostrum facilis quas, cumque dicta eveniet vero, nisi cum ipsa eos.
-                                        </p> -->
-                                        <button mat-raised-button color="primary" (click)="goNext(progress)">
-                                            Avanzar
-                                        </button>
+                                        <ng-container *ngIf="!bCompletado">
+                                            <a progressStepNext class="btn btn-success font-weight-bold mr-2">
+                                                <i class=" flaticon2-next"></i>
+                                            </a>
+                                            <!-- <button mat-raised-button color="primary" (click)="goNext(progress)">
+                                                Avanzar
+                                            </button> -->
+                                            <button mat-raised-button color="primary" (click)="GuardarEstado()">
+                                                Guardar
+                                            </button>
+                                        </ng-container>
+
+
+
                                     </app-progress-step>
 
                                     <app-progress-step>
-                                        <!--  <h1>Enviado</h1>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda sint
-                                            consectetur est quos voluptatem eveniet sed maxime exercitationem officia.
-                                            Ipsa porro inventore earum commodi vero vel deleniti unde ad ipsam?
-                                        </p> -->
-                                        <button progressStepPrev mat-raised-button color="accent">Retraer</button>
-                                        <button progressStepNext mat-raised-button color="primary"
-                                            style="margin-left: 1%;">Avanzar</button>
+
+                                        <ng-container *ngIf="!bCompletado">
+                                            <a progressStepPrev class="btn btn-success font-weight-bold mr-2">
+                                                <i class="flaticon2-back"></i>
+                                            </a>
+
+                                            <a progressStepNext class="btn btn-success font-weight-bold mr-2">
+                                                <i class=" flaticon2-next"></i>
+                                            </a>
+
+                                            <button mat-raised-button color="primary" (click)="GuardarEstado()">
+                                                Guardar
+                                            </button>
+                                        </ng-container>
+
+
                                     </app-progress-step>
 
                                     <app-progress-step>
-                                        <!--  <h1>Entregado</h1>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda sint
-                                            consectetur est quos voluptatem eveniet sed maxime exercitationem officia.
-                                        </p> -->
-                                        <button progressStepPrev mat-raised-button color="accent">Retraer</button>
-                                        <button progressStepNext mat-raised-button color="primary"
-                                            style="margin-left: 1%;">Avanzar</button>
+
+                                        <ng-container *ngIf="!bCompletado">
+                                            <a progressStepPrev class="btn btn-success font-weight-bold mr-2">
+                                                <i class="flaticon2-back"></i>
+                                            </a>
+                                            <button mat-raised-button color="primary" (click)="GuardarEstado()">
+                                                Guardar
+                                            </button>
+                                            <a progressStepNext class="btn btn-success font-weight-bold mr-2 ml-1"
+                                                (click)="GuardarEstadoEntregado()">
+                                                <i class="flaticon2-delivery-package"></i> Entregado
+                                            </a>
+                                        </ng-container>
+
+
                                     </app-progress-step>
 
                                     <!-- <app-progress-step>
@@ -165,7 +220,7 @@
 
 
 
-            <div class="card-body" *ngIf="!(isLoading$ | async)">
+            <div class="card-body">
                 <!-- Contenido del primer card -->
 
 
@@ -270,7 +325,7 @@
                                                             <td>{{producto.producto_nombre}}</td>
                                                             <td>{{producto.nCantidad}} u.</td>
                                                             <td>
-                                                                {{producto.nPrecioUnitario}} PEN
+                                                                s/. {{producto.nPrecioUnitario}}
                                                             </td>
                                                             <td *ngIf="producto.nDescuento != 0">
                                                                 {{producto.nDescuento}} %
@@ -357,7 +412,7 @@
                 <div class="col-12">
                     <label class="form-label"><b>Efectivo Recibido:</b> </label>
                     <input class="form-control" type="number" [formControl]="txtEfectivoRecibido"
-                        [disabled]="bVentaRealizada" min="0" max="100000">
+                        [readonly]="bVentaRealizada" min="0" max="100000">
 
                 </div>
 
@@ -475,12 +530,12 @@
                 </div>
             </div>
 
-            <div class="row mt-5" style="justify-content: end; " *ngIf="bVentaRealizada">
+            <div class="row mt-5" style="justify-content: end; " *ngIf="bVentaRealizada && !bHerencia">
                 <div style="display: flex; ">
-                    <!--  <a class="btn btn-success font-weight-bold mr-2"
+                    <a class="btn btn-success font-weight-bold mr-2"
                         [routerLink]="[ '/ventas/gestionar-ventas/', venta.cCorrelativo ]">
                         <i class="fas fa-list-alt"></i> ver en lista
-                    </a> -->
+                    </a>
 
 
 

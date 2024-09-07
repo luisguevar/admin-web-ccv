@@ -104,6 +104,8 @@ export class GestionarProveedorComponent implements OnInit {
   }
 
   public BotonListarProveedores() {
+    this.desde = 0;
+    this.hasta = 5;
     this.search = '';
     this._service.GetProveedores(this.cboEstado.value).subscribe((resp: any) => {
       console.log('PROVEEDORES. ', resp);

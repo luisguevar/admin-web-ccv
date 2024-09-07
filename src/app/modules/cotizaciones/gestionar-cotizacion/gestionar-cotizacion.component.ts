@@ -117,6 +117,8 @@ export class GestionarCotizacionComponent implements OnInit {
   }
 
   BotonListarCotizaciones() {
+    this.desde = 0;
+    this.hasta = 5;
     this.search = null;
     this._service.GetCotizaciones(
       this.cboEstado.value,

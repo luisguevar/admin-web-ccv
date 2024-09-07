@@ -30,9 +30,11 @@ export class ListadoVentasComponent implements OnInit {
   //listas
   lstEstados = [
     { nIdEstado: -1, cEstado: 'Todos' },
-    { nIdEstado: 1, cEstado: 'Registrado' },
-    { nIdEstado: 2, cEstado: 'Enviado' },
-    { nIdEstado: 3, cEstado: 'Rechazado' },
+    { nIdEstado: 1, cEstado: 'Recibido' },
+    { nIdEstado: 2, cEstado: 'Confirmado' },
+    { nIdEstado: 3, cEstado: 'Enviado' },
+    { nIdEstado: 4, cEstado: 'Entregado' },
+    { nIdEstado: 5, cEstado: 'Cancelado' },
     { nIdEstado: 0, cEstado: 'Inactivo' },
   ];
 
@@ -59,6 +61,8 @@ export class ListadoVentasComponent implements OnInit {
   }
 
   BotonListarVentas() {
+    this.desde = 0;
+    this.hasta = 5;
     this._service.GetVentas(
       this.cboEstado.value,
       this.txtcCorrelativo.value,
@@ -100,7 +104,12 @@ export class ListadoVentasComponent implements OnInit {
 
     this.bDetalleVenta = true;
     setTimeout(() => {
-      this.child.ObtenerVentaPorId(id);
+      this.child.LoadComponente(id, true);
     }, 10);
+  }
+
+  BotonVolver(){
+    this.bDetalleVenta = false;
+    this.BotonListarVentas();
   }
 }

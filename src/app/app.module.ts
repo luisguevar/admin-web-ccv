@@ -29,6 +29,7 @@ import { AddEditCategoriaComponent } from './modules/categorias/add-edit-categor
 import localEsPeru from '@angular/common/locales/es-PE';
 import { registerLocaleData } from '@angular/common';
 import { BuscadorProductosComponent } from './modules/_dialog/buscador-productos/buscador-productos.component';
+import { ConfirmadorEliminadorObservacionComponent } from './modules/_dialog/confirmador-eliminador-observacion/confirmador-eliminador-observacion.component';
 
 registerLocaleData(localEsPeru);
 /* import { CreatePuntoVentaComponent } from './modules/puntoVenta/create-punto-venta/create-punto-venta.component'; */
@@ -44,7 +45,7 @@ function appInitializer(authService: AuthService) {
 
 
 @NgModule({
-  declarations: [AppComponent, NoticyAlertComponent, ConfirmComponent, AddEditCategoriaComponent, BuscadorProductosComponent],
+  declarations: [AppComponent, NoticyAlertComponent, ConfirmComponent, AddEditCategoriaComponent, BuscadorProductosComponent, ConfirmadorEliminadorObservacionComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

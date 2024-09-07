@@ -1,0 +1,37 @@
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <i class="icon-2x text-dark-50 flaticon2-box mx-2"></i>
+            <h3 class="card-label">Cancelar Pedido</h3>
+        </div>
+
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-11">
+                <label class="form-label">
+                  Observaciones
+                </label>
+                <textarea [(ngModel)]="cObservaciones" class="form-control" name="cObservaciones"
+                    placeholder="Observación" rows="4"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
+        Cerrar
+    </button>
+
+    <button type="button" class="btn btn-success btn-elevate mr-2" (click)="Guardar()">
+        Confirmar
+    </button>
+
+
+</div>

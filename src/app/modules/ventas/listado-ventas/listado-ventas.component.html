@@ -3,10 +3,10 @@
         <div class="card-title">
             <h3 class="card-label"><i class="icon-2x flaticon-cart flaticon-doc mx-2"></i> Lista de ventas</h3>
         </div>
-        <div class="card-toolbar">
+       <!--  <div class="card-toolbar">
             <a type="button" class="btn btn-primary" (click)="BotonRegistrarPuntoVenta()"><i
                     class="icon-2x text-white flaticon-file-1"></i> Punto de Venta</a>
-        </div>
+        </div> -->
     </div>
     <div class="card-body">
 
@@ -99,20 +99,24 @@
                             <td>{{ venta.cCorrelativo }}</td>
                             <td>{{ venta.cNombreCliente }}</td>
                             <td>{{ venta.dFechaVenta | date: 'dd-MM-yyyy HH:mm' }}</td>
-                            <td>{{ venta.nTotal }} PEN</td>
+                            <td> s/. {{ venta.nTotal }}</td>
                             <td>{{ venta.cNombreVendedor }}</td>
 
 
 
                             <td>
                                 <span class="label label-lg label-inline label-light-secondary text-black-50"
-                                    *ngIf="venta.nEstado == 1">Pendiente</span>
+                                    *ngIf="venta.nEstado == 1">Recibido</span>
                                 <span class="label label-lg label-inline label-light-primary"
-                                    *ngIf="venta.nEstado == 2">Enviado</span>
+                                    *ngIf="venta.nEstado == 2">Confirmado</span>
                                 <span class="label label-lg label-inline label-light-success"
-                                    *ngIf="venta.nEstado == 3">Aceptado</span>
+                                    *ngIf="venta.nEstado == 3">Enviado</span>
                                 <span class="label label-lg label-inline label-light-info"
-                                    *ngIf="venta.nEstado == 4">Rechazado</span>
+                                    *ngIf="venta.nEstado == 4">Entregado</span>
+
+                                <span class="label label-lg label-inline label-light-danger"
+                                    *ngIf="venta.nEstado == 5">Cancelado</span>
+
 
                                 <span class="label label-lg label-inline label-light-danger"
                                     *ngIf="venta.nEstado == 0">Inactivo</span>
@@ -207,4 +211,9 @@
 
 <div *ngIf="bDetalleVenta">
     <app-punto-venta></app-punto-venta>
+    <div class="form-group row">
+        <div class="col-6">
+            <button class="btn btn-md btn-danger" (click)="BotonVolver()">Volver</button>
+        </div>
+    </div>
 </div>

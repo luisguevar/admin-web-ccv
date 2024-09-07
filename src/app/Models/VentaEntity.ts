@@ -18,6 +18,7 @@ export class VentaEntity {
         public nTotal?: number,
         public cObservaciones?: string,
         public nEstado?: number,
+        public bCompletado?: boolean,
         public cUsuarioCreacion?: string,
         public cUsuarioModificacion?: string,
         public cClienteCorreo?:string,

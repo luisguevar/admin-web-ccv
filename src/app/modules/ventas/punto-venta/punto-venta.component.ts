@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IGV } from 'src/app/config/config';
 import { VentaEntity } from 'src/app/Models/VentaEntity';
 import { ProgressComponent } from '../progress/progress.component';
+import { ConfirmadorEliminadorObservacionComponent } from '../../_dialog/confirmador-eliminador-observacion/confirmador-eliminador-observacion.component';
 
 @Component({
   selector: 'app-punto-venta',
@@ -68,6 +69,12 @@ export class PuntoVentaComponent implements OnInit {
 
   bVentaRealizada: boolean = false;
   venta: VentaEntity = null;
+  bPedidoCancelado: boolean = false;
+
+  cObservaciones: string = '';
+  bHerencia: boolean = false;
+  nEstadoActual: number = 1;
+  bCompletado: boolean = false;
 
   constructor(public authservice: AuthService,
     private _dialog: MatDialog,
@@ -85,13 +92,70 @@ export class PuntoVentaComponent implements OnInit {
     this.isLoading$ = this._service.isLoading$;
   }
 
-  goNext(progress: ProgressComponent) {
-    console.log(progress);
-    progress.next();
+  GuardarEstado() {
+
+    const venta = new VentaEntity();
+
+    venta.nEstado = this.nEstadoActual;
+    venta.cUsuarioModificacion = this.usuario_dni;;
+
+    this._service.PutEstadoVenta(this.venta.id, venta).subscribe((resp: any) => {
+      console.log(resp);
+      if (resp.success) {
+
+        this.toaster.open(NoticyAlertComponent, { text: `success-'Pedido actualizado correctamente'` });
+        /* this.ObtenerVentaPorId(resp.id); */
+
+      } else {
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el estado del Pedido.'` });
+      }
+    },
+      (error: any) => {
+        console.log(error);
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el estado del Pedido.'` });
+        return;
+      }
+
+    )
+
   }
 
+  GuardarEstadoEntregado() {
+
+    this.bCompletado = true;
+  
+    
+    const venta = new VentaEntity();
+
+    venta.nEstado = 4;
+    venta.bCompletado = true;
+    venta.cUsuarioModificacion = this.usuario_dni;;
+
+    this._service.PutEstadoVenta(this.venta.id, venta).subscribe((resp: any) => {
+      console.log(resp);
+      if (resp.success) {
+
+        this.toaster.open(NoticyAlertComponent, { text: `success-'Pedido actualizado correctamente'` });
+
+        /* this.ObtenerVentaPorId(resp.id); */
+
+      } else {
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el estado del Pedido.'` });
+      }
+    },
+      (error: any) => {
+        console.log(error);
+        this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al actualizar el estado del Pedido.'` });
+        return;
+      }
+
+    )
+
+  }
   onStateChange(event) {
-    console.log(event);
+
+    this.nEstadoActual = event.activeIndex;
+
   }
 
   ngAfterViewInit() { }
@@ -135,7 +199,7 @@ export class PuntoVentaComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+   
       if (result) {
 
         this.producto_nombre = result.cDescripcion;
@@ -187,7 +251,6 @@ export class PuntoVentaComponent implements OnInit {
     producto.nTotalDescuento = parseFloat((((producto.nDescuento) * (producto.nCantidad * producto.nPrecioUnitario)) / 100).toFixed(2));
     this.listProducto.push(producto);
     this.listProductoEnv.push(producto);
-    console.log(this.listProducto);
 
     this.producto_id = 0;
     this.producto_nombre = null;
@@ -296,12 +359,10 @@ export class PuntoVentaComponent implements OnInit {
         this.toaster.open(NoticyAlertComponent, { text: `primary-La Venta se registró exitosamente.` });
         this.bVentaRealizada = true;
         this.venta = resp.venta;
-        /* console.log('resp.venta.cCorrelativo', resp.venta.cCorrelativo);
-        console.log('resp.venta.cCorrelativo', resp.venta); */
-        /*   this.cotizacion_id = resp.cotizacion.id;
-          this.cTitle = 'Editar Cotización: ' + resp.cotizacion.cCorrelativo;
-          this.bEdit = true;
-          this.ObtenerCotizacionPorId(this.cotizacion_id); */
+      /*   this.progress.next(); */
+        this.cdr.detectChanges();
+        
+/*         this.ObtenerVentaPorId(venta.id); */
 
       } else {
         this.toaster.open(NoticyAlertComponent, { text: `danger-'Ocurrió un problema al registrar la Venta.'` });
@@ -314,6 +375,11 @@ export class PuntoVentaComponent implements OnInit {
     )
   }
 
+  LoadComponente(id: number, bFlag: boolean = false) {
+    this.bHerencia = true;
+    this.ObtenerVentaPorId(id);
+  }
+
   ObtenerVentaPorId(id: number) {
     setTimeout(() => {
 
@@ -322,6 +388,8 @@ export class PuntoVentaComponent implements OnInit {
 
         console.log(resp);
         this.venta = resp.detalle_venta;
+        
+        this.bCompletado  = this.venta.bCompletado;
         this.cboTipoDocumento.setValue(this.venta.nTipoComprobante);
         this.cboTipoPago.setValue(this.venta.nTipoPago);
         this.txtEfectivoRecibido.setValue(this.venta.nEfectivoRecibido);
@@ -336,14 +404,20 @@ export class PuntoVentaComponent implements OnInit {
         this.listProducto = resp.listProductos;
         this.cliente_nombre = this.venta.cClienteCorreo;
         this.vendedor_nombre = this.venta.cVendedorCorreo;
-        setTimeout(() => {
-          if (this.progress) {
-            // Avanzar hasta el paso 3 (hacer clic 3 veces en "Avanzar")
-            for (let i = 0; i < this.venta.nEstado; i++) {
-              this.progress.next();
+        if (this.venta.nEstado != 5) {
+          setTimeout(() => {
+            if (this.progress) {
+              // Avanzar hasta el paso 3 (hacer clic 3 veces en "Avanzar")
+              for (let i = 0; i < this.venta.nEstado; i++) {
+                this.progress.next();
+              }
             }
-          }
-        }, 100);
+          }, 100);
+        } else {
+          this.bPedidoCancelado = true;
+          this.cObservaciones = this.venta.cObservaciones;
+        }
+
 
         this.cdr.detectChanges();
 
@@ -356,13 +430,31 @@ export class PuntoVentaComponent implements OnInit {
     }, 10);
   }
 
-  setToStep3() {
-    if (this.progress) {
-      // Avanzar hasta el paso 3 (hacer clic 3 veces en "Avanzar")
-      for (let i = 0; i < 3; i++) {
-        this.progress.next();
+
+
+  BotonCancelarPedido() {
+    const dialogRef = this._dialog.open(
+      ConfirmadorEliminadorObservacionComponent,
+      {
+        width: '650px',
+        disableClose: true,
+        data: {
+          bEdit: false,
+          cTitle: 'Cancelar Pedido',
+          id: this.venta.id
+        },
       }
-    }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.ObtenerVentaPorId(this.venta.id);
+
+      }
+
+    });
   }
+
+
 
 }

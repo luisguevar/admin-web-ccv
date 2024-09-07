@@ -114,14 +114,14 @@ export const AsideMenuAdminGeneral = {
       svg: './assets/media/svg/icons/Communication/Clipboard-list.svg',
       page: '/ventas',
       submenu: [
-        {
+       /*  {
           title: 'Punto de venta',
           page: '/punto-venta/add-new-sale'
         },
         {
           title: 'Ordenes',
           page: '/ventas/lista-de-ordenes'
-        },
+        }, */
         {
           title: 'Punto de venta',
           page: '/ventas/punto-venta'

@@ -379,4 +379,22 @@ export class ServiciosGeneralService {
     );
   }
 
+  PutCancelarVenta(venta_id: any, data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/ventas/cancelar/" + venta_id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PutEstadoVenta(venta_id: any, data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/ventas/update_estado/" + venta_id;
+    return this.http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
 }
