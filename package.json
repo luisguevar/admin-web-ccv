@@ -36,6 +36,7 @@
         "dompurify": "^2.3.3",
         "exceljs": "^4.4.0",
         "file-saver": "^2.0.5",
+        "g": "^2.0.1",
         "highlight.js": "^10.4.0",
         "highlightjs-line-numbers.js": "^2.8.0",
         "moment": "^2.27.0",
@@ -55,7 +56,7 @@
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.1100.1",
-        "@angular/cli": "~11.0.1",
+        "@angular/cli": "^11.0.1",
         "@angular/compiler-cli": "~11.0.0",
         "@types/file-saver": "^2.0.7",
         "@types/jasmine": "~3.6.0",
