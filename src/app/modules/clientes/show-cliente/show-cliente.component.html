@@ -1,0 +1,164 @@
+<ng-container *ngIf="isLoading">
+    <div class="progress progress-modal">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+            style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</ng-container>
+<div>
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <i class="icon-2x text-dark-50 flaticon-interface-9 mx-2"></i> {{ cTitle }}
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body">
+        <!-- <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container> -->
+
+        <div class="form-group row">
+            <div class="col-lg-4 mb-3">
+                <div *ngIf="avatar" class="foto-container">
+                    <img [src]="avatar" alt="Foto de prueba">
+                </div>
+                <div *ngIf= "!avatar"  class="foto-container">
+                    <img src=" https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="Foto de prueba">
+                </div>
+            </div>
+            <div class="col-lg-8 mb-3">
+                <p><span><b>Nombres:</b> {{ cliente.cNombres }} {{ cliente.cApellidos }}</span></p>
+                <p><span><b>Correo:</b> {{ cliente.cCorreo }}</span></p>
+                <p><span><b>Celular:</b> {{ cliente.cCelular }}</span></p>
+                <p><span><b>Nro Documento:</b> {{ cliente.cNroDocumento }}</span></p>
+                <p *ngIf = " cliente.nTipoPersona === 1 "><span><b>Tipo de Persona:</b> Natural </span></p>
+                <p *ngIf = " cliente.nTipoPersona === 2 "><span><b>Tipo de Persona:</b> Juridica </span></p>
+            </div>
+        </div>
+        <ul class="nav nav-tabs nav-tabs-line">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Ventas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Cotizaciones</a>
+            </li>
+            
+        </ul>
+        <div class="tab-content mt-5" id="myTabContent">
+            <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="table-responsive my-10">
+                    <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                        <thead>
+                            <tr class="text-left">
+                                <th class="pr-0" style="width: 50px">Nro</th>
+                                <th style="min-width: 100px">Correlativo</th>
+                                <th style="min-width: 150px">Fecha Venta</th>
+                                <th style="min-width: 100px">Total </th>
+                                <th style="min-width: 100px">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="!(isLoading$ | async)">
+                            <ng-container *ngFor="let venta of listVentas ; let i = index"> 
+                                <tr>
+                                    <td>{{ i + 1 }}</td>
+                                    <td> <a href=""> {{ venta.cCorrelativo }} </a> </td>
+                                    <td>{{ venta.dFechaVenta | date: 'dd-MM-yyyy' }}</td>
+                                    <td>S/. {{ venta.nTotal }} </td>
+                                    <td>
+                                        <span class="label label-lg label-inline label-light-secondary text-black-50"
+                                            *ngIf="venta.nEstado == 1">Recibido</span>
+                                        <span class="label label-lg label-inline label-light-primary"
+                                            *ngIf="venta.nEstado == 2">Confirmado</span>
+                                        <span class="label label-lg label-inline label-light-success"
+                                            *ngIf="venta.nEstado == 3">Enviado</span>
+                                        <span class="label label-lg label-inline label-light-info"
+                                            *ngIf="venta.nEstado == 4">Entregado</span>
+                                        <span class="label label-lg label-inline label-light-danger"
+                                            *ngIf="venta.nEstado == 5">Cancelado</span>
+                                        <span class="label label-lg label-inline label-light-danger"
+                                            *ngIf="venta.nEstado == 0">Inactivo</span>
+                                    </td>
+                                    
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+        
+                    <!-- Spinner -->
+                    <ng-container *ngIf="isLoading$ | async">
+                        <app-spinner></app-spinner>
+                    </ng-container>
+        
+                    <!-- <mat-paginator [length]="listVentas.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+                    </mat-paginator> -->
+                </div>
+            
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="table-responsive my-10">
+                    <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_1">
+                        <thead>
+                            <tr class="text-left">
+                                <th class="pr-0" style="width: 50px">Nro</th>
+                                <th style="min-width: 100px">Correlativo</th>
+                                <th style="min-width: 150px">Fecha Emision</th>
+                                
+                                <th style="min-width: 100px">Total </th>
+                                <th style="min-width: 100px">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="!(isLoading$ | async)">
+                            <ng-container *ngFor="let cotizacion of listCotizaciones ; let i = index"> 
+                                <tr>
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ cotizacion.cCorrelativo }}</td>
+                                    <td>{{ cotizacion.dFechaEmision | date: 'dd-MM-yyyy' }}</td>
+                                    
+                                    <td> S/. {{ cotizacion.nTotal }}</td>
+                                    <td>
+                                        <span class="label label-lg label-inline label-light-secondary text-black-50"
+                                            *ngIf="cotizacion.nEstado == 1">Recibido</span>
+                                        <span class="label label-lg label-inline label-light-primary"
+                                            *ngIf="cotizacion.nEstado == 2">Confirmado</span>
+                                        <span class="label label-lg label-inline label-light-success"
+                                            *ngIf="cotizacion.nEstado == 3">Enviado</span>
+                                        <span class="label label-lg label-inline label-light-info"
+                                            *ngIf="cotizacion.nEstado == 4">Entregado</span>
+        
+                                        <span class="label label-lg label-inline label-light-danger"
+                                            *ngIf="cotizacion.nEstado == 5">Cancelado</span>
+        
+        
+                                        <span class="label label-lg label-inline label-light-danger"
+                                            *ngIf="cotizacion.nEstado == 0">Inactivo</span>
+                                    </td>
+                                    
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+        
+                    <!-- Spinner -->
+                    <ng-container *ngIf="isLoading$ | async">
+                        <app-spinner></app-spinner>
+                    </ng-container>
+        
+                    <!-- <mat-paginator [length]="listVentas.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+                    </mat-paginator> -->
+                </div>
+
+
+
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">Tab content 4</div>
+            <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">Tab content 5</div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="dialogRef.close(false)">
+            Cerrar
+        </button>
+        
+    </div>
+</div>

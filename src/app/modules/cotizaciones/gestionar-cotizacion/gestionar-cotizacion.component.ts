@@ -240,9 +240,7 @@ export class GestionarCotizacionComponent implements OnInit {
     this.listProducto = [];
   }
 
-  BotonExportar() {
-
-  }
+ 
   BotonGuardar() {
 
     if (!this.cliente_nombre || !this.dFechaEmision || !this.dFechaExpiracion) {
@@ -484,4 +482,20 @@ export class GestionarCotizacionComponent implements OnInit {
 
 
   }
+
+
+  BotonExportarCotizacion(id:number):void {
+    this.toaster.open(NoticyAlertComponent, { text: `info-La cotización se está descargando.` });
+    this._service.GetDescargaCotizacionPorId(id) ;
+
+    
+  }
+
+  BotonExportar():void{
+    this.toaster.open(NoticyAlertComponent, { text: `info-La cotización se está descargando.` });
+    this._service.GetDescargaCotizacionPorId(this.cotizacion_id) ;
+
+  }
+
+
 }

@@ -7,6 +7,7 @@ import { Toaster } from 'ngx-toast-notifications';
 import { AddEditClienteComponent } from '../add-edit-cliente/add-edit-cliente.component';
 import { ConfirmService } from 'src/app/shared/confirm/confirm.service';
 import { NoticyAlertComponent } from 'src/app/componets/notifications/noticy-alert/noticy-alert.component';
+import { ShowClienteComponent } from '../show-cliente/show-cliente.component';
 
 @Component({
   selector: 'app-listado-clientes',
@@ -52,6 +53,7 @@ export class ListadoClientesComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
     this.BotonListarClientes();
+    
   }
 
   public BotonListarClientes() {
@@ -81,6 +83,27 @@ export class ListadoClientesComponent implements OnInit {
       this.BotonListarClientes();
     });
   }
+//VicVil - 21/11/2024
+public BotonHistorialCliente(cliente) {
+  const dialogRef = this._dialog.open(
+    ShowClienteComponent,
+    {
+      width: '650px',
+      disableClose: true,
+      data: {
+        bEdit: false,
+        cTitle: 'Historial de Cliente',
+        cliente: cliente
+      },
+    }
+  );
+
+  dialogRef.afterClosed().subscribe((result) => {
+
+    this.BotonListarClientes();
+  });
+}
+
 
   public BotonEditarCliente(cliente) {
     const dialogRef = this._dialog.open(

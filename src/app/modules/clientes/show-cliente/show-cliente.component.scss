@@ -1,0 +1,17 @@
+.foto-container {
+    width: 100%;
+    padding-top: 100%; /* Mantiene la proporción cuadrada */
+    position: relative;
+    border: 2px solid #ccc;
+    border-radius: 4px; /* Opcional, para bordes redondeados */
+    overflow: hidden;
+}
+
+.foto-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen se adapte al cuadrado */
+}

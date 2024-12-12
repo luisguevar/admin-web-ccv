@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth';
 import { URL_SERVICIOS } from '../config/config';
 import { finalize } from 'rxjs/operators';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,15 @@ export class ServiciosGeneralService {
     );
   }
 
+  GetClientePorId(cliente_id) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/clientes/show_cliente/" + cliente_id;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+  
   PostClientes(data: any) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
@@ -287,6 +297,20 @@ export class ServiciosGeneralService {
     let URL = URL_SERVICIOS + "/cotizaciones/show_cotizacion/" + cotizacion_id;
     return this.http.get(URL, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+  GetDescargaCotizacionPorId(cotizacion_id) {
+    //this.isLoadingSubject.next(true);
+    //let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/cotizaciones/pdf/" + cotizacion_id;
+    return this.http.get(URL, { responseType: 'blob' }).subscribe(
+      (response) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        saveAs(blob, 'cotizacion.pdf');
+      },
+      (error) => {
+        console.error('Error al generar el PDF:', error);
+      }
     );
   }
 

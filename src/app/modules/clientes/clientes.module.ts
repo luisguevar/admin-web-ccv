@@ -13,10 +13,11 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { SpinnerModule } from 'src/app/shared/spinner/spinner.module';
 import { BuscadorRegistradorClientesComponent } from '../_dialog/buscador-registrador-clientes/buscador-registrador-clientes.component';
+import { ShowClienteComponent } from './show-cliente/show-cliente.component';
 
 
 @NgModule({
-  declarations: [ClientesComponent, ListadoClientesComponent, AddEditClienteComponent, BuscadorRegistradorClientesComponent],
+  declarations: [ClientesComponent, ListadoClientesComponent, AddEditClienteComponent, BuscadorRegistradorClientesComponent, ShowClienteComponent],
   imports: [
     CommonModule,
     ClientesRoutingModule,
